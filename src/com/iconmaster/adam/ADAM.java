@@ -10,10 +10,13 @@ public class ADAM {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		BodyPartFactory.registerPart("human", "body");
+		BodyPartFactory.registerPart("human", "head,body");
+		
+		BodyPartFactory.registerPart("head", "mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear) skull brain");
+		BodyPartFactory.registerPart("mouth", "lips(p=true) teeth(p=true) tongue");
 		
 		BodyPartFactory.registerPart("body", "chest,arms,legs");
-		BodyPartFactory.registerPart("chest", "skin muscle ribs(p=true) spine,guts");
+		BodyPartFactory.registerPart("chest", "skin fat muscle ribs(p=true) spine,guts");
 		BodyPartFactory.registerPart("guts", "p=true heart,stomach,intestines(p=true),lung(n=left_lung),lung(n=right_lung)");
 		
 		BodyPartFactory.registerPart("legs", "d=pair_of_%s leg(n=left_leg),leg(n=right_leg)");
