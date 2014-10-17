@@ -12,8 +12,9 @@ public class ADAM {
 	public static void main(String[] args) {
 		BodyPartFactory.registerPart("human", "head,body");
 		
-		BodyPartFactory.registerPart("head", "mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear) skull brain");
+		BodyPartFactory.registerPart("head", "mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear),neck skull brain");
 		BodyPartFactory.registerPart("mouth", "lips(p=true) teeth(p=true) tongue");
+		BodyPartFactory.registerPart("neck", "skin fat muscle bone");
 		
 		BodyPartFactory.registerPart("body", "chest,arms,legs");
 		BodyPartFactory.registerPart("chest", "skin fat muscle ribs(p=true) spine,guts");
