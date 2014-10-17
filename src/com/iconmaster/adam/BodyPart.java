@@ -10,6 +10,7 @@ public class BodyPart {
 	public String type = "???";
 	public String name = "???";
 	public String desc = "%s";
+	public boolean plural = false;
 	public ArrayList<ArrayList<BodyPart>> layers = new ArrayList<>();
 	
 	public double size = 1;

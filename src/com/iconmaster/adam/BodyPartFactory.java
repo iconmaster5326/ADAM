@@ -61,6 +61,8 @@ public class BodyPartFactory {
 				part.desc = desc.replace("_", " ");
 			} else if (flag.startsWith("m")) {
 				part.density = Double.parseDouble(desc);
+			} else if (flag.startsWith("p")) {
+				part.plural = Boolean.parseBoolean(desc);
 			}
 			return true;
 		}

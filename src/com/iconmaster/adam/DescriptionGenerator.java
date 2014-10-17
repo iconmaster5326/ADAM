@@ -35,7 +35,7 @@ public class DescriptionGenerator {
 				String[] list = new String[layer.size()];
 				for (int j=0;j<layer.size();j++) {
 					BodyPart part2 = layer.get(j);
-					list[j] = getAorAn(formatName(part2))+" "+formatName(part2);
+					list[j] = (part2.plural ? "": getAorAn(formatName(part2))+" ")+formatName(part2);
 				}
 				sb.append(getListString(list));
 				sb.append(".");
@@ -51,7 +51,13 @@ public class DescriptionGenerator {
 					if (!part2.layers.isEmpty()) {
 						sb.append("\nThe ");
 						sb.append(formatName(part2));
-						sb.append(", on the surface, is composed of ");
+						sb.append(", on the surface, ");
+						if (part2.plural) {
+							sb.append("are");
+						} else {
+							sb.append("is");
+						}
+						sb.append(" composed of ");
 						sb.append(getFullDesc(part2));
 					}
 				}
