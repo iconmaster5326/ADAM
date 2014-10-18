@@ -4,6 +4,7 @@ import com.iconmaster.adam.CLAHelper.CLA;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  *
@@ -259,15 +260,7 @@ public class ADAM {
 				String cause = sys.being.isAlive();
 				System.out.println((sys.you?"you are ":"This being is ")+(cause==null?"":"not ")+"alive.");
 				if (cause!=null) {
-					BodyPart cp = sys.being.findPart(cause);
-					if (cp==null) {cp = sys.being;}
-					String rem;
-					if (cp.blood<=0) {
-						rem = "blood loss to the";
-					} else {
-						rem = "a "+cp.removalString;
-					}
-					System.out.println((sys.you?"you are ":"This being is ")+"dead due to "+rem+" "+cause+".");
+					System.out.println((sys.you?"you are ":"This being is ")+"dead due to "+DescriptionGenerator.getCauseOfDeath(being, cause));
 				}
 			});
 			cl.addCommand("heal",0,(s)->{
@@ -310,6 +303,40 @@ public class ADAM {
 				}
 				sys.being = parts.get(index);
 				System.out.println("Navigated to "+sys.being+".");
+			});
+			cl.addCommand("fight",1,(s)->{
+				BodyPart other = sys.saved.get(s[0]);
+				if (other==null) {
+					System.out.println("You can't fight something that doesn't exist!");
+					return;
+				}
+				Random random = new Random();
+				boolean yourTurn = random.nextBoolean();
+				while (true) {
+					if (yourTurn) {
+						other.damage(random.nextDouble()*10);
+						other.tick();
+					} else {
+						sys.being.damage(random.nextDouble()*10);
+						sys.being.tick();
+					}
+					if (sys.being.isAlive()!=null) {
+						System.out.println("You lose...");
+						return;
+					}
+					if (other.isAlive()!=null) {
+						System.out.println("You win!");
+						return;
+					}
+					yourTurn = !yourTurn;
+				}
+			});
+			cl.addCommand("human",1,(s)->{
+				sys.being = BodyPartFactory.generate("human");
+				sys.being.name = s[0].replace("_", " ");
+				sys.being.size = 5+7d/12;
+				sys.being.proper = true;
+				System.out.println("Generated "+s[0]+".");
 			});
 			
 			cl.handle();

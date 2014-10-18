@@ -283,4 +283,19 @@ public class DescriptionGenerator {
 			return "profusely";
 		}
 	}
+	
+	public static String getCauseOfDeath(BodyPart part, String cause) {
+		if (cause==null) {
+			cause = part.isAlive();
+		}
+		BodyPart cp = part.findPart(cause);
+		if (cp==null) {cp = part;}
+		String rem;
+		if (cp.blood<=0) {
+			rem = "blood loss to the";
+		} else {
+			rem = "a "+cp.removalString;
+		}
+		return (rem+" "+cause+".");
+	}
 }
