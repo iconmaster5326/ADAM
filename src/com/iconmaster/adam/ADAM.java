@@ -29,12 +29,12 @@ public class ADAM {
 		BodyPartFactory.registerPart("skin", "d=layer_of_%s");
 		BodyPartFactory.registerPart("fat", "d=layer_of_%s");
 		BodyPartFactory.registerPart("muscle", "d=layer_of_%s");
-		BodyPartFactory.registerPart("bone", "d=layer_of_%s");
+		BodyPartFactory.registerPart("bone", "p=true");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		System.out.println(being);
 		
-		String desc = DescriptionGenerator.getFullBeingDesc(being);
+		String desc = DescriptionGenerator.getFullBeingDesc(being,false);
 		System.out.println(desc);
 	}
 	

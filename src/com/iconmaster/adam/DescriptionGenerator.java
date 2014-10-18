@@ -7,27 +7,32 @@ import java.util.ArrayList;
  * @author iconmaster
  */
 public class DescriptionGenerator {
-	public static String getFullBeingDesc(BodyPart part) {
-		StringBuilder sb = new StringBuilder("This is ");
+	public static String getFullBeingDesc(BodyPart part, boolean you) {
+		StringBuilder sb = new StringBuilder(you?"You are ":"This is ");
 		sb.append(getAorAn(formatName(part)));
 		sb.append(" ");
 		sb.append(formatName(part));
 		sb.append(".");
 		if (!part.layers.isEmpty()) {
 			sb.append("\n\nOn the surface is ");
-			sb.append(getFullDesc(part));
+			sb.append(getFullDesc(part,you));
 		}
-		sb.append("\nThis ");
-		sb.append(formatName(part));
-		sb.append(" is ");
+		if (you) {
+			sb.append("\nYou are ");
+		} else {
+			sb.append("\nThis ");
+			sb.append(formatName(part));
+			sb.append(" is ");
+		}
 		sb.append(Double.toString(part.size));
-		sb.append(" ft tall and weighs ");
+		sb.append(" ft tall and weigh");
+		sb.append(you?" ":"s ");
 		sb.append(Double.toString(part.getMass()));
 		sb.append(" lbs.");
 		return sb.toString();
 	}
 		
-	public static String getFullDesc(BodyPart part) {
+	public static String getFullDesc(BodyPart part, boolean you) {
 		StringBuilder sb = new StringBuilder();
 		if (!part.layers.isEmpty()) {
 			for (int i=0;i<part.layers.size();i++) {
@@ -49,7 +54,7 @@ public class DescriptionGenerator {
 				for (int j=0;j<layer.size();j++) {
 					BodyPart part2 = layer.get(j);
 					if (!part2.layers.isEmpty()) {
-						sb.append("\nThe ");
+						sb.append(you?"\nYour ":"\nThe ");
 						sb.append(formatName(part2));
 						sb.append(", on the surface, ");
 						if (part2.plural) {
@@ -58,7 +63,7 @@ public class DescriptionGenerator {
 							sb.append("is");
 						}
 						sb.append(" composed of ");
-						sb.append(getFullDesc(part2));
+						sb.append(getFullDesc(part2,you));
 					}
 				}
 			}
