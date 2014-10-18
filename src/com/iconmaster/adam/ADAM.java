@@ -111,6 +111,9 @@ public class ADAM {
 				System.out.println((sys.you?"you are now ":"This being is now ")+(sys.being.plural?"":"not ")+"pluralized.");
 			});
 			cl.addCommand("damage",0,(s)->{
+				if (sys.being.layers.isEmpty()) {
+					System.out.println("HP: "+sys.being.damage+"/"+sys.being.maxDamage+"/"+sys.being.destructionDamage);
+				}
 				System.out.println((sys.you?"you have been ":"This being has been ")+sys.being.getRelativeDamage()*100+"% damaged.");
 			});
 			cl.addCommand("new",0,(s)->{
@@ -178,6 +181,7 @@ public class ADAM {
 					return;
 				}
 				sys.being.layers.get(layer).add(part);
+				part.parent = sys.being;
 				System.out.println("Added "+part.name+".");
 			});
 			cl.addCommand("addg",2,(s)->{
@@ -188,6 +192,7 @@ public class ADAM {
 					return;
 				}
 				sys.being.layers.get(layer).add(part);
+				part.parent = sys.being;
 				sys.being = part;
 				System.out.println("Added "+part.name+".");
 			});

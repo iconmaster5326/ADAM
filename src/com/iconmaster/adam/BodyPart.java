@@ -296,6 +296,8 @@ public class BodyPart {
 			BodyPart part2 = part.getPart(term);
 			if ("..".equals(term)) {
 				part = part.parent;
+			} else if ("~".equals(term)) {
+				part = part.getRootPart();
 			} else if (part2==null) {
 				return null;
 			} else {
