@@ -1,6 +1,7 @@
 package com.iconmaster.adam;
 
 import com.iconmaster.adam.CLAHelper.CLA;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -119,6 +120,10 @@ public class ADAM {
 				sys.being = BodyPartFactory.generate(s[0]);
 				System.out.println("Generated a new "+sys.being.type+".");
 			});
+			cl.addCommand("new",-1,(s)->{
+				sys.being = BodyPartFactory.generateFromDef(s[0],CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
+				System.out.println("Generated a new "+sys.being.type+".");
+			});
 			cl.addCommand("hit",1,(s)->{
 				double damage = Double.parseDouble(s[0]);
 				System.out.println("Hitting for "+damage+"...");
@@ -152,6 +157,9 @@ public class ADAM {
 					sys.being = part;
 					System.out.println(sys.being.name+" has been loaded.");
 				}
+			});
+			cl.addCommand("define",-1,(s)->{
+				BodyPartFactory.registerPart(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
 			});
 			
 			cl.handle();

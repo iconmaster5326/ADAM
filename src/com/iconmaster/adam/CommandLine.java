@@ -3,6 +3,8 @@ package com.iconmaster.adam;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -71,16 +73,32 @@ public class CommandLine {
 	public void handle() {
 		Scanner in = new Scanner(System.in);
 		while (true) {
-			System.out.print("> ");
-			String input = in.nextLine();
-			String[] terms = input.split("\\s+");
-			
-			if (terms.length!=0) {
-				String prefix = terms[0];
-				terms = Arrays.copyOfRange(terms, 1, terms.length);
-				
-				execute(prefix,terms);
+			try {
+				System.out.print("> ");
+				String input = in.nextLine();
+				String[] terms = input.split("\\s+");
+
+				if (terms.length!=0) {
+					String prefix = terms[0];
+					terms = Arrays.copyOfRange(terms, 1, terms.length);
+
+					execute(prefix,terms);
+				}
+			} catch (Exception ex) {
+				Logger.getLogger(CommandLine.class.getName()).log(Level.SEVERE, "error in command line", ex);
 			}
 		}
+	}
+	
+	public static String recombine(String[] input) {
+		StringBuilder sb = new StringBuilder();
+		if (input.length!=0) {
+			for (String s : input) {
+				sb.append(s);
+				sb.append(" ");
+			}
+			sb.deleteCharAt(sb.length()-1);
+		}
+		return sb.toString();
 	}
 }
