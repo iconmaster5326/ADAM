@@ -68,6 +68,48 @@ public class ADAM {
 				sys.you = Boolean.parseBoolean(s[0]);
 				System.out.println("Second-person mode is now "+(sys.you?"on.":"off."));
 			});
+			cl.addCommand("name",0,(s)->{
+				System.out.println((sys.you?"You are ":"This is ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
+			});
+			cl.addCommand("name",1,(s)->{
+				sys.being.name = s[0];
+				System.out.println((sys.you?"You are now ":"This is now ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
+			});
+			cl.addCommand("size",0,(s)->{
+				System.out.println((sys.you?"You are ":"This is ")+sys.being.size+" feet tall.");
+			});
+			cl.addCommand("size",1,(s)->{
+				sys.being.size = Double.parseDouble(s[0]);
+				System.out.println((sys.you?"You are now ":"This is now ")+sys.being.size+" feet tall.");
+			});
+			cl.addCommand("mass",0,(s)->{
+				System.out.println((sys.you?"You weigh ":"This weighs ")+sys.being.getMass()+" pounds.");
+			});
+			cl.addCommand("proper",0,(s)->{
+				System.out.println((sys.you?"you are ":"This being is ")+(sys.being.proper?"":"not ")+"referred to by a proper noun.");
+			});
+			cl.addCommand("proper",1,(s)->{
+				sys.being.proper = Boolean.parseBoolean(s[0]);
+				System.out.println((sys.you?"you are now ":"This being is now ")+(sys.being.proper?"":"not ")+"referred to by a proper noun.");
+			});
+			cl.addCommand("plural",0,(s)->{
+				System.out.println((sys.you?"you are ":"This being is ")+(sys.being.plural?"":"not ")+"pluralized.");
+			});
+			cl.addCommand("plural",1,(s)->{
+				sys.being.plural = Boolean.parseBoolean(s[0]);
+				System.out.println((sys.you?"you are now ":"This being is now ")+(sys.being.plural?"":"not ")+"pluralized.");
+			});
+			cl.addCommand("damage",0,(s)->{
+				System.out.println((sys.you?"you have been ":"This being has been ")+sys.being.getRelativeDamage()*100+"% damaged.");
+			});
+			cl.addCommand("new",0,(s)->{
+				sys.being = BodyPartFactory.generate("human");
+				System.out.println("Generated a new "+sys.being.type+".");
+			});
+			cl.addCommand("new",1,(s)->{
+				sys.being = BodyPartFactory.generate(s[0]);
+				System.out.println("Generated a new "+sys.being.type+".");
+			});
 			cl.addCommand("hit",1,(s)->{
 				double damage = Double.parseDouble(s[0]);
 				System.out.println("Hitting for "+damage+"...");
