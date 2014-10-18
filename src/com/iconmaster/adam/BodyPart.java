@@ -100,7 +100,7 @@ public class BodyPart {
 				}
 			}
 		} else {
-			System.out.println(name+"("+parent.name+") got damaged by "+amount);
+			//System.out.println(name+"("+parent.name+") got damaged by "+amount);
 			damage += amount;
 			res.put(this, res.getOrDefault(this, 0d)+amount);
 		}
