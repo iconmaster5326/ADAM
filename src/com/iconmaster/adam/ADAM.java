@@ -17,7 +17,7 @@ public class ADAM {
 	public static void main(String[] args) {
 		BodyPartFactory.registerPart("human", "head,body");
 		
-		BodyPartFactory.registerPart("head", "s=.2 skin(hc=.6),mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear),neck skull brain(e=true)");
+		BodyPartFactory.registerPart("head", "s=.2 skin(hc=.6),mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear),neck skull brain");
 		BodyPartFactory.registerPart("mouth", "lips(p=true) teeth(p=true) tongue");
 		BodyPartFactory.registerPart("neck", "skin fat muscle bone(e=true)");
 		
@@ -25,16 +25,19 @@ public class ADAM {
 		BodyPartFactory.registerPart("ear", "ir=missing");
 		BodyPartFactory.registerPart("nose", "ir=missing");
 		
+		BodyPartFactory.registerPart("skull", "ir=crushed");
+		BodyPartFactory.registerPart("brain", "e=true ir=crushed");
+		
 		BodyPartFactory.registerPart("body", "s=.8 chest,arms,legs");
 		BodyPartFactory.registerPart("chest", "s=.6 skin fat muscle ribs spine,guts");
 		BodyPartFactory.registerPart("ribs", "s=.08 m=13 p=true i=fractured ir=broken");
 		BodyPartFactory.registerPart("spine", "e=true s=.08 m=13 i=fractured ir=broken");
 		BodyPartFactory.registerPart("guts", "s=.05 p=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
 		
-		BodyPartFactory.registerPart("heart", "s=.1 m=14 e=true");
-		BodyPartFactory.registerPart("stomach", "s=.25 m=9");
-		BodyPartFactory.registerPart("intestines", "s=.5 m=5 p=true");
-		BodyPartFactory.registerPart("lung", "s=.125 m=2 e=true");
+		BodyPartFactory.registerPart("heart", "s=.1 m=14 e=true ir=crushed");
+		BodyPartFactory.registerPart("stomach", "s=.25 m=9 ir=crushed");
+		BodyPartFactory.registerPart("intestines", "s=.5 m=5 p=true ir=crushed");
+		BodyPartFactory.registerPart("lung", "s=.125 m=2 e=true ir=crushed");
 		
 		BodyPartFactory.registerPart("legs", "s=.15 d=pair_of_%s leg(n=left_leg),leg(n=right_leg)");
 		BodyPartFactory.registerPart("leg", "s=.5 foot(hc=.1),skin(hc=.9) fat muscle bone");
@@ -117,6 +120,7 @@ public class ADAM {
 			cl.addCommand("damage",0,(s)->{
 				if (sys.being.layers.isEmpty()) {
 					System.out.println("HP: "+sys.being.damage+"/"+sys.being.maxDamage+"/"+sys.being.destructionDamage);
+					System.out.println("Blood: "+sys.being.blood+"/"+sys.being.getMaxBlood()+" (bleed "+sys.being.bleed+")");
 				}
 				System.out.println((sys.you?"you have been ":"This being has been ")+sys.being.getRelativeDamage()*100+"% damaged.");
 			});
@@ -253,16 +257,51 @@ public class ADAM {
 				String cause = sys.being.isAlive();
 				System.out.println((sys.you?"you are ":"This being is ")+(cause==null?"":"not ")+"alive.");
 				if (cause!=null) {
-					System.out.println((sys.you?"you are ":"This being is ")+"dead due to a broken "+cause+".");
+					BodyPart cp = sys.being.findPart(cause);
+					if (cp==null) {cp = sys.being;}
+					System.out.println((sys.you?"you are ":"This being is ")+"dead due to a "+cp.removalString+" "+cause+".");
 				}
 			});
 			cl.addCommand("heal",0,(s)->{
 				double healed = sys.being.healAll();
 				System.out.println((sys.you?"you have been healed for ":"This being has been healed for ")+healed+" damage.");
 			});
-			cl.addCommand("bleed",0,(s)->{
+			cl.addCommand("tick",0,(s)->{
 				double bled = sys.being.bleed();
 				System.out.println((sys.you?"you bled ":"This being bled ")+bled+" blood.");
+			});
+			cl.addCommand("bleed",0,(s)->{
+				System.out.println("Bleed is "+sys.being.bleed+".");
+			});
+			cl.addCommand("bleed",1,(s)->{
+				sys.being.bleed = Double.parseDouble(s[0]);
+				System.out.println("Bleed is now "+sys.being.bleed+".");
+			});
+			cl.addCommand("blood",0,(s)->{
+				System.out.println("Blood is "+sys.being.blood+".");
+			});
+			cl.addCommand("blood",1,(s)->{
+				sys.being.blood = Double.parseDouble(s[0]);
+				System.out.println("Blood is now "+sys.being.blood+".");
+			});
+			cl.addCommand("goto",1,(s)->{
+				ArrayList<BodyPart> parts = sys.being.findAllParts(s[0].replace("_", " "));
+				if (parts.isEmpty()) {
+					System.out.println("There isn't a part anywhere called "+s[0]+"!");
+					return;
+				}
+				sys.being = parts.get(0);
+				System.out.println("Navigated to "+sys.being+".");
+			});
+			cl.addCommand("goto",2,(s)->{
+				ArrayList<BodyPart> parts = sys.being.findAllParts(s[0].replace("_", " "));
+				int index = Integer.parseInt(s[1]);
+				if (index<0 || index>parts.size()-1) {
+					System.out.println("There isn't a part anywhere called "+s[0]+"!");
+					return;
+				}
+				sys.being = parts.get(index);
+				System.out.println("Navigated to "+sys.being+".");
 			});
 			
 			cl.handle();

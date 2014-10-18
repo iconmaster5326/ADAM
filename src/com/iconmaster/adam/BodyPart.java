@@ -178,7 +178,7 @@ public class BodyPart {
 		return a;
 	}
 
-	private boolean isDestroyed() {
+	public boolean isDestroyed() {
 		if (!layers.isEmpty()) {
 			for (ArrayList<BodyPart> layer : layers) {
 				if (!isLayerDestroyed(layer)) {
@@ -187,7 +187,7 @@ public class BodyPart {
 			}
 			return true;
 		} else {
-			return damage>=destructionDamage;
+			return damage>=destructionDamage && blood>0;
 		}
 	}
 	

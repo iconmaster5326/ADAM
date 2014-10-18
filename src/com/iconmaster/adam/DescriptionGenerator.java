@@ -240,7 +240,7 @@ public class DescriptionGenerator {
 		return sb.toString();
 	}
 
-	private static String getBleedString(BodyPart injury) {
+	public static String getBleedString(BodyPart injury) {
 		double bleed = (injury.bleed/injury.getMaxBlood());
 		if (injury.bleed==0) {
 			return "not";
