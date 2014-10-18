@@ -476,6 +476,10 @@ public class BodyPart {
 				bleed = 0;
 			} else if (Math.random()<.2) {
 				bleed *= .8;
+				if (bleed/getMaxBlood()<.05) {
+					bleed = 0;
+					tr.healed.add(this);
+				}
 				tr.clotted.add(this);
 			}
 			return tr;

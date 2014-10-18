@@ -12,6 +12,7 @@ public class TickResult {
 	public HashMap<BodyPart,Double> bloodLost = new HashMap<>();
 	public HashSet<BodyPart> bledOut = new HashSet<>();
 	public HashSet<BodyPart> clotted = new HashSet<>();
+	public HashSet<BodyPart> healed = new HashSet<>();
 	
 	public double bled;
 	

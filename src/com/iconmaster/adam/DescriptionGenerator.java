@@ -208,6 +208,8 @@ public class DescriptionGenerator {
 			}
 			if (tr.bledOut.contains(injury)) {
 				sb.append(" bled out.");
+			} else if (tr.healed.contains(injury)) {
+				sb.append(" stopped bleeding.");
 			} else {
 				sb.append(" bled ");
 				sb.append(getBleedString(injury));
