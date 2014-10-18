@@ -75,6 +75,13 @@ public class ADAM {
 				sys.being.name = s[0];
 				System.out.println((sys.you?"You are now ":"This is now ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
 			});
+			cl.addCommand("desc",0,(s)->{
+				System.out.println((sys.you?"You are ":"This is ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
+			});
+			cl.addCommand("desc",1,(s)->{
+				sys.being.desc = s[0];
+				System.out.println((sys.you?"You are now ":"This is now ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
+			});
 			cl.addCommand("size",0,(s)->{
 				System.out.println((sys.you?"You are ":"This is ")+sys.being.size+" feet tall.");
 			});
@@ -113,13 +120,13 @@ public class ADAM {
 			cl.addCommand("hit",1,(s)->{
 				double damage = Double.parseDouble(s[0]);
 				System.out.println("Hitting for "+damage+"...");
-				sys.dmgres = being.damage(damage);
+				sys.dmgres = sys.being.damage(damage);
 			});
 			cl.addCommand("wound",0,(s)->{
 				if (sys.dmgres==null) {
 					System.out.println("There's no wounds to write home about!");
 				} else {
-					System.out.println(DescriptionGenerator.getInjuryDesc(being,sys.dmgres,sys.you));
+					System.out.println(DescriptionGenerator.getInjuryDesc(sys.being,sys.dmgres,sys.you));
 				}
 			});
 			

@@ -125,11 +125,14 @@ public class DescriptionGenerator {
 		}
 		ArrayList<BodyPart> parts = res.getParts();
 		BodyPart common = BodyPart.getLowestCommonPart(parts).getContainerPart();
-		if (common==being) {
+		if (common==being || common==null) {
 			sb.append("entire body.");
 		} else {
 			sb.append(formatName(common));
 			sb.append(".");
+		}
+		if (common==null) {
+			return sb.toString();
 		}
 		ArrayList<BodyPart> wound = new ArrayList<>();
 		for (BodyPart part : common.getAttachedParts()) {
