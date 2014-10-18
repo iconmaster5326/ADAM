@@ -67,22 +67,27 @@ public class BodyPart {
 	public void damage(double amount, double punch) {
 		Random random = new Random();
 		if (!layers.isEmpty()) {
-			int sum = getNumAttachedParts();
-			
 			HashMap<BodyPart,Double> map = new HashMap<>();
-			double layerProb = 1;
+
 			for (int i=0;i<layers.size();i++) {
+				double skipChance = 0;
 				ArrayList<BodyPart> layer = layers.get(i);
 				for (BodyPart part : layer) {
-					double prob = (1d/sum)/(layerProb*punch);
-					map.put(part, prob);
+					skipChance += part.getRelativeDamage();
 				}
-				layerProb /= 2;
-			}
-			int n = random.nextInt(sum/2)+1;
-			for (int i=0;i<n;i++) {
-				BodyPart part = RandomUtils.getWeightedRandom(map);
-				part.damage(amount/n, punch);
+				skipChance/=layer.size();
+				skipChance=.5*punch+(.5-.5*punch)*skipChance;
+				if (BodyPart.isLayerDestroyed(layer)) {
+					skipChance = 1;
+				}
+				if (random.nextDouble()>skipChance) {
+					int n = random.nextInt(layer.size())+1;
+					for (int j=0;j<n;j++) {
+						int k = random.nextInt(layer.size());
+						layer.get(k).damage(amount/n);
+					}
+					break;
+				}
 			}
 		} else {
 			System.out.println(name+" got damaged by "+amount);
@@ -90,7 +95,7 @@ public class BodyPart {
 		}
 	}
 
-	public void damage(int amount) {
+	public void damage(double amount) {
 		damage(amount,.2);
 	}
 	
@@ -117,6 +122,15 @@ public class BodyPart {
 		}
 	}
 	
+	public static boolean isLayerDestroyed(ArrayList<BodyPart> a) {
+		for (BodyPart part : a) {
+			if (!part.isDestroyed()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public ArrayList<BodyPart> getDamagedParts() {
 		ArrayList<BodyPart> a = new ArrayList<>();
 		for (ArrayList<BodyPart> layer : layers) {
@@ -131,5 +145,18 @@ public class BodyPart {
 			}
 		}
 		return a;
+	}
+
+	private boolean isDestroyed() {
+		if (!layers.isEmpty()) {
+			for (ArrayList<BodyPart> layer : layers) {
+				if (!isLayerDestroyed(layer)) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return damage>=destructionDamage;
+		}
 	}
 }
