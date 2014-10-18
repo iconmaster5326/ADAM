@@ -46,6 +46,10 @@ public class ADAM {
 		
 		String desc = DescriptionGenerator.getFullBeingDesc(being,true);
 		System.out.println(desc);
+		
+		System.out.println();
+		
+		being.damageSingle(5);
 	}
 	
 }
