@@ -208,6 +208,16 @@ public class ADAM {
 					i++;
 				}
 			});
+			cl.addCommand("where",0,(s)->{
+				System.out.println("You are at "+sys.being.getLocation()+".");
+			});
+			cl.addCommand("find",1,(s)->{
+				ArrayList<BodyPart> parts = sys.being.findAllParts(s[0].replace("_", " "));
+				System.out.println(parts.size()+" entires were found:");
+				for (BodyPart part : parts) {
+					System.out.println("\t"+part.getLocation());
+				}
+			});
 			
 			cl.handle();
 			return;

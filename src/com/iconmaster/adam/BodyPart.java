@@ -294,7 +294,9 @@ public class BodyPart {
 		BodyPart part = this;
 		for (String term : terms) {
 			BodyPart part2 = part.getPart(term);
-			if ("..".equals(term)) {
+			if (term.isEmpty()) {
+				
+			} else if ("..".equals(term)) {
 				part = part.parent;
 			} else if ("~".equals(term)) {
 				part = part.getRootPart();
@@ -305,5 +307,44 @@ public class BodyPart {
 			}
 		}
 		return part;
+	}
+	
+	public BodyPart findPart(String name) {
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				if (part.name.matches(name)) {
+					return part;
+				}
+				BodyPart part2 = part.findPart(name);
+				if (part2!=null) {
+					return part2;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public ArrayList<BodyPart> findAllParts(String name) {
+		ArrayList<BodyPart> a = new ArrayList<>();
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				if (part.name.matches(name)) {
+					a.add(part);
+				}
+				a.addAll(part.findAllParts(name));
+			}
+		}
+		return a;
+	}
+	
+	public String getLocation() {
+		StringBuilder sb = new StringBuilder("~");
+		BodyPart part = this;
+		while (part.parent!=null) {
+			sb.insert(1, part.name.replace(" ", "_"));
+			sb.insert(1,"/");
+			part = part.parent;
+		}
+		return sb.toString();
 	}
 }
