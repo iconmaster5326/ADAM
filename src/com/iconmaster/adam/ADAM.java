@@ -218,6 +218,28 @@ public class ADAM {
 					System.out.println("\t"+part.getLocation());
 				}
 			});
+			cl.addCommand("del",1,(s)->{
+				int layerOf = -1;
+				int partOf = -1;
+				int i = 0;
+				for (ArrayList<BodyPart> layer : sys.being.layers) {
+					int j = 0;
+					for (BodyPart part : layer) {
+						if (part.name.equals(s[0].replace("_"," "))) {
+							layerOf = i;
+							partOf = j;
+						}
+						j++;
+					}
+					i++;
+				}
+				if (layerOf==-1) {
+					System.out.println("There isn't a part called "+s[0]+"!");
+					return;
+				}
+				sys.being.layers.get(layerOf).remove(partOf);
+				System.out.println("Deleted "+s[0]+".");
+			});
 			
 			cl.handle();
 			return;
