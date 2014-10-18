@@ -164,4 +164,19 @@ public class BodyPart {
 			return damage>=destructionDamage;
 		}
 	}
+	
+	public int getLayerOn() {
+		if (parent==null) {
+			return -1;
+		} else {
+			int i = 0;
+			for (ArrayList<BodyPart> layer : parent.layers) {
+				if (layer.contains(this)) {
+					return i;
+				}
+				i++;
+			}
+			return -1;
+		}
+	}
 }

@@ -58,7 +58,7 @@ public class DescriptionGenerator {
 				if (injury.parent!=null && injury.layers.isEmpty()) {
 					sb.append("The ");
 					sb.append(formatName(injury));
-					sb.append(" on ");
+					sb.append(injury.getLayerOn()==0?" on ":" in ");
 					sb.append(you?"your ":"its ");
 					sb.append(formatName(injury.parent));
 				} else {
