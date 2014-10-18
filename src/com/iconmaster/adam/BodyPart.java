@@ -26,27 +26,12 @@ public class BodyPart {
 	public double hitChance = -1;
 	public String injuryString = "injured";
 
-//	@Override
-//	public String toString() {
-//		StringBuilder sb = new StringBuilder("[");
-//		sb.append(type).append("(").append(Double.toString(size)).append("):");
-//		if (!layers.isEmpty()) {
-//			for (ArrayList<BodyPart> layer : layers) {
-//				sb.append("<");
-//				for (BodyPart part : layer) {
-//					sb.append(part);
-//					sb.append(" ");
-//				}
-//				sb.append(">");
-//			}
-//		}
-//		sb.append("]");
-//		return sb.toString();
-//	}
-
 	@Override
 	public String toString() {
-		return name;
+		if (parent==null) {
+			return "<"+name+">";
+		}
+		return getLocation();
 	}
 	
 	public double getMass(double factor) {
