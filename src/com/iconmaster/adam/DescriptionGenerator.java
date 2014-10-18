@@ -206,13 +206,15 @@ public class DescriptionGenerator {
 				sb.append(you?"Your ":"The ");
 				sb.append(formatName(injury));
 			}
-			sb.append(" bled ");
-			sb.append(getBleedString(injury));
-			sb.append(".");
-			if (tr.clotted.contains(injury)) {
-				sb.append(" The blood is clotting slightly.");
-			} else if (tr.bledOut.contains(injury)) {
-				sb.append(" It has bled out.");
+			if (tr.bledOut.contains(injury)) {
+				sb.append(" bled out.");
+			} else {
+				sb.append(" bled ");
+				sb.append(getBleedString(injury));
+				sb.append(".");
+				if (tr.clotted.contains(injury)) {
+					sb.append(" The blood is clotting slightly.");
+				}
 			}
 		}
 		return sb.toString();
