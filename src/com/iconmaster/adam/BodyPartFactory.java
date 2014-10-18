@@ -66,6 +66,8 @@ public class BodyPartFactory {
 				part.density = Double.parseDouble(desc);
 			} else if (flag.startsWith("p")) {
 				part.plural = Boolean.parseBoolean(desc);
+			} else if (flag.startsWith("e")) {
+				part.essential = Boolean.parseBoolean(desc);
 			} else if (flag.startsWith("hm")) {
 				part.maxDamage = Double.parseDouble(desc);
 				part.destructionDamage = 2*part.maxDamage;

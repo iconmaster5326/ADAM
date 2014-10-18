@@ -17,20 +17,20 @@ public class ADAM {
 	public static void main(String[] args) {
 		BodyPartFactory.registerPart("human", "head,body");
 		
-		BodyPartFactory.registerPart("head", "s=.2 skin(hc=.6),mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear),neck skull brain");
+		BodyPartFactory.registerPart("head", "s=.2 skin(hc=.6),mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear),neck skull brain(e=true)");
 		BodyPartFactory.registerPart("mouth", "lips(p=true) teeth(p=true) tongue");
-		BodyPartFactory.registerPart("neck", "skin fat muscle bone");
+		BodyPartFactory.registerPart("neck", "skin fat muscle bone(e=true)");
 		
 		BodyPartFactory.registerPart("body", "s=.8 chest,arms,legs");
 		BodyPartFactory.registerPart("chest", "s=.6 skin fat muscle ribs spine,guts");
 		BodyPartFactory.registerPart("ribs", "s=.08 m=13 p=true");
-		BodyPartFactory.registerPart("spine", "s=.08 m=13");
+		BodyPartFactory.registerPart("spine", "e=true s=.08 m=13");
 		BodyPartFactory.registerPart("guts", "s=.05 p=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
 		
-		BodyPartFactory.registerPart("heart", "s=.1 m=14");
+		BodyPartFactory.registerPart("heart", "s=.1 m=14 e=true");
 		BodyPartFactory.registerPart("stomach", "s=.25 m=9");
 		BodyPartFactory.registerPart("intestines", "s=.5 m=5 p=true");
-		BodyPartFactory.registerPart("lung", "s=.125 m=2");
+		BodyPartFactory.registerPart("lung", "s=.125 m=2 e=true");
 		
 		BodyPartFactory.registerPart("legs", "s=.15 d=pair_of_%s leg(n=left_leg),leg(n=right_leg)");
 		BodyPartFactory.registerPart("leg", "s=.5 foot(hc=.1),skin(hc=.9) fat muscle bone");
@@ -244,6 +244,17 @@ public class ADAM {
 				int old = sys.being.layers.size();
 				sys.being.clean();
 				System.out.println("Cleaned up. Deleted "+(old-sys.being.layers.size())+" empty layers.");
+			});
+			cl.addCommand("alive",0,(s)->{
+				String cause = sys.being.isAlive();
+				System.out.println((sys.you?"you are ":"This being is ")+(cause==null?"":"not ")+"alive.");
+				if (cause!=null) {
+					System.out.println((sys.you?"you are ":"This being is ")+"dead due to a broken "+cause+".");
+				}
+			});
+			cl.addCommand("heal",0,(s)->{
+				double healed = sys.being.healAll();
+				System.out.println((sys.you?"you have been healed for ":"This being has been healed for ")+healed+" damage.");
 			});
 			
 			cl.handle();

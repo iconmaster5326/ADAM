@@ -25,6 +25,7 @@ public class BodyPart {
 	public double destructionDamage = 20;
 	public double hitChance = -1;
 	public String injuryString = "injured";
+	public boolean essential = false;
 
 	@Override
 	public String toString() {
@@ -120,6 +121,21 @@ public class BodyPart {
 			return dmg/sum;
 		} else {
 			return damage/maxDamage;
+		}
+	}
+	
+	public double getRelativeDestroyDamage() {
+		if (!layers.isEmpty()) {
+			int sum = getNumAttachedParts();
+			double dmg = 0;
+			for (ArrayList<BodyPart> layer : layers) {
+				for (BodyPart part : layer) {
+					dmg += part.getRelativeDamage();
+				}
+			}
+			return dmg/sum;
+		} else {
+			return damage/destructionDamage;
 		}
 	}
 	
@@ -343,5 +359,55 @@ public class BodyPart {
 			}
 			i++;
 		}
+	}
+	
+	public boolean isWorking() {
+		return getRelativeDamage()<1;
+	}
+	
+	public boolean isAttached() {
+		return getRelativeDestroyDamage()<1;
+	}
+	
+	public String isAlive() {
+		HashMap<String,Boolean> working = new HashMap<>();
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				if (part.essential) {
+					working.putIfAbsent(part.type, false);
+					if (part.isWorking()) {
+						working.put(part.type, true);
+					}
+				}
+				if (!part.layers.isEmpty()) {
+					String cause = part.isAlive();
+					if (cause!=null) {
+						return cause;
+					}
+				}
+			}
+		}
+		for (String part : working.keySet()) {
+			Boolean works = working.get(part);
+			if (!works) {
+				return part;
+			}
+		}
+		return null;
+	}
+	
+	public double healAll() {
+		if (this.layers.isEmpty()) {
+			double dmg = this.damage;
+			this.damage = 0;
+			return dmg;
+		}
+		double healed = 0;
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				healed+=part.healAll();
+			}
+		}
+		return healed;
 	}
 }
