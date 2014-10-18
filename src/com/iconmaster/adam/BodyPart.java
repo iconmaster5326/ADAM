@@ -27,6 +27,11 @@ public class BodyPart {
 	public String injuryString = "injured";
 	public String removalString = "destroyed";
 	public boolean essential = false;
+	
+	public double blood = getMaxBlood();
+	public double bleed = 0;
+	public double bleedChance = .2;
+	public double bleedRate = .2;
 
 	@Override
 	public String toString() {
@@ -89,6 +94,14 @@ public class BodyPart {
 		} else {
 			//System.out.println(name+"("+parent.name+") got damaged by "+amount);
 			damage += amount;
+			if (isDestroyed()) {
+				bleed = 0;
+			} else {
+				if (random.nextDouble()<bleedChance) {
+					res.bleed.put(this, res.getOrDefault(this, 0d)+bleedRate*amount);
+					bleed += bleedRate*amount;
+				}
+			}
 			res.put(this, res.getOrDefault(this, 0d)+amount);
 		}
 		return res;
@@ -363,7 +376,7 @@ public class BodyPart {
 	}
 	
 	public boolean isWorking() {
-		return getRelativeDamage()<1;
+		return getRelativeDamage()<1 && blood>0;
 	}
 	
 	public boolean isAttached() {
@@ -401,6 +414,8 @@ public class BodyPart {
 		if (this.layers.isEmpty()) {
 			double dmg = this.damage;
 			this.damage = 0;
+			bleed = 0;
+			blood = getMaxBlood();
 			return dmg;
 		}
 		double healed = 0;
@@ -424,5 +439,45 @@ public class BodyPart {
 			}
 			return avg/getNumAttachedParts();
 		}
+	}
+	
+	public double getMaxBlood() {
+		return size==0?10:size*100;
+	}
+	
+	public boolean isBleeding() {
+		if (layers.isEmpty()) {
+			return bleed>0;
+		} else {
+			for (ArrayList<BodyPart> layer : layers) {
+				for (BodyPart part : layer) {
+					if (part.isBleeding()) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+	}
+	
+	public double bleed() {
+		if (layers.isEmpty()) {
+			double bled = bleed;
+			blood -= bleed;
+			if (Math.random()<.2) {
+				bleed *= .8;
+			}
+			if (blood<=0) {
+				bleed = 0;
+			}
+			return bled;
+		}
+		double sum = 0;
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				sum += part.bleed();
+			}
+		}
+		return sum;
 	}
 }

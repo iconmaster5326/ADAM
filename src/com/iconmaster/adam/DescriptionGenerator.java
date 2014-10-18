@@ -68,6 +68,14 @@ public class DescriptionGenerator {
 				sb.append(injury.plural?" are ":" is ");
 				sb.append(getInjuryString(injury));
 				sb.append(".");
+				if (injury.isBleeding()) {
+					sb.append(" The injury is bleeding ");
+					sb.append(getBleedString(injury));
+					sb.append(".");
+				}
+				if (injury.blood<=0) {
+					sb.append(" It has bled out.");
+				}
 			}
 		}
 		return sb.toString();
@@ -170,6 +178,14 @@ public class DescriptionGenerator {
 			sb.append(injury.plural?" are ":" is ");
 			sb.append(getInjuryString(injury));
 			sb.append(".");
+			if (injury.isBleeding()) {
+				sb.append(" The injury is bleeding ");
+				sb.append(getBleedString(injury));
+				sb.append(".");
+			}
+			if (injury.blood<=0) {
+				sb.append(" It has bled out.");
+			}
 		}
 			
 		return sb.toString();
@@ -222,5 +238,18 @@ public class DescriptionGenerator {
 			sb.append(part.removalString);
 		}
 		return sb.toString();
+	}
+
+	private static String getBleedString(BodyPart injury) {
+		double bleed = (injury.bleed/injury.getMaxBlood());
+		if (injury.bleed==0) {
+			return "not";
+		} else if (bleed<.2) {
+			return "slightly";
+		} else if (bleed<.5) {
+			return "moderately";
+		} else {
+			return "profusely";
+		}
 	}
 }

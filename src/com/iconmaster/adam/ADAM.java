@@ -260,6 +260,10 @@ public class ADAM {
 				double healed = sys.being.healAll();
 				System.out.println((sys.you?"you have been healed for ":"This being has been healed for ")+healed+" damage.");
 			});
+			cl.addCommand("bleed",0,(s)->{
+				double bled = sys.being.bleed();
+				System.out.println((sys.you?"you bled ":"This being bled ")+bled+" blood.");
+			});
 			
 			cl.handle();
 			return;

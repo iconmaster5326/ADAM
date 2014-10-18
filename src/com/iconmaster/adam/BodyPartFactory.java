@@ -79,6 +79,10 @@ public class BodyPartFactory {
 				part.removalString = desc.replace("_", " ");
 			} else if (flag.startsWith("i")) {
 				part.injuryString = desc.replace("_", " ");
+			} else if (flag.startsWith("bc")) {
+				part.bleedChance = Double.parseDouble(desc);
+			} else if (flag.startsWith("br")) {
+				part.bleedRate = Double.parseDouble(desc);
 			}
 			return true;
 		}
