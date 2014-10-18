@@ -112,6 +112,66 @@ public class DescriptionGenerator {
 		return sb.toString();
 	}
 	
+	public static String getInjuryDesc(BodyPart being, DamageResult res, boolean you) {
+		StringBuilder sb = new StringBuilder();
+		if (you) {
+			sb.append("You have an injury on your ");
+		} else {
+			if (!being.proper) {
+				sb.append("The ");
+			}
+			sb.append(formatName(being));
+			sb.append(" has an injury on its ");
+		}
+		ArrayList<BodyPart> parts = res.getParts();
+		BodyPart common = BodyPart.getLowestCommonPart(parts).getContainerPart();
+		if (common==being) {
+			sb.append("entire body.");
+		} else {
+			sb.append(formatName(common));
+			sb.append(".");
+		}
+		ArrayList<BodyPart> wound = new ArrayList<>();
+		for (BodyPart part : common.getAttachedParts()) {
+			if (part.containsAny(parts)) {
+				wound.add(part);
+			}
+		}
+		if (wound.isEmpty()) {
+			wound = parts;
+			sb.append(" The wound is localized in ");
+		} else {
+			sb.append(" The wound strethes between ");
+		}
+
+		String[] list = new String[wound.size()];
+		for (int j=0;j<wound.size();j++) {
+			BodyPart part2 = wound.get(j);
+			list[j] = (you?"your ":"the ")+formatName(part2);
+		}
+		sb.append(getListString(list));
+		sb.append(".");
+		
+		for (BodyPart injury : parts) {
+			sb.append("\n");
+			if (injury.parent!=null && injury.layers.isEmpty()) {
+				sb.append("The ");
+				sb.append(formatName(injury));
+				sb.append(injury.getLayerOn()==0?" on ":" in ");
+				sb.append(you?"your ":"its ");
+				sb.append(formatName(injury.parent));
+			} else {
+				sb.append(you?"Your ":"The ");
+				sb.append(formatName(injury));
+			}
+			sb.append(injury.plural?" are ":" is ");
+			sb.append(getInjuryString(injury));
+			sb.append(".");
+		}
+			
+		return sb.toString();
+	}
+	
 	public static String getAorAn(String word) {
 		return word.matches("[aeiou].*") ? "an" : "a";
 	}

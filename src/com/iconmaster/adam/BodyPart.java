@@ -236,4 +236,41 @@ public class BodyPart {
 	public BodyPart getContainerPart() {
 		return layers.isEmpty()?parent:this;
 	}
+	
+	public boolean contains(BodyPart part) {
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part2 : layer) {
+				if (part2==part || part2.contains(part)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public ArrayList<BodyPart> getAttachedParts() {
+		ArrayList<BodyPart> a = new ArrayList<>();
+		for (ArrayList<BodyPart> layer : layers) {
+			a.addAll(layer);
+		}
+		return a;
+	}
+	
+	public ArrayList<BodyPart> getSubpartSublist(ArrayList<BodyPart> parts) {
+		ArrayList<BodyPart> a = new ArrayList<>();
+		for (BodyPart part : parts) {
+			if (this.contains(part)) {
+				a.add(part);
+			}
+		}
+		return a;
+	}
+	
+	public boolean containsAny(ArrayList<BodyPart> parts) {
+		return !getSubpartSublist(parts).isEmpty();
+	}
+	
+	public boolean containsAll(ArrayList<BodyPart> parts) {
+		return getSubpartSublist(parts).size()==parts.size();
+	}
 }

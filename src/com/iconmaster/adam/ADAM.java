@@ -47,12 +47,14 @@ public class ADAM {
 			System.out.println("Hitting for 5...");
 			DamageResult res = being.damage(5);
 			//System.out.println(res);
-			for (BodyPart part : res.keySet()) {
-				System.out.println(part.name+"("+part.parent.name+") got damaged by "+res.get(part));
-			}
-			System.out.println();
+//			for (BodyPart part : res.keySet()) {
+//				System.out.println(part.name+"("+part.parent.name+") got damaged by "+res.get(part));
+//			}
+//			System.out.println();
 			System.out.println("Bumpus has an avg. damage of "+being.getRelativeDamage());
-			System.out.println("He was injured in the "+BodyPart.getLowestCommonPart(res.getParts()));
+//			System.out.println("He was injured in the "+BodyPart.getLowestCommonPart(res.getParts()));
+//			System.out.println();
+			System.out.println(DescriptionGenerator.getInjuryDesc(being,res,true));
 			System.out.println();
 		}
 		
