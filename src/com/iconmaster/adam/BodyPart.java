@@ -67,8 +67,6 @@ public class BodyPart {
 	public void damage(double amount, double punch) {
 		Random random = new Random();
 		if (!layers.isEmpty()) {
-			HashMap<BodyPart,Double> map = new HashMap<>();
-
 			for (int i=0;i<layers.size();i++) {
 				double skipChance = 0;
 				ArrayList<BodyPart> layer = layers.get(i);
@@ -79,12 +77,23 @@ public class BodyPart {
 				skipChance=.5*punch+(.5-.5*punch)*skipChance;
 				if (BodyPart.isLayerDestroyed(layer)) {
 					skipChance = 1;
+				} else if (i==layers.size()-1) {
+					skipChance = 0;
 				}
 				if (random.nextDouble()>skipChance) {
+					HashMap<BodyPart,Double> map = new HashMap<>();
 					int n = random.nextInt(layer.size())+1;
+					for (BodyPart part : layer) {
+						map.put(part, part.hitChance==-1?part.size:part.hitChance);
+					}
+					RandomUtils.rescaleMap(map);
 					for (int j=0;j<n;j++) {
-						int k = random.nextInt(layer.size());
-						layer.get(k).damage(amount/n);
+						BodyPart part = RandomUtils.getWeightedRandom(map,random);
+						if (part!=null) {
+							part.damage(amount/n);
+						} else {
+							System.out.println("ERROR IN "+this.name);
+						}
 					}
 					break;
 				}
