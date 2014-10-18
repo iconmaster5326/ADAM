@@ -1,6 +1,7 @@
 package com.iconmaster.adam;
 
 import com.iconmaster.adam.CLAHelper.CLA;
+import java.util.HashMap;
 
 /**
  *
@@ -52,6 +53,7 @@ public class ADAM {
 				public BodyPart being;
 				public boolean you = true;
 				public DamageResult dmgres = null;
+				public HashMap<String,BodyPart> saved = new HashMap<>();
 			}
 			
 			final InteractiveSystem sys = new InteractiveSystem();
@@ -72,14 +74,14 @@ public class ADAM {
 				System.out.println((sys.you?"You are ":"This is ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
 			});
 			cl.addCommand("name",1,(s)->{
-				sys.being.name = s[0];
+				sys.being.name = s[0].replace("_", " ");
 				System.out.println((sys.you?"You are now ":"This is now ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
 			});
 			cl.addCommand("desc",0,(s)->{
 				System.out.println((sys.you?"You are ":"This is ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
 			});
 			cl.addCommand("desc",1,(s)->{
-				sys.being.desc = s[0];
+				sys.being.desc = s[0].replace("_", " ");;
 				System.out.println((sys.you?"You are now ":"This is now ")+(sys.being.proper?"":DescriptionGenerator.getAorAn(sys.being.name)+" ")+DescriptionGenerator.formatName(sys.being)+".");
 			});
 			cl.addCommand("size",0,(s)->{
@@ -127,6 +129,28 @@ public class ADAM {
 					System.out.println("There's no wounds to write home about!");
 				} else {
 					System.out.println(DescriptionGenerator.getInjuryDesc(sys.being,sys.dmgres,sys.you));
+				}
+			});
+			cl.addCommand("get",1,(s)->{
+				BodyPart part = sys.being.getPartRef(s[0]);
+				if (part==null) {
+					System.out.println("There's no part called that!");
+				} else {
+					sys.being = part;
+					System.out.println("You are now working with "+part.name+".");
+				}
+			});
+			cl.addCommand("save",1,(s)->{
+				sys.saved.put(s[0], sys.being);
+				System.out.println(sys.being.name+" has been saved.");
+			});
+			cl.addCommand("load",1,(s)->{
+				BodyPart part = sys.saved.get(s[0]);
+				if (part==null) {
+					System.out.println("There's nothing saved in "+s[0]+"!");
+				} else {
+					sys.being = part;
+					System.out.println(sys.being.name+" has been loaded.");
 				}
 			});
 			

@@ -288,4 +288,20 @@ public class BodyPart {
 		}
 		return null;
 	}
+	
+	public BodyPart getPartRef(String ref) {
+		String[] terms = ref.replace("_", " ").split("\\/");
+		BodyPart part = this;
+		for (String term : terms) {
+			BodyPart part2 = part.getPart(term);
+			if ("..".equals(term)) {
+				part = part.parent;
+			} else if (part2==null) {
+				return null;
+			} else {
+				part = part2;
+			}
+		}
+		return part;
+	}
 }
