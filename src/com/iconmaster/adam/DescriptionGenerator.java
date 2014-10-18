@@ -141,7 +141,7 @@ public class DescriptionGenerator {
 			wound = parts;
 			sb.append(" The wound is localized in ");
 		} else {
-			sb.append(" The wound strethes between ");
+			sb.append(" The wound stretches between ");
 		}
 
 		String[] list = new String[wound.size()];

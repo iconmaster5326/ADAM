@@ -111,6 +111,10 @@ public class BodyPart {
 		return damage(new DamageResult(),amount,.2);
 	}
 	
+	public DamageResult damage(double amount, double punch) {
+		return damage(new DamageResult(),amount,punch);
+	}
+	
 	public int getNumAttachedParts() {
 		int sum = 0;
 		for (ArrayList<BodyPart> layer : layers) {
@@ -272,5 +276,16 @@ public class BodyPart {
 	
 	public boolean containsAll(ArrayList<BodyPart> parts) {
 		return getSubpartSublist(parts).size()==parts.size();
+	}
+	
+	public BodyPart getPart(String name) {
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				if (part.name.equals(name)) {
+					return part;
+				}
+			}
+		}
+		return null;
 	}
 }

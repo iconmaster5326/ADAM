@@ -1,5 +1,7 @@
 package com.iconmaster.adam;
 
+import com.iconmaster.adam.CLAHelper.CLA;
+
 /**
  *
  * @author iconmaster
@@ -42,18 +44,53 @@ public class ADAM {
 		being.size = 5+7/12d;
 		being.name = "Bumpus";
 		being.proper = true;
+		
+		CLA cla = CLAHelper.getArgs(args);
+		if (!cla.containsKey("d")) {
+			
+			class InteractiveSystem {
+				public BodyPart being;
+				public boolean you = true;
+				public DamageResult dmgres = null;
+			}
+			
+			final InteractiveSystem sys = new InteractiveSystem();
+			sys.being = being;
+			
+			CommandLine cl = new CommandLine();
+			cl.addCommand("desc",0,(s)->{
+				System.out.println(DescriptionGenerator.getFullBeingDesc(sys.being,sys.you));
+			});
+			cl.addCommand("you",0,(s)->{
+				System.out.println("Second-person mode is "+(sys.you?"on.":"off."));
+			});
+			cl.addCommand("you",1,(s)->{
+				sys.you = Boolean.parseBoolean(s[0]);
+				System.out.println("Second-person mode is now "+(sys.you?"on.":"off."));
+			});
+			cl.addCommand("hit",1,(s)->{
+				double damage = Double.parseDouble(s[0]);
+				System.out.println("Hitting for "+damage+"...");
+				sys.dmgres = being.damage(damage);
+			});
+			cl.addCommand("wound",0,(s)->{
+				if (sys.dmgres==null) {
+					System.out.println("There's no wounds to write home about!");
+				} else {
+					System.out.println(DescriptionGenerator.getInjuryDesc(being,sys.dmgres,sys.you));
+				}
+			});
+			
+			cl.handle();
+			return;
+		}
 
 		for (int i=0;i<10;i++) {
 			System.out.println("Hitting for 5...");
 			DamageResult res = being.damage(5);
-			//System.out.println(res);
-//			for (BodyPart part : res.keySet()) {
-//				System.out.println(part.name+"("+part.parent.name+") got damaged by "+res.get(part));
-//			}
-//			System.out.println();
+
 			System.out.println("Bumpus has an avg. damage of "+being.getRelativeDamage());
-//			System.out.println("He was injured in the "+BodyPart.getLowestCommonPart(res.getParts()));
-//			System.out.println();
+
 			System.out.println(DescriptionGenerator.getInjuryDesc(being,res,true));
 			System.out.println();
 		}
