@@ -35,12 +35,15 @@ public class BodyPartFactory {
 				for (String sub2 : sub.split(",")) {
 					if (sub2.contains("(")) {
 						BodyPart part2 = generate(sub2.substring(0,sub2.lastIndexOf('(')));
+						part2.parent = part;
 						for (String sub3 : sub2.substring(sub2.lastIndexOf('(')+1,sub2.length()-1).split(";")) {
 							applyFlag(part2,sub3);
 						}
 						pl.add(part2);
 					} else {
-						pl.add(generate(sub2));
+						BodyPart part2 = generate(sub2);
+						part2.parent = part;
+						pl.add(part2);
 					}
 				}
 				part.layers.add(pl);

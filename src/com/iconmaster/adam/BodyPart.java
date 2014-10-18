@@ -15,12 +15,10 @@ public class BodyPart {
 	public boolean plural = false;
 	public boolean proper = false;
 	public ArrayList<ArrayList<BodyPart>> layers = new ArrayList<>();
+	public BodyPart parent;
 	
 	public double size = 0;
 	public double density = 0;
-	public double usedRoom = 0;
-	public double maxRoom = 0;
-	public ArrayList<Modification> mods = new ArrayList<>();
 	
 	public double damage = 0;
 	public double maxDamage = 10;

@@ -55,8 +55,16 @@ public class DescriptionGenerator {
 			sb.append(".");
 			for (BodyPart injury : injuries) {
 				sb.append("\n");
-				sb.append(you?"Your ":"The ");
-				sb.append(formatName(injury));
+				if (injury.parent!=null && injury.layers.isEmpty()) {
+					sb.append("The ");
+					sb.append(formatName(injury));
+					sb.append(" on ");
+					sb.append(you?"your ":"its ");
+					sb.append(formatName(injury.parent));
+				} else {
+					sb.append(you?"Your ":"The ");
+					sb.append(formatName(injury));
+				}
 				sb.append(injury.plural?" are ":" is ");
 				sb.append(getInjuryString(injury));
 				sb.append(".");
@@ -142,6 +150,8 @@ public class DescriptionGenerator {
 			sb.append("moderately ");
 		} else if (avg<1) {
 			sb.append("heavily ");
+		} else if (avg>=1) {
+			sb.append("entirely ");
 		}
 		sb.append(part.injuryString);
 		return sb.toString();
