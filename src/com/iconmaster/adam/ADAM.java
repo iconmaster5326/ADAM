@@ -1,6 +1,7 @@
 package com.iconmaster.adam;
 
 import com.iconmaster.adam.CLAHelper.CLA;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -160,6 +161,47 @@ public class ADAM {
 			});
 			cl.addCommand("define",-1,(s)->{
 				BodyPartFactory.registerPart(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
+			});
+			cl.addCommand("newl",0,(s)->{
+				sys.being.layers.add(new ArrayList<>());
+				System.out.println("Layer "+(sys.being.layers.size()-1)+" added.");
+			});
+			cl.addCommand("clear",0,(s)->{
+				sys.being.layers.clear();
+				System.out.println("All layers cleared.");
+			});
+			cl.addCommand("add",2,(s)->{
+				BodyPart part = BodyPartFactory.generate(s[0]);
+				int layer = Integer.parseInt(s[1]);
+				if (layer<0 || layer>sys.being.layers.size()-1) {
+					System.out.println("The specified layer doesn't exist!");
+					return;
+				}
+				sys.being.layers.get(layer).add(part);
+				System.out.println("Added "+part.name+".");
+			});
+			cl.addCommand("addg",2,(s)->{
+				BodyPart part = BodyPartFactory.generate(s[0]);
+				int layer = Integer.parseInt(s[1]);
+				if (layer<0 || layer>sys.being.layers.size()-1) {
+					System.out.println("The specified layer doesn't exist!");
+					return;
+				}
+				sys.being.layers.get(layer).add(part);
+				sys.being = part;
+				System.out.println("Added "+part.name+".");
+			});
+			cl.addCommand("comp",0,(s)->{
+				int i=0;
+				for (ArrayList<BodyPart> layer : sys.being.layers) {
+					System.out.print("Layer "+i+": ");
+					for (BodyPart part : layer) {
+						System.out.print(part);
+						System.out.print(", ");
+					}
+					System.out.println();
+					i++;
+				}
 			});
 			
 			cl.handle();
