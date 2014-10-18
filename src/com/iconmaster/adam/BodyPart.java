@@ -89,15 +89,13 @@ public class BodyPart {
 						BodyPart part = RandomUtils.getWeightedRandom(map,random);
 						if (part!=null) {
 							part.damage(amount/n);
-						} else {
-							System.out.println("ERROR IN "+this.name);
 						}
 					}
 					break;
 				}
 			}
 		} else {
-			System.out.println(name+" got damaged by "+amount);
+			System.out.println(name+"("+parent.name+") got damaged by "+amount);
 			damage += amount;
 		}
 	}
