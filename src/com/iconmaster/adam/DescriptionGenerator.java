@@ -15,6 +15,13 @@ public class DescriptionGenerator {
 		}
 		sb.append(formatName(part));
 		sb.append(".");
+		if (part.proper) {
+			sb.append(you?" You are ":" It is ");
+			sb.append(getAorAn(formatName(part)));
+			sb.append(" ");
+			sb.append(part.desc.replace("%s", part.type));
+			sb.append(".");
+		}
 		if (!part.layers.isEmpty()) {
 			sb.append("\n\nOn ");
 			sb.append(you?"your":"the");
