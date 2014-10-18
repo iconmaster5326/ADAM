@@ -13,8 +13,8 @@ public class BodyPart {
 	public boolean plural = false;
 	public ArrayList<ArrayList<BodyPart>> layers = new ArrayList<>();
 	
-	public double size = 1;
-	public double density = 1;
+	public double size = 0;
+	public double density = 0;
 	public double damage = 0;
 	public double usedRoom = 0;
 	public double maxRoom = 0;
@@ -45,7 +45,7 @@ public class BodyPart {
 			double sum = 0;
 			for (ArrayList<BodyPart> layer : layers) {
 				for (BodyPart part : layer) {
-					sum += part.getMass(factor);
+					sum += part.getMass(factor*size);
 				}
 			}
 			return sum;
