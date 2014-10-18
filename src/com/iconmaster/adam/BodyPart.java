@@ -460,24 +460,31 @@ public class BodyPart {
 		}
 	}
 	
-	public double bleed() {
+	public TickResult tick() {
+		return tick(new TickResult());
+	}
+	
+	public TickResult tick(TickResult tr) {
 		if (layers.isEmpty()) {
-			double bled = bleed;
 			blood -= bleed;
-			if (Math.random()<.2) {
-				bleed *= .8;
+			tr.bled += bleed;
+			if (bleed>0) {
+				tr.bloodLost.put(this, bleed);
 			}
 			if (blood<=0) {
+				tr.bledOut.add(this);
 				bleed = 0;
+			} else if (Math.random()<.2) {
+				bleed *= .8;
+				tr.clotted.add(this);
 			}
-			return bled;
+			return tr;
 		}
-		double sum = 0;
 		for (ArrayList<BodyPart> layer : layers) {
 			for (BodyPart part : layer) {
-				sum += part.bleed();
+				part.tick(tr);
 			}
 		}
-		return sum;
+		return tr;
 	}
 }

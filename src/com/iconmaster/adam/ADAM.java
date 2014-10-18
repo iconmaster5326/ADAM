@@ -140,6 +140,8 @@ public class ADAM {
 				double damage = Double.parseDouble(s[0]);
 				System.out.println("Hitting for "+damage+"...");
 				sys.dmgres = sys.being.damage(damage);
+				System.out.println();
+				System.out.println(DescriptionGenerator.getInjuryDesc(sys.being,sys.dmgres,sys.you));
 			});
 			cl.addCommand("wound",0,(s)->{
 				if (sys.dmgres==null) {
@@ -259,7 +261,13 @@ public class ADAM {
 				if (cause!=null) {
 					BodyPart cp = sys.being.findPart(cause);
 					if (cp==null) {cp = sys.being;}
-					System.out.println((sys.you?"you are ":"This being is ")+"dead due to a "+cp.removalString+" "+cause+".");
+					String rem;
+					if (cp.blood<=0) {
+						rem = "blood loss to the";
+					} else {
+						rem = "a "+cp.removalString;
+					}
+					System.out.println((sys.you?"you are ":"This being is ")+"dead due to "+rem+" "+cause+".");
 				}
 			});
 			cl.addCommand("heal",0,(s)->{
@@ -267,8 +275,8 @@ public class ADAM {
 				System.out.println((sys.you?"you have been healed for ":"This being has been healed for ")+healed+" damage.");
 			});
 			cl.addCommand("tick",0,(s)->{
-				double bled = sys.being.bleed();
-				System.out.println((sys.you?"you bled ":"This being bled ")+bled+" blood.");
+				TickResult tr = sys.being.tick();
+				System.out.println(DescriptionGenerator.getTickString(sys.being,tr,sys.you));
 			});
 			cl.addCommand("bleed",0,(s)->{
 				System.out.println("Bleed is "+sys.being.bleed+".");

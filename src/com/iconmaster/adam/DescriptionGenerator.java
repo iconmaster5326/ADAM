@@ -191,6 +191,33 @@ public class DescriptionGenerator {
 		return sb.toString();
 	}
 	
+	public static String getTickString(BodyPart part, TickResult tr, boolean you) {
+		StringBuilder sb = new StringBuilder();
+		ArrayList<BodyPart> parts = tr.getParts();
+		for (BodyPart injury : parts) {
+			sb.append("\n");
+			if (injury.parent!=null && injury.layers.isEmpty()) {
+				sb.append("The ");
+				sb.append(formatName(injury));
+				sb.append(injury.getLayerOn()==0?" on ":" in ");
+				sb.append(you?"your ":"its ");
+				sb.append(formatName(injury.parent));
+			} else {
+				sb.append(you?"Your ":"The ");
+				sb.append(formatName(injury));
+			}
+			sb.append(" bled ");
+			sb.append(getBleedString(injury));
+			sb.append(".");
+			if (tr.clotted.contains(injury)) {
+				sb.append(" The blood is clotting slightly.");
+			} else if (tr.bledOut.contains(injury)) {
+				sb.append(" It has bled out.");
+			}
+		}
+		return sb.toString();
+	}
+	
 	public static String getAorAn(String word) {
 		return word.matches("[aeiou].*") ? "an" : "a";
 	}
