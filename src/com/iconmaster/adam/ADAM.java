@@ -45,8 +45,11 @@ public class ADAM {
 
 		for (int i=0;i<10;i++) {
 			System.out.println("Hitting for 5...");
-			being.damage(5);
+			DamageResult res = being.damage(5);
+			//System.out.println(res);
+			System.out.println();
 			System.out.println("Bumpus has an avg. damage of "+being.getRelativeDamage());
+			System.out.println("He was injured in the "+BodyPart.getLowestCommonPart(res.getParts()));
 			System.out.println();
 		}
 		

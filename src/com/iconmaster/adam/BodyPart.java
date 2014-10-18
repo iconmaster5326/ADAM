@@ -43,6 +43,11 @@ public class BodyPart {
 //		sb.append("]");
 //		return sb.toString();
 //	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 	
 	public double getMass(double factor) {
 		if (layers.isEmpty()) {
@@ -62,7 +67,7 @@ public class BodyPart {
 		return getMass(size);
 	}
 	
-	public void damage(double amount, double punch) {
+	public DamageResult damage(DamageResult res, double amount, double punch) {
 		Random random = new Random();
 		if (!layers.isEmpty()) {
 			for (int i=0;i<layers.size();i++) {
@@ -88,7 +93,7 @@ public class BodyPart {
 					for (int j=0;j<n;j++) {
 						BodyPart part = RandomUtils.getWeightedRandom(map,random);
 						if (part!=null) {
-							part.damage(amount/n);
+							part.damage(res,amount/n,punch);
 						}
 					}
 					break;
@@ -97,11 +102,13 @@ public class BodyPart {
 		} else {
 			System.out.println(name+"("+parent.name+") got damaged by "+amount);
 			damage += amount;
+			res.put(this, res.getOrDefault(this, 0d)+amount);
 		}
+		return res;
 	}
 
-	public void damage(double amount) {
-		damage(amount,.2);
+	public DamageResult damage(double amount) {
+		return damage(new DamageResult(),amount,.2);
 	}
 	
 	public int getNumAttachedParts() {
@@ -178,5 +185,51 @@ public class BodyPart {
 			}
 			return -1;
 		}
+	}
+	
+	public BodyPart getRootPart() {
+		BodyPart part = this;
+		while (part.parent!=null) {
+			part = part.parent;
+		}
+		return part;
+	}
+	
+	public static BodyPart getLowestCommonPart(BodyPart part1, BodyPart part2) {
+		if (part1==null || part2==null) {
+			return null;
+		}
+		if (part1==part2) {
+			return part1;
+		}
+		if (part1.parent==part2) {
+			return part2;
+		}
+		if (part2.parent==part1) {
+			return part1;
+		}
+		return getLowestCommonPart(part1.parent==null?part1:part1.parent,part2.parent==null?part2:part2.parent);
+	}
+	
+	public static BodyPart getLowestCommonPart(ArrayList<BodyPart> parts) {
+		if (parts.isEmpty()) {
+			return null;
+		}
+		if (parts.size()==1) {
+			return parts.get(0);
+		}
+		ArrayList<BodyPart> a = new ArrayList<>();
+		BodyPart testPart = parts.get(0);
+		for (int i=1;i<parts.size();i++) {
+			BodyPart part = getLowestCommonPart(testPart, parts.get(i));
+			a.add(part);
+		}
+		ArrayList<BodyPart> a2 = new ArrayList<>();
+		for (BodyPart part : a) {
+			if (!a2.contains(part)) {
+				a2.add(part);
+			}
+		}
+		return getLowestCommonPart(a2);
 	}
 }
