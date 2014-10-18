@@ -9,12 +9,16 @@ import java.util.ArrayList;
 public class DescriptionGenerator {
 	public static String getFullBeingDesc(BodyPart part, boolean you) {
 		StringBuilder sb = new StringBuilder(you?"You are ":"This is ");
-		sb.append(getAorAn(formatName(part)));
-		sb.append(" ");
+		if (!part.proper) {
+			sb.append(getAorAn(formatName(part)));
+			sb.append(" ");
+		}
 		sb.append(formatName(part));
 		sb.append(".");
 		if (!part.layers.isEmpty()) {
-			sb.append("\n\nOn the surface is ");
+			sb.append("\n\nOn ");
+			sb.append(you?"your":"the");
+			sb.append(" surface is ");
 			sb.append(getFullDesc(part,you));
 		}
 		if (you) {

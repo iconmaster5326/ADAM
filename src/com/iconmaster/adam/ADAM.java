@@ -39,7 +39,9 @@ public class ADAM {
 		BodyPartFactory.registerPart("bone", "s=.4 m=13 p=true");
 		
 		BodyPart being = BodyPartFactory.generate("human");
-		being.size = 5.7;
+		being.size = 5+7/12d;
+		being.name = "Bumpus";
+		being.proper = true;
 		//System.out.println(being);
 		
 		String desc = DescriptionGenerator.getFullBeingDesc(being,true);

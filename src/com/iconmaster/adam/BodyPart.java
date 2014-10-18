@@ -11,6 +11,7 @@ public class BodyPart {
 	public String name = "???";
 	public String desc = "%s";
 	public boolean plural = false;
+	public boolean proper = false;
 	public ArrayList<ArrayList<BodyPart>> layers = new ArrayList<>();
 	
 	public double size = 0;
