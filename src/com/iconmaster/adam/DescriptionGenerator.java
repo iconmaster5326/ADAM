@@ -206,17 +206,21 @@ public class DescriptionGenerator {
 	
 	public static String getInjuryString(BodyPart part) {
 		StringBuilder sb = new StringBuilder();
-		double avg = part.getRelativeDamage();
-		if (avg<.1) {
-			sb.append("slightly ");
-		} else if (avg<.3) {
-			sb.append("moderately ");
-		} else if (avg<1) {
-			sb.append("heavily ");
-		} else if (avg>=1) {
-			sb.append("entirely ");
+		if (part.isAttached()) {
+			double avg = part.getRelativeDamage();
+			if (avg<.1) {
+				sb.append("slightly ");
+			} else if (avg<.3) {
+				sb.append("moderately ");
+			} else if (avg<1) {
+				sb.append("heavily ");
+			} else if (avg>=1) {
+				sb.append("entirely ");
+			}
+			sb.append(part.injuryString);
+		} else {
+			sb.append(part.removalString);
 		}
-		sb.append(part.injuryString);
 		return sb.toString();
 	}
 }

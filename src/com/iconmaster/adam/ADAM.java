@@ -21,10 +21,14 @@ public class ADAM {
 		BodyPartFactory.registerPart("mouth", "lips(p=true) teeth(p=true) tongue");
 		BodyPartFactory.registerPart("neck", "skin fat muscle bone(e=true)");
 		
+		BodyPartFactory.registerPart("eye", "ir=missing");
+		BodyPartFactory.registerPart("ear", "ir=missing");
+		BodyPartFactory.registerPart("nose", "ir=missing");
+		
 		BodyPartFactory.registerPart("body", "s=.8 chest,arms,legs");
 		BodyPartFactory.registerPart("chest", "s=.6 skin fat muscle ribs spine,guts");
-		BodyPartFactory.registerPart("ribs", "s=.08 m=13 p=true");
-		BodyPartFactory.registerPart("spine", "e=true s=.08 m=13");
+		BodyPartFactory.registerPart("ribs", "s=.08 m=13 p=true i=fractured ir=broken");
+		BodyPartFactory.registerPart("spine", "e=true s=.08 m=13 i=fractured ir=broken");
 		BodyPartFactory.registerPart("guts", "s=.05 p=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
 		
 		BodyPartFactory.registerPart("heart", "s=.1 m=14 e=true");
@@ -38,10 +42,10 @@ public class ADAM {
 		BodyPartFactory.registerPart("arms", "s=.15 d=pair_of_%s arm(n=left_arm),arm(n=right_arm)");
 		BodyPartFactory.registerPart("arm", "s=.5 hand(hc=.1),skin(hc=.9) fat muscle bone");
 		
-		BodyPartFactory.registerPart("skin", "s=.1 m=7 d=layer_of_%s i=bruised");
-		BodyPartFactory.registerPart("fat", "s=.25 m=6 d=layer_of_%s i=torn");
-		BodyPartFactory.registerPart("muscle", "s=.25 m=8 d=layer_of_%s i=torn");
-		BodyPartFactory.registerPart("bone", "s=.4 m=7 p=true i=fractured");
+		BodyPartFactory.registerPart("skin", "s=.1 m=7 d=layer_of_%s i=bruised ir=flayed");
+		BodyPartFactory.registerPart("fat", "s=.25 m=6 d=layer_of_%s i=torn ir=flayed");
+		BodyPartFactory.registerPart("muscle", "s=.25 m=8 d=layer_of_%s i=torn ir=flayed");
+		BodyPartFactory.registerPart("bone", "s=.4 m=7 p=true i=fractured ir=broken");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;

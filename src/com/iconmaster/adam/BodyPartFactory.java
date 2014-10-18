@@ -75,6 +75,8 @@ public class BodyPartFactory {
 				part.destructionDamage = Double.parseDouble(desc);
 			} else if (flag.startsWith("hc")) {
 				part.hitChance = Double.parseDouble(desc);
+			} else if (flag.startsWith("ir")) {
+				part.removalString = desc.replace("_", " ");
 			} else if (flag.startsWith("i")) {
 				part.injuryString = desc.replace("_", " ");
 			}

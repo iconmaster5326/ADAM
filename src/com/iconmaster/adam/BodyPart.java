@@ -25,6 +25,7 @@ public class BodyPart {
 	public double destructionDamage = 20;
 	public double hitChance = -1;
 	public String injuryString = "injured";
+	public String removalString = "destroyed";
 	public boolean essential = false;
 
 	@Override
@@ -71,7 +72,7 @@ public class BodyPart {
 				}
 				if (random.nextDouble()>skipChance) {
 					HashMap<BodyPart,Double> map = new HashMap<>();
-					int n = random.nextInt(layer.size())+1;
+					int n = random.nextInt(((int)Math.abs(amount/getThreshold()))*2+1)+1;
 					for (BodyPart part : layer) {
 						map.put(part, part.hitChance==-1?part.size:part.hitChance);
 					}
@@ -409,5 +410,19 @@ public class BodyPart {
 			}
 		}
 		return healed;
+	}
+	
+	public double getThreshold() {
+		if (layers.isEmpty()) {
+			return destructionDamage/2;
+		} else {
+			double avg = 0;
+			for (ArrayList<BodyPart> layer : layers) {
+				for (BodyPart part : layer) {
+					avg += part.getThreshold();
+				}
+			}
+			return avg/getNumAttachedParts();
+		}
 	}
 }
