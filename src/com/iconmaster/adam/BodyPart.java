@@ -232,4 +232,8 @@ public class BodyPart {
 		}
 		return getLowestCommonPart(a2);
 	}
+	
+	public BodyPart getContainerPart() {
+		return layers.isEmpty()?parent:this;
+	}
 }
