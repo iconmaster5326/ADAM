@@ -332,4 +332,16 @@ public class BodyPart {
 		}
 		return sb.toString();
 	}
+	
+	public void clean() {
+		int i = 0;
+		for (ArrayList<BodyPart> layer : (ArrayList<ArrayList<BodyPart>>) layers.clone()) {
+			if (layer.isEmpty()) {
+				layers.remove(i);
+				clean();
+				return;
+			}
+			i++;
+		}
+	}
 }

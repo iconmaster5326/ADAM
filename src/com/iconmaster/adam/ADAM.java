@@ -240,6 +240,11 @@ public class ADAM {
 				sys.being.layers.get(layerOf).remove(partOf);
 				System.out.println("Deleted "+s[0]+".");
 			});
+			cl.addCommand("clean",0,(s)->{
+				int old = sys.being.layers.size();
+				sys.being.clean();
+				System.out.println("Cleaned up. Deleted "+(old-sys.being.layers.size())+" empty layers.");
+			});
 			
 			cl.handle();
 			return;
