@@ -57,7 +57,7 @@ public class DescriptionGenerator {
 				sb.append("\n");
 				sb.append(you?"Your ":"The ");
 				sb.append(formatName(injury));
-				sb.append(" is ");
+				sb.append(injury.plural?" are ":" is ");
 				sb.append(getInjuryString(injury));
 				sb.append(".");
 			}
