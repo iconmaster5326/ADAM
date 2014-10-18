@@ -17,11 +17,14 @@ public class BodyPart {
 	
 	public double size = 0;
 	public double density = 0;
-	public double damage = 0;
-	public double maxDamage = 10;
 	public double usedRoom = 0;
 	public double maxRoom = 0;
 	public ArrayList<Modification> mods = new ArrayList<>();
+	
+	public double damage = 0;
+	public double maxDamage = 10;
+	public double hitChance = -1;
+	public double hitResistance = 0;
 
 	@Override
 	public String toString() {
@@ -57,21 +60,6 @@ public class BodyPart {
 
 	double getMass() {
 		return getMass(size);
-	}
-	
-	public void damageSingle(double amount) {
-		System.out.println("Hitting for "+amount+"...");
-		Random random = new Random();
-		if (!layers.isEmpty()) {
-			int li = random.nextInt(layers.size());
-			ArrayList<BodyPart> layer = layers.get(li);
-			int pi = random.nextInt(layer.size());
-			BodyPart part = layer.get(pi);
-			part.damage(amount);
-		} else {
-			System.out.println(name+" got damaged by "+amount);
-			damage += amount;
-		}
 	}
 	
 	public void damage(double amount) {

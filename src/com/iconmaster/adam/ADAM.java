@@ -49,7 +49,8 @@ public class ADAM {
 		
 		System.out.println();
 		
-		being.damageSingle(5);
+		System.out.println("Hitting for 5...");
+		being.damage(5);
 	}
 	
 }
