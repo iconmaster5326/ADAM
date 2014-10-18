@@ -63,6 +63,15 @@ public class BodyPartFactory {
 				part.density = Double.parseDouble(desc);
 			} else if (flag.startsWith("p")) {
 				part.plural = Boolean.parseBoolean(desc);
+			} else if (flag.startsWith("hm")) {
+				part.maxDamage = Double.parseDouble(desc);
+				part.destructionDamage = 2*part.maxDamage;
+			} else if (flag.startsWith("hd")) {
+				part.destructionDamage = Double.parseDouble(desc);
+			} else if (flag.startsWith("hc")) {
+				part.hitChance = Double.parseDouble(desc);
+			} else if (flag.startsWith("i")) {
+				part.injuryString = desc.replace("_", " ");
 			}
 			return true;
 		}

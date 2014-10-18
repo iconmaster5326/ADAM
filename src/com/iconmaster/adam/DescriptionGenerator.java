@@ -40,6 +40,28 @@ public class DescriptionGenerator {
 		sb.append(you?" ":"s ");
 		sb.append(Double.toString(part.getMass()));
 		sb.append(" lbs.");
+		
+		ArrayList<BodyPart> injuries = part.getDamagedParts();
+		if (!injuries.isEmpty()) {
+			sb.append("\n");
+			if (you) {
+				sb.append("\nYou are ");
+			} else {
+				sb.append("\nThis ");
+				sb.append(formatName(part));
+				sb.append(" is ");
+			}
+			sb.append(getInjuryString(part));
+			sb.append(".");
+			for (BodyPart injury : injuries) {
+				sb.append("\n");
+				sb.append(you?"Your ":"The ");
+				sb.append(formatName(injury));
+				sb.append(" is ");
+				sb.append(getInjuryString(injury));
+				sb.append(".");
+			}
+		}
 		return sb.toString();
 	}
 		
@@ -109,5 +131,19 @@ public class DescriptionGenerator {
 	
 	public static String capitalize(String input) {
 		return input.substring(0,1).toUpperCase()+input.substring(1);
+	}
+	
+	public static String getInjuryString(BodyPart part) {
+		StringBuilder sb = new StringBuilder();
+		double avg = part.getRelativeDamage();
+		if (avg<.1) {
+			sb.append("slightly ");
+		} else if (avg<.3) {
+			sb.append("moderately ");
+		} else if (avg<1) {
+			sb.append("heavily ");
+		}
+		sb.append(part.injuryString);
+		return sb.toString();
 	}
 }

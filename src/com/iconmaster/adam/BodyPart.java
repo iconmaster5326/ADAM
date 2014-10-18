@@ -24,8 +24,9 @@ public class BodyPart {
 	
 	public double damage = 0;
 	public double maxDamage = 10;
+	public double destructionDamage = 20;
 	public double hitChance = -1;
-	public double hitResistance = 0;
+	public String injuryString = "injured";
 
 //	@Override
 //	public String toString() {
@@ -66,19 +67,7 @@ public class BodyPart {
 	public void damage(double amount, double punch) {
 		Random random = new Random();
 		if (!layers.isEmpty()) {
-			int sum = 0;
-			for (ArrayList<BodyPart> layer : layers) {
-				sum+=layer.size();
-			}
-//			int amt = random.nextInt(sum)+1;
-//			for (int i=0;i<amt;i++) {
-//				int li = random.nextInt(layers.size());
-//				ArrayList<BodyPart> layer = layers.get(li);
-//				int pi = random.nextInt(layer.size());
-//				BodyPart part = layer.get(pi);
-//				double dmg = amount/amt;
-//				part.damage(dmg,punch);
-//			}
+			int sum = getNumAttachedParts();
 			
 			HashMap<BodyPart,Double> map = new HashMap<>();
 			double layerProb = 1;
@@ -103,5 +92,44 @@ public class BodyPart {
 
 	public void damage(int amount) {
 		damage(amount,.2);
+	}
+	
+	public int getNumAttachedParts() {
+		int sum = 0;
+		for (ArrayList<BodyPart> layer : layers) {
+			sum+=layer.size();
+		}
+		return sum;
+	}
+	
+	public double getRelativeDamage() {
+		if (!layers.isEmpty()) {
+			int sum = getNumAttachedParts();
+			double dmg = 0;
+			for (ArrayList<BodyPart> layer : layers) {
+				for (BodyPart part : layer) {
+					dmg += part.getRelativeDamage();
+				}
+			}
+			return dmg/sum;
+		} else {
+			return damage/maxDamage;
+		}
+	}
+	
+	public ArrayList<BodyPart> getDamagedParts() {
+		ArrayList<BodyPart> a = new ArrayList<>();
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				if (part.layers.isEmpty()) {
+					if (part.damage>0) {
+						a.add(part);
+					}
+				} else {
+					a.addAll(part.getDamagedParts());
+				}
+			}
+		}
+		return a;
 	}
 }

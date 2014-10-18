@@ -33,24 +33,24 @@ public class ADAM {
 		BodyPartFactory.registerPart("arms", "s=.15 d=pair_of_%s arm(n=left_arm),arm(n=right_arm)");
 		BodyPartFactory.registerPart("arm", "s=.5 hand,skin fat muscle bone");
 		
-		BodyPartFactory.registerPart("skin", "s=.1 m=13 d=layer_of_%s");
-		BodyPartFactory.registerPart("fat", "s=.25 m=11 d=layer_of_%s");
-		BodyPartFactory.registerPart("muscle", "s=.25 m=14 d=layer_of_%s");
-		BodyPartFactory.registerPart("bone", "s=.4 m=13 p=true");
+		BodyPartFactory.registerPart("skin", "s=.1 m=13 d=layer_of_%s i=bruised");
+		BodyPartFactory.registerPart("fat", "s=.25 m=11 d=layer_of_%s i=torn");
+		BodyPartFactory.registerPart("muscle", "s=.25 m=14 d=layer_of_%s i=torn");
+		BodyPartFactory.registerPart("bone", "s=.4 m=13 p=true i=fractured");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;
 		being.name = "Bumpus";
 		being.proper = true;
-		//System.out.println(being);
-		
-		String desc = DescriptionGenerator.getFullBeingDesc(being,true);
-		System.out.println(desc);
+
+		System.out.println("Hitting for 5...");
+		being.damage(5);
+		System.out.println("Bumpus has an avg. damage of "+being.getRelativeDamage());
 		
 		System.out.println();
 		
-		System.out.println("Hitting for 5...");
-		being.damage(5);
+		String desc = DescriptionGenerator.getFullBeingDesc(being,true);
+		System.out.println(desc);
 	}
 	
 }
