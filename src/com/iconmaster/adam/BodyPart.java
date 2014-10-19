@@ -390,7 +390,7 @@ public class BodyPart {
 	
 	public IsAliveResult isAlive() {
 		BodyPart root = this.getRootPart();
-		if (root.getRelativeDestroyDamage()>1) {
+		if (root.getRelativeDestroyDamage()>1.5) {
 			return new IsAliveResult(null, false, true);
 		}
 		if (root.blood<=0) {
