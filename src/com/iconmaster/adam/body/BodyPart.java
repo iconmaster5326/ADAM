@@ -3,6 +3,7 @@ package com.iconmaster.adam.body;
 import com.iconmaster.adam.equip.Equipment;
 import com.iconmaster.adam.equip.RepairResult;
 import com.iconmaster.adam.fight.Attack;
+import com.iconmaster.adam.fight.AttackType;
 import com.iconmaster.adam.fight.DamageResult;
 import com.iconmaster.adam.fight.HealResult;
 import com.iconmaster.adam.fight.IsAliveResult;
@@ -71,7 +72,7 @@ public class BodyPart {
 		return getMass(size);
 	}
 	
-	public DamageResult damage(DamageResult res, double amount, double punch) {
+	public DamageResult damage(DamageResult res, double amount, AttackType type) {
 		Random random = new Random();
 		if (!layers.isEmpty()) {
 			for (int i=0;i<layers.size();i++) {
@@ -81,7 +82,7 @@ public class BodyPart {
 					skipChance += part.getRelativeDamage();
 				}
 				skipChance/=layer.size();
-				skipChance=.5*punch+(.5-.5*punch)*skipChance;
+				skipChance=.5*type.punch+(.5-.5*type.punch)*skipChance;
 				if (BodyPart.isLayerDestroyed(layer)) {
 					skipChance = 1;
 				} else if (i==layers.size()-1) {
@@ -89,7 +90,7 @@ public class BodyPart {
 				}
 				if (random.nextDouble()>skipChance) {
 					HashMap<BodyPart,Double> map = new HashMap<>();
-					int n = random.nextInt(((int)Math.abs(amount/getThreshold()))*2+1)+1;
+					int n = random.nextInt(((int)(Math.abs(amount/getThreshold())*type.spread))*2+1)+1;
 					for (BodyPart part : layer) {
 						map.put(part, part.hitChance==-1?part.size:part.hitChance);
 					}
@@ -97,7 +98,7 @@ public class BodyPart {
 					for (int j=0;j<n;j++) {
 						BodyPart part = RandomUtils.getWeightedRandom(map,random);
 						if (part!=null) {
-							part.damage(res,amount/n,punch);
+							part.damage(res,amount/n,type);
 						}
 					}
 					break;
@@ -136,11 +137,11 @@ public class BodyPart {
 	}
 
 	public DamageResult damage(double amount) {
-		return damage(new DamageResult(),amount,.2);
+		return damage(new DamageResult(),amount,new AttackType());
 	}
 	
-	public DamageResult damage(double amount, double punch) {
-		return damage(new DamageResult(),amount,punch);
+	public DamageResult damage(double amount, AttackType type) {
+		return damage(new DamageResult(),amount,type);
 	}
 	
 	public int getNumAttachedParts() {

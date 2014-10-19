@@ -1,6 +1,7 @@
 package com.iconmaster.adam.equip;
 
 import com.iconmaster.adam.body.BodyPartFactory;
+import com.iconmaster.adam.fight.AttackFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class EquipFactory {
 				} else if (sub.startsWith("s")) {
 					equip.slotRoom = Double.parseDouble(desc);
 				} else if (sub.startsWith("a+")) {
-					equip.attacks.add(BodyPartFactory.attacks.get(desc).newAttack(equip));
+					equip.attacks.add(AttackFactory.attacks.get(desc).newAttack(equip));
 				} else if (sub.startsWith("dm")) {
 					equip.maxDamage = Double.parseDouble(desc);
 				} else if (sub.startsWith("dc")) {

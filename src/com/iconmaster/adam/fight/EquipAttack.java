@@ -12,18 +12,20 @@ public class EquipAttack extends Attack {
 	public double minimum;
 	public double variance;
 	public double punch;
+	
+	public AttackType type;
 
 	public EquipAttack(AttackFactory factory, Equipment eq) {
 		this.eq = eq;
 		this.name = factory.name;
 		this.minimum = factory.minimum;
 		this.variance = factory.variance;
-		this.punch = factory.punch;
+		this.type = factory.type;
 	}
 
 	@Override
 	public DamageResult onAttack(BodyPart other) {
-		return other.damage(minimum+random.nextDouble()*variance,punch);
+		return other.damage(minimum+random.nextDouble()*variance,type);
 	}
 	
 	@Override

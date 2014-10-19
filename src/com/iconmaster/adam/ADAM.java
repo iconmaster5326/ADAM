@@ -8,6 +8,7 @@ import com.iconmaster.adam.equip.EquipFactory;
 import com.iconmaster.adam.equip.Equipment;
 import com.iconmaster.adam.equip.RepairResult;
 import com.iconmaster.adam.fight.Attack;
+import com.iconmaster.adam.fight.AttackFactory;
 import com.iconmaster.adam.fight.Battle;
 import com.iconmaster.adam.fight.DamageResult;
 import com.iconmaster.adam.fight.HealResult;
@@ -69,9 +70,9 @@ public class ADAM {
 		BodyPartFactory.registerPart("muscle", "s=.25 m=8 d=layer_of_%s i=torn ir=flayed");
 		BodyPartFactory.registerPart("bone", "s=.4 m=7 i=fractured ir=broken");
 		
-		BodyPartFactory.registerAttack("punch", "d=5-10 pl=.2");
-		BodyPartFactory.registerAttack("kick", "d=10-10 pl=.2");
-		BodyPartFactory.registerAttack("slash", "d=10-10 pl=.4");
+		AttackFactory.registerAttack("punch", "d=5-10 ap=.2");
+		AttackFactory.registerAttack("kick", "d=10-10 ap=.2");
+		AttackFactory.registerAttack("slash", "d=10-10 ap=.4");
 		
 		EquipFactory.registerEquip("shirt", "s=.5 mb=.1 body chest arms? legs*");
 		EquipFactory.registerEquip("sword", "s=.8 w=true a+=slash hand");
@@ -166,14 +167,6 @@ public class ADAM {
 			cl.addCommand("new",-1,(s)->{
 				sys.being = BodyPartFactory.generateFromDef(s[0],CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
 				System.out.println("Generated a new "+sys.being.type+".");
-			});
-			cl.addCommand("hit",2,(s)->{
-				double damage = Double.parseDouble(s[0]);
-				double punch = Double.parseDouble(s[1]);
-				System.out.println("Hitting for "+damage+"...");
-				sys.dmgres = sys.being.damage(damage,punch);
-				System.out.println();
-				System.out.println(DescriptionGenerator.getInjuryDesc(sys.being,sys.dmgres,sys.you));
 			});
 			cl.addCommand("hit",1,(s)->{
 				double damage = Double.parseDouble(s[0]);
@@ -388,7 +381,7 @@ public class ADAM {
 				System.out.println(DescriptionGenerator.formatNameFull(sys.being)+" is now referred to by "+sys.being.pronouns.he+"/"+sys.being.pronouns.him+"/"+sys.being.pronouns.his+".");
 			});
 			cl.addCommand("defa",-1,(s)->{
-				BodyPartFactory.registerAttack(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
+				AttackFactory.registerAttack(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
 			});
 			cl.addCommand("equip",0,(s)->{
 				System.out.println("You have "+sys.being.equips.size()+" things on your body:");
