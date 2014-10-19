@@ -332,7 +332,7 @@ public class ADAM {
 						DamageResult res = sys.being.damage(dmg);
 						System.out.println(DescriptionGenerator.formatNameFull(other)+" hits "+DescriptionGenerator.formatNameFull(sys.being)+" for "+dmg+" damage!");
 						System.out.println();
-						System.out.println(DescriptionGenerator.getInjuryDesc(other, res, true));
+						System.out.println(DescriptionGenerator.getInjuryDesc(sys.being, res, true));
 						TickResult tr = other.tick();
 						System.out.println(DescriptionGenerator.getTickString(other, tr, false));
 					}
