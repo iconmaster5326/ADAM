@@ -73,9 +73,6 @@ public class DescriptionGenerator {
 					sb.append(getBleedString(injury));
 					sb.append(".");
 				}
-				if (injury.blood<=0) {
-					sb.append(" It has bled out.");
-				}
 			}
 		}
 		return sb.toString();

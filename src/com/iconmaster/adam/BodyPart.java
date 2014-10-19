@@ -166,7 +166,7 @@ public class BodyPart {
 		for (ArrayList<BodyPart> layer : layers) {
 			for (BodyPart part : layer) {
 				if (part.layers.isEmpty()) {
-					if (part.damage>0) {
+					if (part.damage>0 || part.bleed > 0) {
 						a.add(part);
 					}
 				} else {
