@@ -392,7 +392,7 @@ public class ADAM {
 			cl.addCommand("equip",0,(s)->{
 				System.out.println("You have "+sys.being.equips.size()+" things on your body:");
 				for (Equipment part : sys.being.equips) {
-					System.out.println("\t"+part);
+					System.out.println("\t"+part+" on "+part.attachedTo);
 				}
 			});
 			cl.addCommand("equip",1,(s)->{
