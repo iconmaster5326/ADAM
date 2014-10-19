@@ -563,7 +563,14 @@ public class BodyPart {
 			}
 		}
 		a.addAll(attacks);
-		return a;
+		
+		ArrayList<Attack> a2 = new ArrayList<>();
+		for (Attack attk : a) {
+			if (attk.canUseAttack()) {
+				a2.add(attk);
+			}
+		}
+		return a2;
 	}
 	
 	public void applyPronouns(PronounSet ps) {

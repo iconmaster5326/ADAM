@@ -30,7 +30,7 @@ public class EquipFactory {
 				} else if (sub.startsWith("s")) {
 					equip.slotRoom = Double.parseDouble(desc);
 				} else if (sub.startsWith("a+")) {
-					equip.attacks.add(BodyPartFactory.attacks.get(desc).newAttack(null));
+					equip.attacks.add(BodyPartFactory.attacks.get(desc).newAttack(equip));
 				}
 			} else {
 				if (equip.primaryMatch==null) {

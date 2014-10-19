@@ -1,19 +1,20 @@
 package com.iconmaster.adam.fight;
 
 import com.iconmaster.adam.body.BodyPart;
+import com.iconmaster.adam.equip.Equipment;
 
 /**
  *
  * @author iconmaster
  */
-public class BasicAttack extends Attack {
-	public BodyPart part;
+public class EquipAttack extends Attack {
+	public Equipment eq;
 	public double minimum;
 	public double variance;
 	public double punch;
 
-	public BasicAttack(AttackFactory factory, BodyPart part) {
-		this.part = part;
+	public EquipAttack(AttackFactory factory, Equipment eq) {
+		this.eq = eq;
 		this.name = factory.name;
 		this.minimum = factory.minimum;
 		this.variance = factory.variance;
@@ -27,6 +28,6 @@ public class BasicAttack extends Attack {
 	
 	@Override
 	public boolean canUseAttack() {
-		return part.getRelativeDamage()<1;
+		return eq.attachedTo!=null && eq.attachedTo.getRelativeDamage()<1;
 	}
 }

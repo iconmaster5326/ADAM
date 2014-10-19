@@ -1,6 +1,7 @@
 package com.iconmaster.adam.fight;
 
 import com.iconmaster.adam.body.BodyPart;
+import com.iconmaster.adam.equip.Equipment;
 
 /**
  *
@@ -14,5 +15,9 @@ public class AttackFactory {
 
 	public Attack newAttack(BodyPart part) {
 		return new BasicAttack(this, part);
+	}
+	
+	public Attack newAttack(Equipment part) {
+		return new EquipAttack(this, part);
 	}
 }
