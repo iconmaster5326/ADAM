@@ -452,7 +452,7 @@ public class BodyPart {
 	
 	public double getThreshold() {
 		if (layers.isEmpty()) {
-			return destructionDamage/2;
+			return destructionDamage/5;
 		} else {
 			double avg = 0;
 			for (ArrayList<BodyPart> layer : layers) {
