@@ -282,11 +282,9 @@ public class DescriptionGenerator {
 
 	public static String getBleedString(BodyPart injury) {
 		double bleed = (injury.bleed/injury.getMaxBlood());
-		if (injury.bleed==0) {
-			return "not";
-		} else if (bleed<.2) {
+		if (bleed<.4) {
 			return "slightly";
-		} else if (bleed<.5) {
+		} else if (bleed<.8) {
 			return "moderately";
 		} else {
 			return "profusely";
