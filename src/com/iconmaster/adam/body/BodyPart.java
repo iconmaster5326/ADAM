@@ -1,4 +1,4 @@
-package com.iconmaster.adam;
+package com.iconmaster.adam.body;
 
 import com.iconmaster.adam.util.RandomUtils;
 import com.iconmaster.adam.fight.IsAliveResult;

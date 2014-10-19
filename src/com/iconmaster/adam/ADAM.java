@@ -1,5 +1,9 @@
 package com.iconmaster.adam;
 
+import com.iconmaster.adam.body.BodyPart;
+import com.iconmaster.adam.body.PronounSet;
+import com.iconmaster.adam.body.DescriptionGenerator;
+import com.iconmaster.adam.body.BodyPartFactory;
 import com.iconmaster.adam.util.CLAHelper;
 import com.iconmaster.adam.util.CommandLine;
 import com.iconmaster.adam.fight.IsAliveResult;

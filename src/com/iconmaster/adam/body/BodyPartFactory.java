@@ -1,4 +1,4 @@
-package com.iconmaster.adam;
+package com.iconmaster.adam.body;
 
 import com.iconmaster.adam.fight.AttackFactory;
 import com.iconmaster.adam.fight.Attack;
