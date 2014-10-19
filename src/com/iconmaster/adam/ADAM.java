@@ -33,7 +33,7 @@ public class ADAM {
 		BodyPartFactory.registerPart("chest", "s=.6 skin fat muscle ribs spine,guts");
 		BodyPartFactory.registerPart("ribs", "s=.08 m=13 p=true i=fractured ir=broken");
 		BodyPartFactory.registerPart("spine", "e=true s=.08 m=13 i=fractured ir=broken");
-		BodyPartFactory.registerPart("guts", "s=.05 p=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
+		BodyPartFactory.registerPart("guts", "n=chest_cavity s=.05 p=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
 		
 		BodyPartFactory.registerPart("heart", "s=.1 m=14 e=true ir=crushed");
 		BodyPartFactory.registerPart("stomach", "s=.25 m=9 ir=crushed");
@@ -317,7 +317,7 @@ public class ADAM {
 				System.out.println();
 				while (true) {
 					if (yourTurn) {
-						double dmg = random.nextDouble()*10;
+						double dmg = random.nextDouble()*100;
 						DamageResult res = other.damage(dmg);
 						System.out.println(DescriptionGenerator.formatNameFull(sys.being)+" hits "+DescriptionGenerator.formatNameFull(other)+" for "+dmg+" damage!");
 						System.out.println();
@@ -325,7 +325,7 @@ public class ADAM {
 						TickResult tr = sys.being.tick();
 						System.out.println(DescriptionGenerator.getTickString(sys.being, tr, true));
 					} else {
-						double dmg = random.nextDouble()*10;
+						double dmg = random.nextDouble()*100;
 						DamageResult res = sys.being.damage(dmg);
 						System.out.println(DescriptionGenerator.formatNameFull(other)+" hits "+DescriptionGenerator.formatNameFull(sys.being)+" for "+dmg+" damage!");
 						System.out.println();
