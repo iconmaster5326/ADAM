@@ -298,4 +298,8 @@ public class DescriptionGenerator {
 		}
 		return (rem+" "+cause+".");
 	}
+	
+	public static String formatNameFull(BodyPart part) {
+		return ((part.proper || part.plural)?"":DescriptionGenerator.getAorAn(part.name)+" ")+DescriptionGenerator.formatName(part);
+	}
 }

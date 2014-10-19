@@ -312,23 +312,42 @@ public class ADAM {
 				}
 				Random random = new Random();
 				boolean yourTurn = random.nextBoolean();
+				int turns = 1;
+				System.out.println("** "+DescriptionGenerator.formatNameFull(sys.being)+" VS "+DescriptionGenerator.formatNameFull(other)+" **");
+				System.out.println();
 				while (true) {
 					if (yourTurn) {
-						other.damage(random.nextDouble()*10);
-						other.tick();
+						double dmg = random.nextDouble()*10;
+						DamageResult res = other.damage(dmg);
+						System.out.println(DescriptionGenerator.formatNameFull(sys.being)+" hits "+DescriptionGenerator.formatNameFull(other)+" for "+dmg+" damage!");
+						System.out.println();
+						System.out.println(DescriptionGenerator.getInjuryDesc(other, res, false));
+						TickResult tr = sys.being.tick();
+						System.out.println(DescriptionGenerator.getTickString(sys.being, tr, true));
 					} else {
-						sys.being.damage(random.nextDouble()*10);
-						sys.being.tick();
+						double dmg = random.nextDouble()*10;
+						DamageResult res = sys.being.damage(dmg);
+						System.out.println(DescriptionGenerator.formatNameFull(other)+" hits "+DescriptionGenerator.formatNameFull(sys.being)+" for "+dmg+" damage!");
+						System.out.println();
+						System.out.println(DescriptionGenerator.getInjuryDesc(other, res, true));
+						TickResult tr = other.tick();
+						System.out.println(DescriptionGenerator.getTickString(other, tr, false));
 					}
 					if (sys.being.isAlive()!=null) {
-						System.out.println("You lose...");
+						System.out.println();
+						System.out.println("You died of "+DescriptionGenerator.getCauseOfDeath(sys.being, sys.being.isAlive()));
+						System.out.println("You lost in "+turns+" turns.");
 						return;
 					}
 					if (other.isAlive()!=null) {
-						System.out.println("You win!");
+						System.out.println();
+						System.out.println(DescriptionGenerator.formatNameFull(other)+" died of "+DescriptionGenerator.getCauseOfDeath(other, other.isAlive()));
+						System.out.println("You won in "+turns+" turns!");
 						return;
 					}
+					System.out.println();
 					yourTurn = !yourTurn;
+					turns++;
 				}
 			});
 			cl.addCommand("human",1,(s)->{
