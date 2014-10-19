@@ -197,7 +197,7 @@ public class DescriptionGenerator {
 		return sb.toString();
 	}
 	
-	public static String getTickString(BodyPart part, TickResult tr, boolean you) {
+	public static String getTickDesc(BodyPart part, TickResult tr, boolean you) {
 		StringBuilder sb = new StringBuilder();
 		ArrayList<BodyPart> parts = tr.getParts();
 		for (BodyPart injury : parts) {
@@ -307,5 +307,15 @@ public class DescriptionGenerator {
 	
 	public static String formatNameFull(BodyPart part) {
 		return ((part.proper || part.plural)?"":DescriptionGenerator.getAorAn(part.name)+" ")+DescriptionGenerator.formatName(part);
+	}
+	
+	public static String pluralize(String input) {
+		if (input.endsWith("s") || input.endsWith("x") || input.endsWith("ch") || input.endsWith("sh")) {
+			return input+"es";
+		} else if (input.endsWith("y")) {
+			return input.substring(0,input.length()-1)+"ies";
+		} else {
+			return input+"s";
+		}
 	}
 }

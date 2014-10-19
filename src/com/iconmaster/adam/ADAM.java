@@ -4,7 +4,6 @@ import com.iconmaster.adam.CLAHelper.CLA;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  *
@@ -44,12 +43,16 @@ public class ADAM {
 		BodyPartFactory.registerPart("leg", "s=.5 foot(hc=.1),skin(hc=.9) fat muscle bone");
 		
 		BodyPartFactory.registerPart("arms", "s=.15 d=pair_of_%s arm(n=left_arm),arm(n=right_arm)");
-		BodyPartFactory.registerPart("arm", "s=.5 hand(hc=.1),skin(hc=.9) fat muscle bone");
+		BodyPartFactory.registerPart("arm", "s=.5 hand,skin(hc=.9) fat muscle bone");
+		
+		BodyPartFactory.registerPart("hand", "hc=.1 a+=punch");
 		
 		BodyPartFactory.registerPart("skin", "s=.1 m=7 d=layer_of_%s i=bruised ir=flayed");
 		BodyPartFactory.registerPart("fat", "s=.25 m=6 d=layer_of_%s i=torn ir=flayed");
 		BodyPartFactory.registerPart("muscle", "s=.25 m=8 d=layer_of_%s i=torn ir=flayed");
 		BodyPartFactory.registerPart("bone", "s=.4 m=7 i=fractured ir=broken");
+		
+		BodyPartFactory.registerAttack("punch", "d=5-10 p=.2");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;
@@ -280,7 +283,7 @@ public class ADAM {
 			});
 			cl.addCommand("tick",0,(s)->{
 				TickResult tr = sys.being.tick();
-				System.out.println(DescriptionGenerator.getTickString(sys.being,tr,sys.you));
+				System.out.println(DescriptionGenerator.getTickDesc(sys.being,tr,sys.you));
 			});
 			cl.addCommand("bleed",0,(s)->{
 				System.out.println("Bleed is "+sys.being.bleed+".");
@@ -321,45 +324,8 @@ public class ADAM {
 					System.out.println("You can't fight something that doesn't exist!");
 					return;
 				}
-				Random random = new Random();
-				boolean yourTurn = random.nextBoolean();
-				int turns = 1;
-				System.out.println("** "+DescriptionGenerator.formatNameFull(sys.being)+" VS "+DescriptionGenerator.formatNameFull(other)+" **");
-				System.out.println();
-				while (true) {
-					if (yourTurn) {
-						double dmg = random.nextDouble()*100;
-						DamageResult res = other.damage(dmg);
-						System.out.println(DescriptionGenerator.formatNameFull(sys.being)+" hits "+DescriptionGenerator.formatNameFull(other)+" for "+dmg+" damage!");
-						System.out.println();
-						System.out.println(DescriptionGenerator.getInjuryDesc(other, res, false));
-						TickResult tr = sys.being.tick();
-						System.out.println(DescriptionGenerator.getTickString(sys.being, tr, true));
-					} else {
-						double dmg = random.nextDouble()*100;
-						DamageResult res = sys.being.damage(dmg);
-						System.out.println(DescriptionGenerator.formatNameFull(other)+" hits "+DescriptionGenerator.formatNameFull(sys.being)+" for "+dmg+" damage!");
-						System.out.println();
-						System.out.println(DescriptionGenerator.getInjuryDesc(sys.being, res, true));
-						TickResult tr = other.tick();
-						System.out.println(DescriptionGenerator.getTickString(other, tr, false));
-					}
-					if (sys.being.isAlive()!=null) {
-						System.out.println();
-						System.out.println("You died of "+DescriptionGenerator.getCauseOfDeath(sys.being, sys.being.isAlive()));
-						System.out.println("You lost in "+turns+" turns.");
-						return;
-					}
-					if (other.isAlive()!=null) {
-						System.out.println();
-						System.out.println(DescriptionGenerator.formatNameFull(other)+" died of "+DescriptionGenerator.getCauseOfDeath(other, other.isAlive()));
-						System.out.println("You won in "+turns+" turns!");
-						return;
-					}
-					System.out.println();
-					yourTurn = !yourTurn;
-					turns++;
-				}
+				Battle battle = new Battle(sys.being, other);
+				battle.doBattle();
 			});
 			cl.addCommand("human",1,(s)->{
 				sys.being = BodyPartFactory.generate("human");
@@ -372,7 +338,13 @@ public class ADAM {
 				sys.being = sys.being.getRootPart();
 				System.out.println("Went to root.");
 			});
-			
+			cl.addCommand("attack",0,(s)->{
+				ArrayList<Attack> a = sys.being.getAttacks();
+				System.out.println("Found "+a.size()+" attacks available:");
+				for (Attack attk : a) {
+					System.out.println("\t"+attk.name);
+				}
+			});
 			cl.handle();
 			return;
 		}

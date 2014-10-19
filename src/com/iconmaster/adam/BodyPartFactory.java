@@ -9,6 +9,7 @@ import java.util.HashMap;
  */
 public class BodyPartFactory {
 	public static HashMap<String,String> parts = new HashMap<>();
+	public static HashMap<String,AttackFactory> attacks = new HashMap<>();
 	
 	public static void registerPart(String name, String define) {
 		parts.put(name, define);
@@ -16,6 +17,33 @@ public class BodyPartFactory {
 	
 	public static String getPartDef(String name) {
 		return parts.getOrDefault(name, "");
+	}
+	
+	public static void registerAttack(String name, String def) {
+		AttackFactory af = new AttackFactory();
+		af.name = name;
+		attacks.put(name, af);
+		
+		for (String sub : def.split("\\s+")) {
+			if (sub.contains("=")) {
+				String flag = sub.substring(0,sub.indexOf("="));
+				String desc = sub.substring(sub.indexOf("=")+1);
+				
+				if ("n".equals(flag)) {
+					af.name = desc;
+				} else if ("d".equals(flag)) {
+					if (desc.contains("-")) {
+						af.minimum = Double.parseDouble(desc.substring(0,desc.indexOf("-")));
+						af.variance = Double.parseDouble(desc.substring(desc.indexOf("-")+1));
+					} else {
+						af.minimum = Double.parseDouble(desc);
+						af.variance = 0;
+					}
+				} else if ("p".equals(flag)) {
+					af.punch = Double.parseDouble(desc);
+				}
+			}
+		}
 	}
 	
 	public static BodyPart generate(String name) {
@@ -84,6 +112,9 @@ public class BodyPartFactory {
 				part.bleedChance = Double.parseDouble(desc);
 			} else if (flag.startsWith("br")) {
 				part.bleedRate = Double.parseDouble(desc);
+			} else if (flag.startsWith("a+")) {
+				Attack attk = attacks.get(desc).newAttack(part);
+				part.attacks.add(attk);
 			}
 			return true;
 		}

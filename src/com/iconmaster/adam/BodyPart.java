@@ -32,6 +32,8 @@ public class BodyPart {
 	public double bleed = 0;
 	public double bleedChance = .2;
 	public double bleedRate = 1.2;
+	
+	public ArrayList<Attack> attacks = new ArrayList<>();
 
 	@Override
 	public String toString() {
@@ -93,11 +95,13 @@ public class BodyPart {
 			}
 		} else {
 			damage += amount;
+			res.damage += amount;
 			if (isDestroyed()) {
 				bleed = 0;
 			} else {
 				if (random.nextDouble()<bleedChance) {
-					res.bleed.put(this, res.getOrDefault(this, 0d)+bleedRate*amount);
+					res.bledParts.put(this, res.getOrDefault(this, 0d)+bleedRate*amount);
+					res.bleed += bleedRate*amount;
 					bleed += bleedRate*amount;
 				}
 			}
@@ -535,5 +539,20 @@ public class BodyPart {
 			}
 		}
 		return tr;
+	}
+	
+	public ArrayList<Attack> getAttacks() {
+		if (layers.isEmpty()) {
+			return attacks;
+		} else {
+			ArrayList<Attack> a = new ArrayList<>();
+			a.addAll(attacks);
+			for (ArrayList<BodyPart> layer : layers) {
+				for (BodyPart part : layer) {
+					a.addAll(part.getAttacks());
+				}
+			}
+			return a;
+		}
 	}
 }
