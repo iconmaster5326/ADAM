@@ -573,4 +573,18 @@ public class BodyPart {
 			}
 		}
 	}
+	
+	public double getSlotRoom() {
+		return 1-getSlotRoomUsed();
+	}
+	
+	public double getSlotRoomUsed() {
+		double room = 0;
+		for (Equipment eq : getRootPart().equips) {
+			if (eq.attachedTo==this) {
+				room += eq.slotRoom;
+			}
+		}
+		return room;
+	}
 }

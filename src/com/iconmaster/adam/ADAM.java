@@ -71,7 +71,9 @@ public class ADAM {
 		BodyPartFactory.registerAttack("punch", "d=5-10 pl=.2");
 		BodyPartFactory.registerAttack("kick", "d=10-10 pl=.2");
 		
-		EquipFactory.registerEquip("shirt", "body chest arms? legs*");
+		EquipFactory.registerEquip("shirt", "s=.5 body chest arms? legs*");
+		EquipFactory.registerEquip("sword", "s=.8 hand");
+		EquipFactory.registerEquip("ring", "s=.05 hand");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;
@@ -425,6 +427,10 @@ public class ADAM {
 					}
 				}
 			});
+			cl.addCommand("defeq",-1,(s)->{
+				EquipFactory.registerEquip(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
+			});
+			
 			cl.handle();
 			return;
 		}

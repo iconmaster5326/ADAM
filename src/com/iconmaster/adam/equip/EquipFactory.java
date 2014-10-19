@@ -26,6 +26,8 @@ public class EquipFactory {
 				String desc = sub.substring(sub.indexOf("=")+1);
 				if (sub.startsWith("n")) {
 					equip.name = desc;
+				} else if (sub.startsWith("s")) {
+					equip.slotRoom = Double.parseDouble(desc);
 				}
 			} else {
 				if (equip.primaryMatch==null) {

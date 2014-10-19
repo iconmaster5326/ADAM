@@ -11,6 +11,7 @@ public class Equipment {
 	public String name;
 	public EquipMatch primaryMatch;
 	public EquipMatch[] matches;
+	public double slotRoom = 0;
 	
 	public BodyPart attachedTo;
 	
@@ -36,7 +37,10 @@ public class Equipment {
 					}
 				}
 			}
-			a.add(being);
+			
+			if (being.getSlotRoom()>=slotRoom) {
+				a.add(being);
+			}
 		} else {
 			for (ArrayList<BodyPart> layer : being.layers) {
 				for (BodyPart part : layer) {
