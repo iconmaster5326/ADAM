@@ -1,11 +1,12 @@
 package com.iconmaster.adam.body;
 
-import com.iconmaster.adam.util.RandomUtils;
-import com.iconmaster.adam.fight.IsAliveResult;
+import com.iconmaster.adam.equip.Equipment;
+import com.iconmaster.adam.fight.Attack;
 import com.iconmaster.adam.fight.DamageResult;
 import com.iconmaster.adam.fight.HealResult;
+import com.iconmaster.adam.fight.IsAliveResult;
 import com.iconmaster.adam.fight.TickResult;
-import com.iconmaster.adam.fight.Attack;
+import com.iconmaster.adam.util.RandomUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -41,6 +42,7 @@ public class BodyPart {
 	public double bleedRate = .8;
 	
 	public ArrayList<Attack> attacks = new ArrayList<>();
+	public ArrayList<Equipment> equips = new ArrayList<>();
 
 	@Override
 	public String toString() {
@@ -353,7 +355,7 @@ public class BodyPart {
 		ArrayList<BodyPart> a = new ArrayList<>();
 		for (ArrayList<BodyPart> layer : layers) {
 			for (BodyPart part : layer) {
-				if (part.name.matches(name)) {
+				if (part.name.matches(name) || part.type.matches(name)) {
 					a.add(part);
 				}
 				a.addAll(part.findAllParts(name));

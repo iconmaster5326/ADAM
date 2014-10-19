@@ -1,18 +1,20 @@
 package com.iconmaster.adam;
 
 import com.iconmaster.adam.body.BodyPart;
-import com.iconmaster.adam.body.PronounSet;
-import com.iconmaster.adam.body.DescriptionGenerator;
 import com.iconmaster.adam.body.BodyPartFactory;
-import com.iconmaster.adam.util.CLAHelper;
-import com.iconmaster.adam.util.CommandLine;
-import com.iconmaster.adam.fight.IsAliveResult;
+import com.iconmaster.adam.body.DescriptionGenerator;
+import com.iconmaster.adam.body.PronounSet;
+import com.iconmaster.adam.equip.EquipFactory;
+import com.iconmaster.adam.equip.Equipment;
+import com.iconmaster.adam.fight.Attack;
+import com.iconmaster.adam.fight.Battle;
 import com.iconmaster.adam.fight.DamageResult;
 import com.iconmaster.adam.fight.HealResult;
-import com.iconmaster.adam.fight.Battle;
+import com.iconmaster.adam.fight.IsAliveResult;
 import com.iconmaster.adam.fight.TickResult;
-import com.iconmaster.adam.fight.Attack;
+import com.iconmaster.adam.util.CLAHelper;
 import com.iconmaster.adam.util.CLAHelper.CLA;
+import com.iconmaster.adam.util.CommandLine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -68,6 +70,8 @@ public class ADAM {
 		
 		BodyPartFactory.registerAttack("punch", "d=5-10 pl=.2");
 		BodyPartFactory.registerAttack("kick", "d=10-10 pl=.2");
+		
+		EquipFactory.registerEquip("shirt", "body chest arms? legs*");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;
@@ -381,6 +385,45 @@ public class ADAM {
 			});
 			cl.addCommand("defa",-1,(s)->{
 				BodyPartFactory.registerAttack(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
+			});
+			cl.addCommand("equip",0,(s)->{
+				System.out.println("You have "+sys.being.equips.size()+" things on your body:");
+				for (Equipment part : sys.being.equips) {
+					System.out.println("\t"+part);
+				}
+			});
+			cl.addCommand("equip",1,(s)->{
+				Equipment eq = EquipFactory.generate(s[0]);
+				ArrayList<BodyPart> a = eq.canEquip(sys.being);
+				System.out.println("There are "+a.size()+" places you can equip this:");
+				for (BodyPart part : a) {
+					System.out.println("\t"+part);
+				}
+			});
+			cl.addCommand("equip",2,(s)->{
+				Equipment eq = EquipFactory.generate(s[0]);
+				int index = Integer.parseInt(s[1]);
+				ArrayList<BodyPart> a = eq.canEquip(sys.being);
+				if (index<0 || index>a.size()-1) {
+					System.out.println("That's not a valid place to equip that!");
+					return;
+				}
+				eq.equip(a.get(index));
+				System.out.println("Equipped "+eq+" to "+eq.attachedTo+".");
+			});
+			cl.addCommand("unequip",0,(s)->{
+				for (Equipment eq : (ArrayList<Equipment>)sys.being.equips.clone()) {
+					eq.unequip();
+				}
+				System.out.println("Unequipped everything.");
+			});
+			cl.addCommand("unequip",1,(s)->{
+				for (Equipment eq : (ArrayList<Equipment>)sys.being.equips.clone()) {
+					if (eq.name.matches(s[0])) {
+						eq.unequip();
+						System.out.println("Unequipped "+eq+".");
+					}
+				}
 			});
 			cl.handle();
 			return;
