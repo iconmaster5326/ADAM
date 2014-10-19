@@ -90,7 +90,7 @@ public class BodyPart {
 				}
 				if (random.nextDouble()>skipChance) {
 					HashMap<BodyPart,Double> map = new HashMap<>();
-					int n = random.nextInt(((int)(Math.abs(amount/getThreshold())*type.spread))*2+1)+1;
+					int n = (int) Math.max(random.nextInt(((int)(Math.abs(amount/getThreshold())))*2+1)*type.spread,1);
 					for (BodyPart part : layer) {
 						map.put(part, part.hitChance==-1?part.size:part.hitChance);
 					}

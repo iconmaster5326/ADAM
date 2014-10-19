@@ -70,9 +70,9 @@ public class ADAM {
 		BodyPartFactory.registerPart("muscle", "s=.25 m=8 d=layer_of_%s i=torn ir=flayed");
 		BodyPartFactory.registerPart("bone", "s=.4 m=7 i=fractured ir=broken");
 		
-		AttackFactory.registerAttack("punch", "d=5-10 ap=.2");
-		AttackFactory.registerAttack("kick", "d=10-10 ap=.2");
-		AttackFactory.registerAttack("slash", "d=10-10 ap=.4");
+		AttackFactory.registerAttack("punch", "d=5-10 ap=.2 as=.1");
+		AttackFactory.registerAttack("kick", "d=10-10 ap=.2 as=.1");
+		AttackFactory.registerAttack("slash", "d=10-10 ap=.4 as=.1");
 		
 		EquipFactory.registerEquip("shirt", "s=.5 mb=.1 body chest arms? legs*");
 		EquipFactory.registerEquip("sword", "s=.8 w=true a+=slash hand");

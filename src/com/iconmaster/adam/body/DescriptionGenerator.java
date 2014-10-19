@@ -170,7 +170,10 @@ public class DescriptionGenerator {
 			sb.append(" has an injury on ").append(being.pronouns.his).append(" ");
 		}
 		ArrayList<BodyPart> parts = res.getParts();
-		BodyPart common = BodyPart.getLowestCommonPart(parts).getContainerPart();
+		BodyPart common = BodyPart.getLowestCommonPart(parts);
+		if (common!=null) {
+			common = common.getContainerPart();
+		}
 		if (common==being || common==null) {
 			sb.append("entire body.");
 		} else {
