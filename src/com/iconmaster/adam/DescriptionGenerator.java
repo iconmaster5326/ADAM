@@ -31,7 +31,10 @@ public class DescriptionGenerator {
 		if (you) {
 			sb.append("\nYou are ");
 		} else {
-			sb.append("\nThis ");
+			sb.append("\n");
+			if (!part.proper) {
+				sb.append("This ");
+			}
 			sb.append(formatName(part));
 			sb.append(" is ");
 		}
@@ -74,6 +77,15 @@ public class DescriptionGenerator {
 					sb.append(".");
 				}
 			}
+		}
+		if (part.isAlive()!=null) {
+			sb.append("\n\n");
+			IsAliveResult cause = part.isAlive();
+			sb.append(you?"You are":"It is");
+			sb.append(" dead. ");
+			sb.append(you?"You":"It");
+			sb.append(" died due to ");
+			sb.append(getCauseOfDeath(part,cause));
 		}
 		return sb.toString();
 	}

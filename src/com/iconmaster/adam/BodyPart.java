@@ -491,7 +491,14 @@ public class BodyPart {
 	}
 	
 	public TickResult tick() {
-		return tick(new TickResult());
+		TickResult tr = new TickResult();
+		BodyPart root = this.getRootPart();
+		boolean bledOut = root.blood<=0;
+		tr = tick(tr);
+		if (root.blood<=0 && !bledOut) {
+			tr.bledOut = true;
+		}
+		return tr;
 	}
 	
 	public TickResult tick(TickResult tr) {
@@ -503,7 +510,12 @@ public class BodyPart {
 				tr.bloodLost.put(this, bleed);
 			}
 			if (root.blood<=0) {
-				tr.bledOut = true;
+				bleed *= .4;
+				tr.clotted.add(this);
+				if (bleed/getMaxBlood()<.05) {
+					bleed = 0;
+					tr.healed.add(this);
+				}
 			} else if (Math.random()<.2) {
 				bleed *= .8;
 				if (bleed/getMaxBlood()<.05) {
