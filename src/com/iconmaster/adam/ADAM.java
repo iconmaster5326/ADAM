@@ -321,13 +321,22 @@ public class ADAM {
 				sys.being = parts.get(index);
 				System.out.println("Navigated to "+sys.being+".");
 			});
-			cl.addCommand("fight",1,(s)->{
-				BodyPart other = sys.saved.get(s[0]);
-				if (other==null) {
-					System.out.println("You can't fight something that doesn't exist!");
-					return;
+			cl.addCommand("fight",0,(s)->{
+				Battle battle = new Battle(sys.being, sys.being);
+				battle.doBattle();
+			});
+			cl.addCommand("fight",-1,(s)->{
+				ArrayList<BodyPart> a = new ArrayList<>();
+				a.add(sys.being);
+				for (String str : s) {
+					BodyPart other = sys.saved.get(str);
+					if (other==null) {
+						System.out.println("You can't fight something that doesn't exist!");
+						return;
+					}
+					a.add(other);
 				}
-				Battle battle = new Battle(sys.being, other);
+				Battle battle = new Battle(a);
 				battle.doBattle();
 			});
 			cl.addCommand("human",1,(s)->{

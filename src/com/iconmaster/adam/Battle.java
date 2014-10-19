@@ -56,7 +56,7 @@ public class Battle {
 	public void doTurn() {
 		BodyPart self = combatants.get(turn);
 		ArrayList<BodyPart> a = getAlive();
-		a.remove(turn);
+		a.remove(self);
 		BodyPart other = a.get(random.nextInt(a.size()));
 		ArrayList<Attack> attks = self.getAttacks();
 		if (attks.isEmpty()) {
