@@ -167,7 +167,7 @@ public class DescriptionGenerator {
 		String[] list = new String[wound.size()];
 		for (int j=0;j<wound.size();j++) {
 			BodyPart part2 = wound.get(j);
-			list[j] = (you?"your ":"the ")+formatName(part2);
+			list[j] = (you?"your ":"its ")+formatName(part2);
 		}
 		sb.append(getListString(list));
 		sb.append(".");
