@@ -551,18 +551,19 @@ public class BodyPart {
 	}
 	
 	public ArrayList<Attack> getAttacks() {
-		if (layers.isEmpty()) {
-			return attacks;
-		} else {
-			ArrayList<Attack> a = new ArrayList<>();
-			a.addAll(attacks);
-			for (ArrayList<BodyPart> layer : layers) {
-				for (BodyPart part : layer) {
-					a.addAll(part.getAttacks());
-				}
+		ArrayList<Attack> a = new ArrayList<>();
+		if (this==this.getRootPart()) {
+			for (Equipment eq : equips) {
+				a.addAll(eq.attacks);
 			}
-			return a;
 		}
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				a.addAll(part.getAttacks());
+			}
+		}
+		a.addAll(attacks);
+		return a;
 	}
 	
 	public void applyPronouns(PronounSet ps) {

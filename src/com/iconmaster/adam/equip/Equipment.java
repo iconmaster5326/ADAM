@@ -1,6 +1,7 @@
 package com.iconmaster.adam.equip;
 
 import com.iconmaster.adam.body.BodyPart;
+import com.iconmaster.adam.fight.Attack;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +13,7 @@ public class Equipment {
 	public EquipMatch primaryMatch;
 	public EquipMatch[] matches;
 	public double slotRoom = 0;
+	public ArrayList<Attack> attacks = new ArrayList<>();
 	
 	public BodyPart attachedTo;
 	

@@ -1,5 +1,6 @@
 package com.iconmaster.adam.equip;
 
+import com.iconmaster.adam.body.BodyPartFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,6 +29,8 @@ public class EquipFactory {
 					equip.name = desc;
 				} else if (sub.startsWith("s")) {
 					equip.slotRoom = Double.parseDouble(desc);
+				} else if (sub.startsWith("a+")) {
+					equip.attacks.add(BodyPartFactory.attacks.get(desc).newAttack(null));
 				}
 			} else {
 				if (equip.primaryMatch==null) {
