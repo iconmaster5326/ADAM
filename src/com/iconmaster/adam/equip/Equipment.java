@@ -16,6 +16,16 @@ public class Equipment {
 	public ArrayList<Attack> attacks = new ArrayList<>();
 	
 	public BodyPart attachedTo;
+	public boolean wielded = false;
+	
+	public double damage=0;
+	public double maxDamage=20;
+	public double damageChance=.2;
+	public double damageRate = .2;
+	public double mitigationBase=0;
+	public double mitigationRate=1;
+	public String damagedString = "damaged";
+	public String brokenString = "broken";
 	
 	public ArrayList<BodyPart> canEquip(BodyPart being) {
 		ArrayList<BodyPart> a = new ArrayList<>();
@@ -69,5 +79,17 @@ public class Equipment {
 	@Override
 	public String toString() {
 		return name;
+	}
+	
+	public double getPercentDamaged() {
+		return damage/maxDamage;
+	}
+	
+	public double mitigate(double amount) {
+		return amount-amount*(mitigationBase*((1-getPercentDamaged())*mitigationRate));
+	}
+	
+	public void damage(double amount) {
+		damage+=amount;
 	}
 }

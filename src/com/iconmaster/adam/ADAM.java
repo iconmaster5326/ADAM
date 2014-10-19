@@ -72,8 +72,8 @@ public class ADAM {
 		BodyPartFactory.registerAttack("kick", "d=10-10 pl=.2");
 		BodyPartFactory.registerAttack("slash", "d=10-10 pl=.4");
 		
-		EquipFactory.registerEquip("shirt", "s=.5 body chest arms? legs*");
-		EquipFactory.registerEquip("sword", "s=.8 a+=slash hand");
+		EquipFactory.registerEquip("shirt", "s=.5 mb=.1 body chest arms? legs*");
+		EquipFactory.registerEquip("sword", "s=.8 w=true a+=slash hand");
 		EquipFactory.registerEquip("ring", "s=.05 hand");
 		
 		BodyPart being = BodyPartFactory.generate("human");

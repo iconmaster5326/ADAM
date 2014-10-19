@@ -103,6 +103,21 @@ public class BodyPart {
 				}
 			}
 		} else {
+			ArrayList<Equipment> a = getEquipped();
+			for (Equipment eq : a) {
+				double orig = amount;
+				double mitigated = eq.mitigate(amount);
+				amount = mitigated;
+				if (random.nextDouble()<eq.damageChance) {
+					eq.damage(amount*eq.damageRate);
+					res.equipDamage += amount*eq.damageRate;
+					res.damagedEquips.put(eq,amount*eq.damageRate);
+				}
+				if (mitigated!=orig) {
+					res.mitigated += orig-mitigated;
+					res.mitigations.put(eq,orig-mitigated);
+				}
+			}
 			damage += amount;
 			res.damage += amount;
 			if (isDestroyed()) {
@@ -594,5 +609,18 @@ public class BodyPart {
 			}
 		}
 		return room;
+	}
+	
+	public ArrayList<Equipment> getEquipped() {
+		ArrayList<Equipment> a = new ArrayList<>();
+		for (Equipment eq : getRootPart().equips) {
+			if (eq.attachedTo==this) {
+				a.add(eq);
+			}
+		}
+		if (parent!=null) {
+			a.addAll(parent.getEquipped());
+		}
+		return a;
 	}
 }

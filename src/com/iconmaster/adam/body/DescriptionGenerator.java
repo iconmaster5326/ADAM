@@ -1,7 +1,8 @@
 package com.iconmaster.adam.body;
 
-import com.iconmaster.adam.fight.IsAliveResult;
+import com.iconmaster.adam.equip.Equipment;
 import com.iconmaster.adam.fight.DamageResult;
+import com.iconmaster.adam.fight.IsAliveResult;
 import com.iconmaster.adam.fight.TickResult;
 import java.util.ArrayList;
 
@@ -31,6 +32,30 @@ public class DescriptionGenerator {
 			sb.append(" surface is ");
 			sb.append(getFullDesc(part,you));
 		}
+		
+		ArrayList<Equipment> equips = part.equips;
+		if (!equips.isEmpty()) {
+			for (Equipment eq : equips) {
+				sb.append("\n");
+				sb.append(you?"You":part.pronouns.he);
+				sb.append(" have a ");
+				sb.append(eq);
+				sb.append(" ");
+				sb.append(eq.wielded?"in":"on");
+				sb.append(" ");
+				sb.append(you?"your":part.pronouns.his);
+				sb.append(" ");
+				sb.append(formatName(eq.attachedTo));
+				sb.append(".");
+				if (eq.damage>0) {
+					sb.append(" It is ");
+					sb.append(getEquipDamageString(eq));
+					sb.append(".");
+				}
+			}
+			sb.append("\n");
+		}
+		
 		if (you) {
 			sb.append("\nYou are ");
 		} else {
@@ -81,6 +106,7 @@ public class DescriptionGenerator {
 				}
 			}
 		}
+		
 		if (part.isAlive()!=null) {
 			sb.append("\n\n");
 			IsAliveResult cause = part.isAlive();
@@ -195,6 +221,22 @@ public class DescriptionGenerator {
 				sb.append(getBleedString(injury));
 				sb.append(".");
 			}
+		}
+		for (Equipment eq : res.mitigations.keySet()) {
+			double amount = res.mitigations.get(eq);
+			sb.append("\n");
+			sb.append(you?"Your":(being.pronouns.his));
+			sb.append(" ");
+			sb.append(eq);
+			sb.append(" mitigated some damage.");
+		}
+		for (Equipment eq : res.damagedEquips.keySet()) {
+			double amount = res.damagedEquips.get(eq);
+			sb.append("\n");
+			sb.append(you?"Your":(being.pronouns.his));
+			sb.append(" ");
+			sb.append(eq);
+			sb.append(" was damaged.");
 		}
 			
 		return sb.toString();
@@ -320,5 +362,21 @@ public class DescriptionGenerator {
 		} else {
 			return input+"s";
 		}
+	}
+	public static String getEquipDamageString(Equipment eq) {
+		StringBuilder sb = new StringBuilder();
+		if (eq.getPercentDamaged()<.2) {
+			sb.append("slightly ");
+		} else if (eq.getPercentDamaged()<.5) {
+			sb.append("moderately ");
+		} else if (eq.getPercentDamaged()<1) {
+			sb.append("severely ");
+		}
+		if (eq.getPercentDamaged()>=1) {
+			sb.append(eq.brokenString);
+		} else {
+			sb.append(eq.damagedString);
+		}
+		return sb.toString();
 	}
 }

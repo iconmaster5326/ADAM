@@ -1,6 +1,7 @@
 package com.iconmaster.adam.fight;
 
 import com.iconmaster.adam.body.BodyPart;
+import com.iconmaster.adam.equip.Equipment;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +12,11 @@ import java.util.HashMap;
 public class DamageResult extends HashMap<BodyPart,Double> {
 	public double damage = 0;
 	public double bleed = 0;
-	public HashMap<BodyPart,Double> bledParts = new HashMap<BodyPart,Double>();
+	public double mitigated = 0;
+	public double equipDamage = 0;
+	public HashMap<Equipment,Double> damagedEquips = new HashMap<>();
+	public HashMap<Equipment,Double> mitigations = new HashMap<>();
+	public HashMap<BodyPart,Double> bledParts = new HashMap<>();
 	
 	public ArrayList<BodyPart> getParts() {
 			ArrayList<BodyPart> a = new ArrayList<>();

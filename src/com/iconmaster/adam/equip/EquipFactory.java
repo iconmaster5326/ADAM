@@ -26,11 +26,27 @@ public class EquipFactory {
 			if (sub.contains("=")) {
 				String desc = sub.substring(sub.indexOf("=")+1);
 				if (sub.startsWith("n")) {
-					equip.name = desc;
+					equip.name = desc.replace("_", " ");
 				} else if (sub.startsWith("s")) {
 					equip.slotRoom = Double.parseDouble(desc);
 				} else if (sub.startsWith("a+")) {
 					equip.attacks.add(BodyPartFactory.attacks.get(desc).newAttack(equip));
+				} else if (sub.startsWith("dm")) {
+					equip.maxDamage = Double.parseDouble(desc);
+				} else if (sub.startsWith("dc")) {
+					equip.damageChance = Double.parseDouble(desc);
+				} else if (sub.startsWith("dr")) {
+					equip.damageRate = Double.parseDouble(desc);
+				} else if (sub.startsWith("mb")) {
+					equip.mitigationBase = Double.parseDouble(desc);
+				} else if (sub.startsWith("mr")) {
+					equip.mitigationRate = Double.parseDouble(desc);
+				} else if (sub.startsWith("w")) {
+					equip.wielded = Boolean.parseBoolean(desc);
+				} else if (sub.startsWith("ir")) {
+					equip.brokenString = desc.replace("_", " ");
+				} else if (sub.startsWith("i")) {
+					equip.damagedString = desc.replace("_", " ");
 				}
 			} else {
 				if (equip.primaryMatch==null) {
