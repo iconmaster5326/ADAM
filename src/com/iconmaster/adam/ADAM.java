@@ -18,7 +18,7 @@ public class ADAM {
 		BodyPartFactory.registerPart("human", "head,body");
 		
 		BodyPartFactory.registerPart("head", "s=.2 skin(hc=.6),mouth,nose,eye(n=left_eye),eye(n=right_eye),ear(n=left_ear),ear(n=right_ear),neck skull brain");
-		BodyPartFactory.registerPart("mouth", "lips(p=true) teeth(p=true) tongue");
+		BodyPartFactory.registerPart("mouth", "lips(pl=true) teeth(pl=true) tongue");
 		BodyPartFactory.registerPart("neck", "skin fat muscle bone(e=true)");
 		
 		BodyPartFactory.registerPart("eye", "ir=missing");
@@ -30,13 +30,13 @@ public class ADAM {
 		
 		BodyPartFactory.registerPart("body", "s=.8 chest,arms,legs");
 		BodyPartFactory.registerPart("chest", "s=.6 skin fat muscle ribs spine,guts");
-		BodyPartFactory.registerPart("ribs", "s=.08 m=13 p=true i=fractured ir=broken");
+		BodyPartFactory.registerPart("ribs", "s=.08 m=13 pl=true i=fractured ir=broken");
 		BodyPartFactory.registerPart("spine", "e=true s=.08 m=13 i=fractured ir=broken");
-		BodyPartFactory.registerPart("guts", "n=chest_cavity s=.05 p=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
+		BodyPartFactory.registerPart("guts", "n=chest_cavity s=.05 pl=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
 		
 		BodyPartFactory.registerPart("heart", "s=.1 m=14 e=true ir=crushed");
 		BodyPartFactory.registerPart("stomach", "s=.25 m=9 ir=crushed");
-		BodyPartFactory.registerPart("intestines", "s=.5 m=5 p=true ir=crushed");
+		BodyPartFactory.registerPart("intestines", "s=.5 m=5 pl=true ir=crushed");
 		BodyPartFactory.registerPart("lung", "s=.125 m=2 e=true ir=crushed");
 		
 		BodyPartFactory.registerPart("legs", "s=.15 d=pair_of_%s leg(n=left_leg),leg(n=right_leg)");
@@ -52,12 +52,13 @@ public class ADAM {
 		BodyPartFactory.registerPart("muscle", "s=.25 m=8 d=layer_of_%s i=torn ir=flayed");
 		BodyPartFactory.registerPart("bone", "s=.4 m=7 i=fractured ir=broken");
 		
-		BodyPartFactory.registerAttack("punch", "d=5-10 p=.2");
+		BodyPartFactory.registerAttack("punch", "d=5-10 pl=.2");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;
 		being.name = "Bumpus";
 		being.proper = true;
+		being.applyPronouns(new PronounSet("he", "him", "his"));
 		
 		CLA cla = CLAHelper.getArgs(args);
 		if (!cla.containsKey("d")) {
@@ -344,6 +345,15 @@ public class ADAM {
 				for (Attack attk : a) {
 					System.out.println("\t"+attk.name);
 				}
+			});
+			cl.addCommand("pronoun",0,(s)->{
+				System.out.println(DescriptionGenerator.formatNameFull(sys.being)+" is referred to by "+sys.being.pronouns.he+"/"+sys.being.pronouns.him+"/"+sys.being.pronouns.his+".");
+			});
+			cl.addCommand("pronoun",1,(s)->{
+				String[] ps = s[0].split("\\/");
+				PronounSet pr = new PronounSet(ps[0], ps[1], ps[2]);
+				sys.being.applyPronouns(pr);
+				System.out.println(DescriptionGenerator.formatNameFull(sys.being)+" is now referred to by "+sys.being.pronouns.he+"/"+sys.being.pronouns.him+"/"+sys.being.pronouns.his+".");
 			});
 			cl.handle();
 			return;

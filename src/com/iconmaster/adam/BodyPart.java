@@ -16,6 +16,7 @@ public class BodyPart {
 	public boolean proper = false;
 	public ArrayList<ArrayList<BodyPart>> layers = new ArrayList<>();
 	public BodyPart parent;
+	public PronounSet pronouns = new PronounSet("it", "it", "its");
 	
 	public double size = 0;
 	public double density = 0;
@@ -553,6 +554,15 @@ public class BodyPart {
 				}
 			}
 			return a;
+		}
+	}
+	
+	public void applyPronouns(PronounSet ps) {
+		pronouns = ps;
+		for (ArrayList<BodyPart> layer : layers) {
+			for (BodyPart part : layer) {
+				part.applyPronouns(ps);
+			}
 		}
 	}
 }

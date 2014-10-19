@@ -93,8 +93,14 @@ public class BodyPartFactory {
 				part.desc = desc.replace("_", " ");
 			} else if (flag.startsWith("m")) {
 				part.density = Double.parseDouble(desc);
-			} else if (flag.startsWith("p")) {
+			} else if (flag.startsWith("pl")) {
 				part.plural = Boolean.parseBoolean(desc);
+			} else if (flag.startsWith("pr")) {
+				part.proper = Boolean.parseBoolean(desc);
+			} else if (flag.startsWith("pn")) {
+				String[] psParts = desc.split("\\/");
+				PronounSet ps = new PronounSet(psParts[0],psParts[1],psParts[2]);
+				part.applyPronouns(ps);
 			} else if (flag.startsWith("e")) {
 				part.essential = Boolean.parseBoolean(desc);
 			} else if (flag.startsWith("hm")) {

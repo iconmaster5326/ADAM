@@ -60,22 +60,23 @@ public class Battle {
 		BodyPart other = a.get(random.nextInt(a.size()));
 		ArrayList<Attack> attks = self.getAttacks();
 		if (attks.isEmpty()) {
-			
+			System.out.println(DescriptionGenerator.formatNameFull(self)+" flails around uselessly!");
+			System.out.println();
 		} else {
 			Attack attk = attks.get(random.nextInt(attks.size()));
 			DamageResult dr = attk.onAttack(other);
 			System.out.println(DescriptionGenerator.formatNameFull(self)+" "+DescriptionGenerator.pluralize(attk.name)+" "+DescriptionGenerator.formatNameFull(other)+" for "+dr.damage+" damage!");
 			System.out.println();
 			System.out.println(DescriptionGenerator.getInjuryDesc(other, dr, false));
-			
-			TickResult tr = other.tick();
-			System.out.println(DescriptionGenerator.getTickDesc(other, tr, false));
+		}
+		
+		TickResult tr = other.tick();
+		System.out.println(DescriptionGenerator.getTickDesc(other, tr, false));
+		System.out.println();
+
+		if (other.isAlive()!=null) {
+			System.out.println(DescriptionGenerator.formatNameFull(other)+" died of "+DescriptionGenerator.getCauseOfDeath(other, null));
 			System.out.println();
-			
-			if (other.isAlive()!=null) {
-				System.out.println(DescriptionGenerator.formatNameFull(other)+" died of "+DescriptionGenerator.getCauseOfDeath(other, null));
-				System.out.println();
-			}
 		}
 	}
 	

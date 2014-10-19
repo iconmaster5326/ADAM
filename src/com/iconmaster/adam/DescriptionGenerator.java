@@ -16,7 +16,7 @@ public class DescriptionGenerator {
 		sb.append(formatName(part));
 		sb.append(".");
 		if (part.proper) {
-			sb.append(you?" You are ":" It is ");
+			sb.append(you?" You are ":(" "+capitalize(part.pronouns.he)+" is "));
 			sb.append(getAorAn(formatName(part)));
 			sb.append(" ");
 			sb.append(part.desc.replace("%s", part.type));
@@ -24,7 +24,7 @@ public class DescriptionGenerator {
 		}
 		if (!part.layers.isEmpty()) {
 			sb.append("\n\nOn ");
-			sb.append(you?"your":"the");
+			sb.append(you?"your":part.pronouns.his);
 			sb.append(" surface is ");
 			sb.append(getFullDesc(part,you));
 		}
@@ -62,7 +62,7 @@ public class DescriptionGenerator {
 					sb.append("The ");
 					sb.append(formatName(injury));
 					sb.append(injury.getLayerOn()==0?" on ":" in ");
-					sb.append(you?"your ":"its ");
+					sb.append(you?"your ":(part.pronouns.his+" "));
 					sb.append(formatName(injury.parent));
 				} else {
 					sb.append(you?"Your ":"The ");
@@ -81,9 +81,9 @@ public class DescriptionGenerator {
 		if (part.isAlive()!=null) {
 			sb.append("\n\n");
 			IsAliveResult cause = part.isAlive();
-			sb.append(you?"You are":"It is");
+			sb.append(you?"You are":(capitalize(part.pronouns.he)+" is"));
 			sb.append(" dead. ");
-			sb.append(you?"You":"It");
+			sb.append(you?"You":(capitalize(part.pronouns.he)));
 			sb.append(" died due to ");
 			sb.append(getCauseOfDeath(part,cause));
 		}
@@ -112,7 +112,7 @@ public class DescriptionGenerator {
 				for (int j=0;j<layer.size();j++) {
 					BodyPart part2 = layer.get(j);
 					if (!part2.layers.isEmpty()) {
-						sb.append(you?"\nYour ":"\nThe ");
+						sb.append(you?"\nYour ":("\n"+capitalize(part.pronouns.his)+" "));
 						sb.append(formatName(part2));
 						sb.append(", on the surface, ");
 						if (part2.plural) {
@@ -138,7 +138,7 @@ public class DescriptionGenerator {
 				sb.append("The ");
 			}
 			sb.append(formatName(being));
-			sb.append(" has an injury on its ");
+			sb.append(" has an injury on ").append(being.pronouns.his).append(" ");
 		}
 		ArrayList<BodyPart> parts = res.getParts();
 		BodyPart common = BodyPart.getLowestCommonPart(parts).getContainerPart();
@@ -167,7 +167,7 @@ public class DescriptionGenerator {
 		String[] list = new String[wound.size()];
 		for (int j=0;j<wound.size();j++) {
 			BodyPart part2 = wound.get(j);
-			list[j] = (you?"your ":"its ")+formatName(part2);
+			list[j] = (you?"your ":(being.pronouns.his+" "))+formatName(part2);
 		}
 		sb.append(getListString(list));
 		sb.append(".");
@@ -178,7 +178,7 @@ public class DescriptionGenerator {
 				sb.append("The ");
 				sb.append(formatName(injury));
 				sb.append(injury.getLayerOn()==0?" on ":" in ");
-				sb.append(you?"your ":"its ");
+				sb.append(you?"your ":(being.pronouns.his+" "));
 				sb.append(formatName(injury.parent));
 			} else {
 				sb.append(you?"Your ":"The ");
@@ -206,7 +206,7 @@ public class DescriptionGenerator {
 				sb.append("The ");
 				sb.append(formatName(injury));
 				sb.append(injury.getLayerOn()==0?" on ":" in ");
-				sb.append(you?"your ":"its ");
+				sb.append(you?"your ":(part.pronouns.his+" "));
 				sb.append(formatName(injury.parent));
 			} else {
 				sb.append(you?"Your ":"The ");
@@ -225,7 +225,7 @@ public class DescriptionGenerator {
 		}
 		if (tr.bledOut) {
 			sb.append("\n");
-			sb.append(you?"You ":((part.proper?"":"The ")+formatName(part)+" "));
+			sb.append(you?"You ":(capitalize(part.pronouns.he)+" "));
 			sb.append("bled out.");
 		}
 		return sb.toString();
