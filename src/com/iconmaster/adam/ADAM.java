@@ -31,7 +31,7 @@ public class ADAM {
 		BodyPartFactory.registerPart("body", "s=.8 chest,arms,legs");
 		BodyPartFactory.registerPart("chest", "s=.6 skin fat muscle ribs spine,guts");
 		BodyPartFactory.registerPart("ribs", "s=.08 m=13 pl=true i=fractured ir=broken");
-		BodyPartFactory.registerPart("spine", "e=true s=.08 m=13 i=fractured ir=broken");
+		BodyPartFactory.registerPart("spine", "hm=100 e=true s=.08 m=13 i=fractured ir=broken");
 		BodyPartFactory.registerPart("guts", "n=chest_cavity s=.05 pl=true heart,stomach,intestines,lung(n=left_lung),lung(n=right_lung)");
 		
 		BodyPartFactory.registerPart("heart", "s=.1 m=14 e=true ir=crushed");
@@ -40,12 +40,13 @@ public class ADAM {
 		BodyPartFactory.registerPart("lung", "s=.125 m=2 e=true ir=crushed");
 		
 		BodyPartFactory.registerPart("legs", "s=.15 d=pair_of_%s leg(n=left_leg),leg(n=right_leg)");
-		BodyPartFactory.registerPart("leg", "s=.5 foot(hc=.1),skin(hc=.9) fat muscle bone");
+		BodyPartFactory.registerPart("leg", "s=.5 foot,skin(hc=.9) fat muscle bone");
 		
 		BodyPartFactory.registerPart("arms", "s=.15 d=pair_of_%s arm(n=left_arm),arm(n=right_arm)");
 		BodyPartFactory.registerPart("arm", "s=.5 hand,skin(hc=.9) fat muscle bone");
 		
 		BodyPartFactory.registerPart("hand", "hc=.1 a+=punch");
+		BodyPartFactory.registerPart("foot", "hc=.1 a+=kick");
 		
 		BodyPartFactory.registerPart("skin", "s=.1 m=7 d=layer_of_%s i=bruised ir=flayed");
 		BodyPartFactory.registerPart("fat", "s=.25 m=6 d=layer_of_%s i=torn ir=flayed");
@@ -53,6 +54,7 @@ public class ADAM {
 		BodyPartFactory.registerPart("bone", "s=.4 m=7 i=fractured ir=broken");
 		
 		BodyPartFactory.registerAttack("punch", "d=5-10 pl=.2");
+		BodyPartFactory.registerAttack("kick", "d=10-10 pl=.2");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;
@@ -354,6 +356,9 @@ public class ADAM {
 				PronounSet pr = new PronounSet(ps[0], ps[1], ps[2]);
 				sys.being.applyPronouns(pr);
 				System.out.println(DescriptionGenerator.formatNameFull(sys.being)+" is now referred to by "+sys.being.pronouns.he+"/"+sys.being.pronouns.him+"/"+sys.being.pronouns.his+".");
+			});
+			cl.addCommand("defa",-1,(s)->{
+				BodyPartFactory.registerAttack(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
 			});
 			cl.handle();
 			return;

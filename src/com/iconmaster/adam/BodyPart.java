@@ -32,7 +32,7 @@ public class BodyPart {
 	public double blood = 0;
 	public double bleed = 0;
 	public double bleedChance = .2;
-	public double bleedRate = 1.2;
+	public double bleedRate = .8;
 	
 	public ArrayList<Attack> attacks = new ArrayList<>();
 
