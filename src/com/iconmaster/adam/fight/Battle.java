@@ -1,5 +1,7 @@
-package com.iconmaster.adam;
+package com.iconmaster.adam.fight;
 
+import com.iconmaster.adam.BodyPart;
+import com.iconmaster.adam.DescriptionGenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;

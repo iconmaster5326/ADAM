@@ -1,5 +1,7 @@
 package com.iconmaster.adam;
 
+import com.iconmaster.adam.fight.AttackFactory;
+import com.iconmaster.adam.fight.Attack;
 import java.util.ArrayList;
 import java.util.HashMap;
 

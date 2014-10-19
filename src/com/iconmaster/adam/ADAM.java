@@ -1,6 +1,14 @@
 package com.iconmaster.adam;
 
-import com.iconmaster.adam.CLAHelper.CLA;
+import com.iconmaster.adam.util.CLAHelper;
+import com.iconmaster.adam.util.CommandLine;
+import com.iconmaster.adam.fight.IsAliveResult;
+import com.iconmaster.adam.fight.DamageResult;
+import com.iconmaster.adam.fight.HealResult;
+import com.iconmaster.adam.fight.Battle;
+import com.iconmaster.adam.fight.TickResult;
+import com.iconmaster.adam.fight.Attack;
+import com.iconmaster.adam.util.CLAHelper.CLA;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

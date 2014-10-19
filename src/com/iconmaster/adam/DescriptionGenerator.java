@@ -1,5 +1,8 @@
 package com.iconmaster.adam;
 
+import com.iconmaster.adam.fight.IsAliveResult;
+import com.iconmaster.adam.fight.DamageResult;
+import com.iconmaster.adam.fight.TickResult;
 import java.util.ArrayList;
 
 /**

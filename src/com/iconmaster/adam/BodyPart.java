@@ -1,5 +1,11 @@
 package com.iconmaster.adam;
 
+import com.iconmaster.adam.util.RandomUtils;
+import com.iconmaster.adam.fight.IsAliveResult;
+import com.iconmaster.adam.fight.DamageResult;
+import com.iconmaster.adam.fight.HealResult;
+import com.iconmaster.adam.fight.TickResult;
+import com.iconmaster.adam.fight.Attack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;

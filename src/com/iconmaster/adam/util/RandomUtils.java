@@ -1,4 +1,4 @@
-package com.iconmaster.adam;
+package com.iconmaster.adam.util;
 
 import java.util.ArrayList;
 import java.util.Map;

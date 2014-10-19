@@ -1,5 +1,6 @@
-package com.iconmaster.adam;
+package com.iconmaster.adam.fight;
 
+import com.iconmaster.adam.BodyPart;
 import java.util.Random;
 
 /**
