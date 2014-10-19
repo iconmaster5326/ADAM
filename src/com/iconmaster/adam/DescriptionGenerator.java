@@ -183,9 +183,6 @@ public class DescriptionGenerator {
 				sb.append(getBleedString(injury));
 				sb.append(".");
 			}
-			if (injury.blood<=0) {
-				sb.append(" It has bled out.");
-			}
 		}
 			
 		return sb.toString();
@@ -206,9 +203,7 @@ public class DescriptionGenerator {
 				sb.append(you?"Your ":"The ");
 				sb.append(formatName(injury));
 			}
-			if (tr.bledOut.contains(injury)) {
-				sb.append(" bled out.");
-			} else if (tr.healed.contains(injury)) {
+			if (tr.healed.contains(injury)) {
 				sb.append(" stopped bleeding.");
 			} else {
 				sb.append(" bled ");
@@ -218,6 +213,11 @@ public class DescriptionGenerator {
 					sb.append(" The blood is clotting slightly.");
 				}
 			}
+		}
+		if (tr.bledOut) {
+			sb.append("\n");
+			sb.append(you?"You ":((part.proper?"":"The ")+formatName(part)+" "));
+			sb.append("bled out.");
 		}
 		return sb.toString();
 	}
@@ -284,19 +284,15 @@ public class DescriptionGenerator {
 		}
 	}
 	
-	public static String getCauseOfDeath(BodyPart part, String cause) {
+	public static String getCauseOfDeath(BodyPart being, IsAliveResult cause) {
 		if (cause==null) {
-			cause = part.isAlive();
+			cause = being.isAlive();
 		}
-		BodyPart cp = part.findPart(cause);
-		if (cp==null) {cp = part;}
-		String rem;
-		if (cp.blood<=0) {
-			rem = "blood loss to the";
-		} else {
-			rem = "a "+cp.removalString;
+		if (cause.bloodLoss) {
+			return "blood loss.";
 		}
-		return (rem+" "+cause+".");
+		String rem = "a "+cause.part.removalString;
+		return (rem+" "+formatName(cause.part)+".");
 	}
 	
 	public static String formatNameFull(BodyPart part) {

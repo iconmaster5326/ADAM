@@ -28,10 +28,10 @@ public class BodyPart {
 	public String removalString = "destroyed";
 	public boolean essential = false;
 	
-	public double blood = getMaxBlood();
+	public double blood = 0;
 	public double bleed = 0;
 	public double bleedChance = .2;
-	public double bleedRate = .2;
+	public double bleedRate = .7;
 
 	@Override
 	public String toString() {
@@ -55,7 +55,7 @@ public class BodyPart {
 		}
 	}
 
-	double getMass() {
+	public double getMass() {
 		return getMass(size);
 	}
 	
@@ -92,7 +92,6 @@ public class BodyPart {
 				}
 			}
 		} else {
-			//System.out.println(name+"("+parent.name+") got damaged by "+amount);
 			damage += amount;
 			if (isDestroyed()) {
 				bleed = 0;
@@ -376,25 +375,33 @@ public class BodyPart {
 	}
 	
 	public boolean isWorking() {
-		return getRelativeDamage()<1 && blood>0;
+		BodyPart root = this.getRootPart();
+		return getRelativeDamage()<1 && root.blood>0;
 	}
 	
 	public boolean isAttached() {
 		return getRelativeDestroyDamage()<1;
 	}
 	
-	public String isAlive() {
+	public IsAliveResult isAlive() {
+		BodyPart root = this.getRootPart();
+		if (root.blood<=0) {
+			return new IsAliveResult(null, true);
+		}
+		HashMap<String,BodyPart> parts = new HashMap<>();
 		HashMap<String,Boolean> working = new HashMap<>();
 		for (ArrayList<BodyPart> layer : layers) {
 			for (BodyPart part : layer) {
 				if (part.essential) {
 					working.putIfAbsent(part.type, false);
+					parts.putIfAbsent(part.type, part);
 					if (part.isWorking()) {
 						working.put(part.type, true);
+						parts.put(part.type, part);
 					}
 				}
 				if (!part.layers.isEmpty()) {
-					String cause = part.isAlive();
+					IsAliveResult cause = part.isAlive();
 					if (cause!=null) {
 						return cause;
 					}
@@ -404,27 +411,40 @@ public class BodyPart {
 		for (String part : working.keySet()) {
 			Boolean works = working.get(part);
 			if (!works) {
-				return part;
+				return new IsAliveResult(parts.get(part), false);
 			}
 		}
 		return null;
 	}
 	
-	public double healAll() {
+	public HealResult healAll() {
+		HealResult res = new HealResult(0, 0);
+		
+		BodyPart root = this.getRootPart();
+		if (root==this) {
+			double bled = blood;
+			blood = root.getMaxBlood();
+			res.bloodHealed += blood-bled;
+		}
+		
 		if (this.layers.isEmpty()) {
 			double dmg = this.damage;
 			this.damage = 0;
 			bleed = 0;
-			blood = getMaxBlood();
-			return dmg;
+			if (root!=this) {
+				blood = 0;
+			}
+			res.damageHealed += dmg;
+			return res;
 		}
-		double healed = 0;
 		for (ArrayList<BodyPart> layer : layers) {
 			for (BodyPart part : layer) {
-				healed+=part.healAll();
+				HealResult hr = part.healAll();
+				res.damageHealed += hr.damageHealed;
+				res.bloodHealed += hr.bloodHealed;
 			}
 		}
-		return healed;
+		return res;
 	}
 	
 	public double getThreshold() {
@@ -442,7 +462,17 @@ public class BodyPart {
 	}
 	
 	public double getMaxBlood() {
-		return size==0?10:size*100;
+		if (layers.isEmpty()) {
+			return size==0?10:size*100;
+		} else {
+			double sum = 0;
+			for (ArrayList<BodyPart> layer : layers) {
+				for (BodyPart part : layer) {
+					sum += part.getMaxBlood();
+				}
+			}
+			return sum;
+		}
 	}
 	
 	public boolean isBleeding() {
@@ -465,15 +495,15 @@ public class BodyPart {
 	}
 	
 	public TickResult tick(TickResult tr) {
+		BodyPart root = this.getRootPart();
 		if (layers.isEmpty()) {
-			blood -= bleed;
+			root.blood -= bleed;
 			tr.bled += bleed;
 			if (bleed>0) {
 				tr.bloodLost.put(this, bleed);
 			}
-			if (blood<=0) {
-				tr.bledOut.add(this);
-				bleed = 0;
+			if (root.blood<=0) {
+				tr.bledOut = true;
 			} else if (Math.random()<.2) {
 				bleed *= .8;
 				if (bleed/getMaxBlood()<.05) {

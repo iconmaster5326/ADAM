@@ -120,8 +120,11 @@ public class ADAM {
 			});
 			cl.addCommand("damage",0,(s)->{
 				if (sys.being.layers.isEmpty()) {
-					System.out.println("HP: "+sys.being.damage+"/"+sys.being.maxDamage+"/"+sys.being.destructionDamage);
-					System.out.println("Blood: "+sys.being.blood+"/"+sys.being.getMaxBlood()+" (bleed "+sys.being.bleed+")");
+					System.out.println("Damage: "+sys.being.damage+"/"+sys.being.maxDamage+"/"+sys.being.destructionDamage);
+					System.out.println("Bleed: "+sys.being.bleed);
+				}
+				if (sys.being.getRootPart()==sys.being) {
+					System.out.println("Blood: "+sys.being.blood+"/"+sys.being.getMaxBlood());
 				}
 				System.out.println((sys.you?"you have been ":"This being has been ")+sys.being.getRelativeDamage()*100+"% damaged.");
 			});
@@ -257,15 +260,15 @@ public class ADAM {
 				System.out.println("Cleaned up. Deleted "+(old-sys.being.layers.size())+" empty layers.");
 			});
 			cl.addCommand("alive",0,(s)->{
-				String cause = sys.being.isAlive();
+				IsAliveResult cause = sys.being.isAlive();
 				System.out.println((sys.you?"you are ":"This being is ")+(cause==null?"":"not ")+"alive.");
 				if (cause!=null) {
 					System.out.println((sys.you?"you are ":"This being is ")+"dead due to "+DescriptionGenerator.getCauseOfDeath(being, cause));
 				}
 			});
 			cl.addCommand("heal",0,(s)->{
-				double healed = sys.being.healAll();
-				System.out.println((sys.you?"you have been healed for ":"This being has been healed for ")+healed+" damage.");
+				HealResult healed = sys.being.healAll();
+				System.out.println((sys.you?"you have been healed for ":"This being has been healed for ")+healed.damageHealed+" damage and "+healed.bloodHealed+" blood.");
 			});
 			cl.addCommand("tick",0,(s)->{
 				TickResult tr = sys.being.tick();

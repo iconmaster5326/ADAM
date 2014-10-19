@@ -49,6 +49,7 @@ public class BodyPartFactory {
 				part.layers.add(pl);
 			}
 		}
+		part.healAll();
 		return part;
 	}
 	

@@ -10,7 +10,7 @@ import java.util.HashSet;
  */
 public class TickResult {
 	public HashMap<BodyPart,Double> bloodLost = new HashMap<>();
-	public HashSet<BodyPart> bledOut = new HashSet<>();
+	public boolean bledOut = false;
 	public HashSet<BodyPart> clotted = new HashSet<>();
 	public HashSet<BodyPart> healed = new HashSet<>();
 	
