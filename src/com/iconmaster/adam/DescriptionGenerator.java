@@ -298,6 +298,9 @@ public class DescriptionGenerator {
 		if (cause.bloodLoss) {
 			return "blood loss.";
 		}
+		if (cause.destroyed) {
+			return "complete destruction.";
+		}
 		String rem = "a "+cause.part.removalString;
 		return (rem+" "+formatName(cause.part)+".");
 	}

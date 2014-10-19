@@ -49,7 +49,7 @@ public class ADAM {
 		BodyPartFactory.registerPart("skin", "s=.1 m=7 d=layer_of_%s i=bruised ir=flayed");
 		BodyPartFactory.registerPart("fat", "s=.25 m=6 d=layer_of_%s i=torn ir=flayed");
 		BodyPartFactory.registerPart("muscle", "s=.25 m=8 d=layer_of_%s i=torn ir=flayed");
-		BodyPartFactory.registerPart("bone", "s=.4 m=7 p=true i=fractured ir=broken");
+		BodyPartFactory.registerPart("bone", "s=.4 m=7 i=fractured ir=broken");
 		
 		BodyPart being = BodyPartFactory.generate("human");
 		being.size = 5+7/12d;
@@ -139,6 +139,14 @@ public class ADAM {
 			cl.addCommand("new",-1,(s)->{
 				sys.being = BodyPartFactory.generateFromDef(s[0],CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
 				System.out.println("Generated a new "+sys.being.type+".");
+			});
+			cl.addCommand("hit",2,(s)->{
+				double damage = Double.parseDouble(s[0]);
+				double punch = Double.parseDouble(s[1]);
+				System.out.println("Hitting for "+damage+"...");
+				sys.dmgres = sys.being.damage(damage,punch);
+				System.out.println();
+				System.out.println(DescriptionGenerator.getInjuryDesc(sys.being,sys.dmgres,sys.you));
 			});
 			cl.addCommand("hit",1,(s)->{
 				double damage = Double.parseDouble(s[0]);
@@ -359,6 +367,10 @@ public class ADAM {
 				sys.being.size = 5+7d/12;
 				sys.being.proper = true;
 				System.out.println("Generated "+s[0]+".");
+			});
+			cl.addCommand("root",0,(s)->{
+				sys.being = sys.being.getRootPart();
+				System.out.println("Went to root.");
 			});
 			
 			cl.handle();

@@ -385,8 +385,11 @@ public class BodyPart {
 	
 	public IsAliveResult isAlive() {
 		BodyPart root = this.getRootPart();
+		if (root.getRelativeDestroyDamage()>1) {
+			return new IsAliveResult(null, false, true);
+		}
 		if (root.blood<=0) {
-			return new IsAliveResult(null, true);
+			return new IsAliveResult(null, true, false);
 		}
 		HashMap<String,BodyPart> parts = new HashMap<>();
 		HashMap<String,Boolean> working = new HashMap<>();
@@ -411,7 +414,7 @@ public class BodyPart {
 		for (String part : working.keySet()) {
 			Boolean works = working.get(part);
 			if (!works) {
-				return new IsAliveResult(parts.get(part), false);
+				return new IsAliveResult(parts.get(part), false, false);
 			}
 		}
 		return null;
