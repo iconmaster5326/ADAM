@@ -6,6 +6,7 @@ import com.iconmaster.adam.body.DescriptionGenerator;
 import com.iconmaster.adam.body.PronounSet;
 import com.iconmaster.adam.equip.EquipFactory;
 import com.iconmaster.adam.equip.Equipment;
+import com.iconmaster.adam.equip.RepairResult;
 import com.iconmaster.adam.fight.Attack;
 import com.iconmaster.adam.fight.Battle;
 import com.iconmaster.adam.fight.DamageResult;
@@ -430,6 +431,10 @@ public class ADAM {
 			});
 			cl.addCommand("defeq",-1,(s)->{
 				EquipFactory.registerEquip(s[0], CommandLine.recombine(Arrays.copyOfRange(s, 1, s.length)));
+			});
+			cl.addCommand("repair",-1,(s)->{
+				RepairResult rr = sys.being.repair();
+				System.out.println("Repaired "+rr.repaired+" points of equipment damage.");
 			});
 			
 			cl.handle();

@@ -236,7 +236,9 @@ public class DescriptionGenerator {
 			sb.append(you?"Your":(being.pronouns.his));
 			sb.append(" ");
 			sb.append(eq);
-			sb.append(" was damaged.");
+			sb.append(" was ");
+			sb.append(getEquipDamageString(eq));
+			sb.append(".");
 		}
 			
 		return sb.toString();

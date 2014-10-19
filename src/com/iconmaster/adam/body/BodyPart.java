@@ -1,6 +1,7 @@
 package com.iconmaster.adam.body;
 
 import com.iconmaster.adam.equip.Equipment;
+import com.iconmaster.adam.equip.RepairResult;
 import com.iconmaster.adam.fight.Attack;
 import com.iconmaster.adam.fight.DamageResult;
 import com.iconmaster.adam.fight.HealResult;
@@ -622,5 +623,15 @@ public class BodyPart {
 			a.addAll(parent.getEquipped());
 		}
 		return a;
+	}
+	
+	public RepairResult repair() {
+		RepairResult rr = new RepairResult();
+		for (Equipment eq : equips) {
+			double dmg = eq.damage;
+			eq.damage = 0;
+			rr.repaired += dmg;
+		}
+		return rr;
 	}
 }
