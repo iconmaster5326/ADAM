@@ -1,0 +1,47 @@
+apply plugin: 'java'
+apply plugin: 'edu.sc.seis.launch4j'
+apply plugin: 'jacoco'
+
+def mainClass = 'info.iconmaster.adam.ADAM'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+buildscript {
+	repositories {
+		maven {
+			url 'https://plugins.gradle.org/m2/'
+		}
+	}
+	dependencies {
+		classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.1'
+	}
+}
+
+launch4j {
+	mainClassName = mainClass
+	headerType = "console"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClass
+    }
+    
+    from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/reports/coverage"
+    }
+}

@@ -1,2 +1,11 @@
+# Error logs
+hs_err_pid*
+
+# Eclipse junk
+/.gradle/
+/.settings/
+/bin/
 /build/
-/dist/
+/.classpath
+/.project
+/gradle.properties
