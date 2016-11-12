@@ -37,4 +37,9 @@ public class Vector3 {
 	public Vector3 mul(Vector3 other) {
 		return new Vector3(this.x*other.x, this.y*other.y, this.z*other.z);
 	}
+
+	@Override
+	public String toString() {
+		return "Vector3 [x=" + x + ", y=" + y + ", z=" + z + "]";
+	}
 }

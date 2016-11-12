@@ -87,6 +87,12 @@ public interface Assembly extends Entity {
 		}
 		
 		@Override
+		public boolean add(Entity element) {
+			element.setParent(assembly);
+			return a.add(element);
+		}
+		
+		@Override
 		public boolean addAll(int index, Collection<? extends Entity> c) {
 			for (Entity e : c) {
 				e.setParent(assembly);
