@@ -1,8 +1,6 @@
 package info.iconmaster.adam.entity;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
+import info.iconmaster.adam.util.Vector3;
 
 /**
  * The base class for an interactable entity in ADAM.
@@ -10,10 +8,14 @@ import java.util.List;
  *
  */
 public interface Entity {
-	public double getSize();
+	public Vector3 getSize();
 	public double getMass();
+	public default double getVolume() {
+		Vector3 size = getSize();
+		return size.x*size.y*size.z;
+	}
 	public default double getDensity() {
-		return getMass()/getSize();
+		return getMass()/getVolume();
 	}
 	
 	/**
@@ -26,28 +28,4 @@ public interface Entity {
 	 * @return
 	 */
 	public void setName(String name);
-	/**
-	 * Returns the color for drawing, or null if invisible.
-	 * @return
-	 */
-	public Color getColor();
-	
-	/**
-	 * Returns a list of all attachments. Any modification to this list should be reflected in the Entity.
-	 * @return
-	 */
-	public List<EntityAttachment> getAttachments();
-	
-	/**
-	 * Returns all the parts of an entity of a certain attachment type.
-	 * @param type
-	 * @return
-	 */
-	public default List<EntityAttachment> getAttachments(EntityAttachment.Type type) {
-		ArrayList<EntityAttachment> a = new ArrayList<>();
-		for (EntityAttachment att : getAttachments()) {
-			if (att.type == type) a.add(att);
-		}
-		return a;
-	}
 }
