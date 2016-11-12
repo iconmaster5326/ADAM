@@ -28,4 +28,11 @@ public interface Entity {
 	 * @return
 	 */
 	public void setName(String name);
+	
+	/**
+	 * A "parent" entity is for bookkeeping information. For example, entities are part of assemblies or worlds or etc.
+	 * @return
+	 */
+	public Entity getParent();
+	public void setParent(Entity entity);
 }
