@@ -21,6 +21,9 @@ public class Tests {
 		ass.joints.add(new Assembly.Joint(e1, Assembly.JointType.FRONT, e2));
 		ass.joints.add(new Assembly.Joint(e2, Assembly.JointType.TOP, e3));
 		
-		System.out.println(ass.getMass());
+		BasicWorld world = new BasicWorld("Earth", 5000, 1000);
+		world.entities().put(ass, new Vector3(10001, 20002, 30003));
+		
+		System.out.println(world.entities.get(ass));
 	}
 }
