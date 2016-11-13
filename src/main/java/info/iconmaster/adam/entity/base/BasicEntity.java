@@ -3,20 +3,20 @@ package info.iconmaster.adam.entity.base;
 import java.awt.Color;
 
 import info.iconmaster.adam.entity.ConcreteEntity;
-import info.iconmaster.adam.util.Vector3;
+import info.iconmaster.adam.util.WorldCoord;
 
 public class BasicEntity implements ConcreteEntity {
 	
-	public BasicEntity(String name, Vector3 size, double mass, Color color) {
+	public BasicEntity(String name, WorldCoord size, double mass, Color color) {
 		this.size = size;
 		this.mass = mass;
 		this.name = name;
 		this.color = color;
 	}
 
-	Vector3 size;
+	WorldCoord size;
 	@Override
-	public Vector3 getSize() {
+	public WorldCoord getSize() {
 		return size;
 	}
 

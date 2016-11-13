@@ -1,6 +1,6 @@
 package info.iconmaster.adam.entity;
 
-import info.iconmaster.adam.util.Vector3;
+import info.iconmaster.adam.util.WorldCoord;
 
 /**
  * The base class for an interactable entity in ADAM.
@@ -8,10 +8,10 @@ import info.iconmaster.adam.util.Vector3;
  *
  */
 public interface Entity {
-	public Vector3 getSize();
+	public WorldCoord getSize();
 	public double getMass();
 	public default double getVolume() {
-		Vector3 size = getSize();
+		WorldCoord size = getSize();
 		return size.x*size.y*size.z;
 	}
 	public default double getDensity() {

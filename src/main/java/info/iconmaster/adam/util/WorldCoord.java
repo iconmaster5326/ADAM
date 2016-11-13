@@ -1,45 +1,45 @@
 package info.iconmaster.adam.util;
 
-public class Vector3 {
+public class WorldCoord {
 	public final double x,y,z;
 
-	public Vector3(double x, double y, double z) {
+	public WorldCoord(double x, double y, double z) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
-	public Vector3 add(double x, double y, double z) {
-		return new Vector3(this.x+x, this.y+y, this.z+z);
+	public WorldCoord add(double x, double y, double z) {
+		return new WorldCoord(this.x+x, this.y+y, this.z+z);
 	}
 	
-	public Vector3 add(Vector3 other) {
-		return new Vector3(this.x+other.x, this.y+other.y, this.z+other.z);
+	public WorldCoord add(WorldCoord other) {
+		return new WorldCoord(this.x+other.x, this.y+other.y, this.z+other.z);
 	}
 	
-	public Vector3 sub(double x, double y, double z) {
-		return new Vector3(this.x-x, this.y-y, this.z-z);
+	public WorldCoord sub(double x, double y, double z) {
+		return new WorldCoord(this.x-x, this.y-y, this.z-z);
 	}
 	
-	public Vector3 sub(Vector3 other) {
-		return new Vector3(this.x-other.x, this.y-other.y, this.z-other.z);
+	public WorldCoord sub(WorldCoord other) {
+		return new WorldCoord(this.x-other.x, this.y-other.y, this.z-other.z);
 	}
 	
-	public Vector3 mul(double n) {
-		return new Vector3(this.x*n, this.y*n, this.z*n);
+	public WorldCoord mul(double n) {
+		return new WorldCoord(this.x*n, this.y*n, this.z*n);
 	}
 	
-	public Vector3 mul(double x, double y, double z) {
-		return new Vector3(this.x*x, this.y*y, this.z*z);
+	public WorldCoord mul(double x, double y, double z) {
+		return new WorldCoord(this.x*x, this.y*y, this.z*z);
 	}
 	
-	public Vector3 mul(Vector3 other) {
-		return new Vector3(this.x*other.x, this.y*other.y, this.z*other.z);
+	public WorldCoord mul(WorldCoord other) {
+		return new WorldCoord(this.x*other.x, this.y*other.y, this.z*other.z);
 	}
 	
-	public Vector3 mod(double n) {
-		return new Vector3(this.x%n, this.y%n, this.z%n);
+	public WorldCoord mod(double n) {
+		return new WorldCoord(this.x%n, this.y%n, this.z%n);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class Vector3 {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Vector3 other = (Vector3) obj;
+		WorldCoord other = (WorldCoord) obj;
 		if (x != other.x)
 			return false;
 		if (y != other.y)

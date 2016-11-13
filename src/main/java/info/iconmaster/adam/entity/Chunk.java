@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import info.iconmaster.adam.util.ChunkCoord;
-import info.iconmaster.adam.util.Vector3;
+import info.iconmaster.adam.util.WorldCoord;
 
 public class Chunk {
 	public final ChunkCoord pos;
@@ -12,38 +12,38 @@ public class Chunk {
 	public Entity ground = null;
 	public double height = 0.0;
 	
-	public final Map<Entity, Vector3> entities = new HashMap<Entity, Vector3>() {
+	public final Map<Entity, WorldCoord> entities = new HashMap<Entity, WorldCoord>() {
 		private static final long serialVersionUID = -1626718035634777215L;
 		
 		@Override
-		public Vector3 put(Entity key, Vector3 value) {
+		public WorldCoord put(Entity key, WorldCoord value) {
 			key.setParent(Chunk.this);
 			return super.put(key, value.mod(world.getRadius()));
 		}
 		
 		@Override
-		public void putAll(Map<? extends Entity, ? extends Vector3> m) {
-			for (Map.Entry<? extends Entity, ? extends Vector3> entry : m.entrySet()) {
+		public void putAll(Map<? extends Entity, ? extends WorldCoord> m) {
+			for (Map.Entry<? extends Entity, ? extends WorldCoord> entry : m.entrySet()) {
 				put(entry.getKey(), entry.getValue());
 			}
 		}
 		
 		@Override
-		public Vector3 putIfAbsent(Entity key, Vector3 value) {
+		public WorldCoord putIfAbsent(Entity key, WorldCoord value) {
 			if (!containsKey(key)) key.setParent(Chunk.this);
 			return super.putIfAbsent(key, value.mod(world.getRadius()));
 		}
 		
 		@Override
 		public boolean containsValue(Object value) {
-			if (value instanceof Vector3) {
-				value = ((Vector3)value).mod(world.getRadius());
+			if (value instanceof WorldCoord) {
+				value = ((WorldCoord)value).mod(world.getRadius());
 			}
 			return super.containsValue(value);
 		}
 		
 		@Override
-		public Vector3 remove(Object key) {
+		public WorldCoord remove(Object key) {
 			if (key instanceof Entity && containsKey(key)) {
 				((Entity)key).setParent(null);
 			}

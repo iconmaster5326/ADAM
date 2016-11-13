@@ -11,7 +11,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import info.iconmaster.adam.util.Vector3;
+import info.iconmaster.adam.util.WorldCoord;
 
 public interface Assembly extends Entity {
 	public static enum JointType {
@@ -187,8 +187,8 @@ public interface Assembly extends Entity {
 	public PartsList getParts();
 	public JointsMap getJoints();
 	
-	default Vector3 getSubassemblySize(Entity excluding, Entity part) {
-		Vector3 s = part.getSize();
+	default WorldCoord getSubassemblySize(Entity excluding, Entity part) {
+		WorldCoord s = part.getSize();
 		double x = s.x, y = s.y, z = s.z;
 		
 		if (getJoints().has(part)) {
@@ -222,22 +222,22 @@ public interface Assembly extends Entity {
 			z = extents.getOrDefault(JointType.FRONT, 0.0) + z + extents.getOrDefault(JointType.BACK, 0.0);
 		}
 		
-		return new Vector3(x, y, z);
+		return new WorldCoord(x, y, z);
 	}
 	
 	@Override
-	public default Vector3 getSize() {
+	public default WorldCoord getSize() {
 		double maxX = 0, maxY = 0, maxZ = 0;
 		
 		for (Entity part : getParts()) {
-			Vector3 size = getSubassemblySize(null, part);
+			WorldCoord size = getSubassemblySize(null, part);
 			
 			maxX = Math.max(maxX, size.x);
 			maxY = Math.max(maxY, size.y);
 			maxZ = Math.max(maxZ, size.z);
 		}
 		
-		return new Vector3(maxX, maxY, maxZ);
+		return new WorldCoord(maxX, maxY, maxZ);
 	}
 	
 	@Override

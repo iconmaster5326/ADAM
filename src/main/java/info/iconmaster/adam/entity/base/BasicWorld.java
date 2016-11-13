@@ -7,7 +7,7 @@ import java.util.Map;
 import info.iconmaster.adam.entity.Chunk;
 import info.iconmaster.adam.entity.World;
 import info.iconmaster.adam.util.ChunkCoord;
-import info.iconmaster.adam.util.Vector3;
+import info.iconmaster.adam.util.WorldCoord;
 
 public class BasicWorld implements World {
 	public BasicWorld(String name, double mass, double radius) {
@@ -57,7 +57,7 @@ public class BasicWorld implements World {
 	@Override
 	public Chunk generateChunk(ChunkCoord coord) {
 		Chunk ch = new Chunk(this, coord);
-		ch.ground = new BasicEntity("dirt", new Vector3(100, 10, 100), 50, Color.GREEN);
+		ch.ground = new BasicEntity("dirt", new WorldCoord(100, 10, 100), 50, Color.GREEN);
 		return ch;
 	}
 

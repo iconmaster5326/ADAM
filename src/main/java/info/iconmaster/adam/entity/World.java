@@ -3,16 +3,16 @@ package info.iconmaster.adam.entity;
 import java.util.Map;
 
 import info.iconmaster.adam.util.ChunkCoord;
-import info.iconmaster.adam.util.Vector3;
+import info.iconmaster.adam.util.WorldCoord;
 
 public interface World extends Entity {
 	public static final int VEC3_TO_CHUNK_SCALE = 10;
 	
 	public double getRadius();
 	@Override
-	public default Vector3 getSize() {
+	public default WorldCoord getSize() {
 		double r = getRadius();
-		return new Vector3(r, r, r);
+		return new WorldCoord(r, r, r);
 	}
 	
 	public Map<ChunkCoord, Chunk> getChunks();
@@ -27,11 +27,11 @@ public interface World extends Entity {
 			return ch;
 		}
 	}
-	public default Chunk getChunk(Vector3 pos) {
+	public default Chunk getChunk(WorldCoord pos) {
 		return getChunk(new ChunkCoord((long) (pos.x/VEC3_TO_CHUNK_SCALE), (long) (pos.z/VEC3_TO_CHUNK_SCALE)));
 	}
 	
-	public default void move(Entity e, Vector3 moveTo) {
+	public default void move(Entity e, WorldCoord moveTo) {
 		Chunk oldChunk = e.getParentWithClass(Chunk.class);
 		Chunk newChunk = getChunk(moveTo);
 		

@@ -10,12 +10,12 @@ import info.iconmaster.adam.entity.Chunk;
 import info.iconmaster.adam.entity.Entity;
 import info.iconmaster.adam.entity.World;
 import info.iconmaster.adam.util.ChunkCoord;
-import info.iconmaster.adam.util.Vector3;
+import info.iconmaster.adam.util.WorldCoord;
 
 public class WorldPane extends JPanel {
 	private static final long serialVersionUID = 8272220582389104958L;
 	
-	public static void drawWorldView(Graphics g, World world, Vector3 subject, int width, int height, int pxPerChunk) {
+	public static void drawWorldView(Graphics g, World world, WorldCoord subject, int width, int height, int pxPerChunk) {
 		double chunksWide = Math.ceil((double) width / (double) pxPerChunk)+2; if (chunksWide%2==0) chunksWide++;
 		double chunksHigh = Math.ceil((double) height / (double) pxPerChunk)+2; if (chunksHigh%2==0) chunksHigh++;
 		
@@ -47,7 +47,7 @@ public class WorldPane extends JPanel {
 			for (int y = 0; y < chunksHigh; y++) {
 				Chunk ch = world.getChunk(new ChunkCoord(((int)(chunkCenterX-chunksWide/2))+x, ((int)(chunkCenterY-chunksHigh/2))+y));
 				
-				for (Map.Entry<Entity, Vector3> entry : ch.entities.entrySet()) {
+				for (Map.Entry<Entity, WorldCoord> entry : ch.entities.entrySet()) {
 					double px = entry.getValue().x % World.VEC3_TO_CHUNK_SCALE / World.VEC3_TO_CHUNK_SCALE;
 					double py = entry.getValue().z % World.VEC3_TO_CHUNK_SCALE / World.VEC3_TO_CHUNK_SCALE;
 					double pw = entry.getKey().getSize().x / World.VEC3_TO_CHUNK_SCALE;
