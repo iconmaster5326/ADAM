@@ -105,7 +105,8 @@ public class AdamGui extends JFrame {
 		charPanel.setBorder(BorderFactory.createEtchedBorder());
 		bottomBar.add(charPanel);
 		
-		JPanel worldPanel = new JPanel(new BorderLayout());
+		WorldPane worldPanel = new WorldPane(this);
+		worldPanel.setLayout(new BorderLayout());
 		worldPanel.setBorder(BorderFactory.createEtchedBorder());
 		bottomBar.add(worldPanel);
 		
@@ -143,6 +144,8 @@ public class AdamGui extends JFrame {
 			String result = game.doAction(input.getText());
 			output.setText(output.getText()+">>> "+input.getText()+"\n"+result+"\n");
 			input.setText("");
+			
+			repaint();
 		});
 		
 		input.addKeyListener(new KeyListener() {
@@ -172,6 +175,8 @@ public class AdamGui extends JFrame {
 			
 			input.setEnabled(true);
 			output.setText(output.getText()+"A new world has begun!\n");
+			
+			repaint();
 		});
 	}
 }
