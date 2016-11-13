@@ -3,12 +3,18 @@ package info.iconmaster.adam.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -18,8 +24,34 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class AdamGui extends JFrame {
 	private static final long serialVersionUID = -8286165289807880809L;
 	
+	public static class RightClickHandler implements MouseListener {
+		JPopupMenu menu;
+		
+		public RightClickHandler(JPopupMenu menu) {
+			this.menu = menu;
+		}
+		
+		@Override public void mouseExited(MouseEvent e) {}
+		@Override public void mouseEntered(MouseEvent e) {}
+		@Override public void mouseClicked(MouseEvent e) {}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				menu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				menu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		}
+	}
+	
 	public AdamGui() {
-		// view
+		// view - main GUI
 		
 		setSize(1024, 768);
 		setTitle("ADAM");
@@ -75,10 +107,40 @@ public class AdamGui extends JFrame {
 		add(bottomBar);
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		
+		// view - popup menus
+		
+		JPopupMenu outputMenu = new JPopupMenu();
+		
+		JMenuItem outputMenuClear = new JMenuItem("Clear log");
+		outputMenu.add(outputMenuClear);
+		
 		// controller
 		
 		input.addActionListener((ev)->{
 			output.setText(output.getText()+"Action!\n");
+			input.setText("");
+		});
+		
+		input.addKeyListener(new KeyListener() {
+			@Override public void keyTyped(KeyEvent e) {}
+			@Override public void keyPressed(KeyEvent e) {}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					input.setText("up");
+				}
+				
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					input.setText("down");
+				}
+			}
+		});
+		
+		output.addMouseListener(new RightClickHandler(outputMenu));
+		
+		outputMenuClear.addActionListener((ev)->{
+			output.setText("");
 		});
 	}
 }
