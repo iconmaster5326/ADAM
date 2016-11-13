@@ -17,7 +17,7 @@ public class AdamGame {
 	public AdamGame() {
 		player = new BasicEntity("Bumpus", new Vector3(3,6,1), 200, Color.YELLOW);
 		BasicWorld earth = new BasicWorld("Earth", 1000000, 1000000);
-		earth.getChunk(new ChunkCoord(0, 0)).entities.put(player, new Vector3(5, 5, 5));
+		earth.getChunk(new ChunkCoord(0, 0)).entities.put(player, new Vector3(5, 0, 3));
 		controllable.add(player);
 	}
 	
