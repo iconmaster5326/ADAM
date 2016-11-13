@@ -26,7 +26,7 @@ buildscript {
 
 launch4j {
 	mainClassName = mainClass
-	headerType = "console"
+	headerType = "gui"
 }
 
 jar {
