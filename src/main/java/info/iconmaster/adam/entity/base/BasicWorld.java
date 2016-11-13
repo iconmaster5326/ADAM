@@ -1,6 +1,13 @@
 package info.iconmaster.adam.entity.base;
 
+import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+
+import info.iconmaster.adam.entity.Chunk;
 import info.iconmaster.adam.entity.World;
+import info.iconmaster.adam.util.ChunkCoord;
+import info.iconmaster.adam.util.Vector3;
 
 public class BasicWorld implements World {
 	public BasicWorld(String name, double mass, double radius) {
@@ -41,10 +48,18 @@ public class BasicWorld implements World {
 	public double getRadius() {
 		return radius;
 	}
-
-	EntityMap entities = new EntityMap(this);
+	
+	HashMap<ChunkCoord, Chunk> chunks = new HashMap<>();
 	@Override
-	public EntityMap entities() {
-		return entities;
+	public Map<ChunkCoord, Chunk> getChunks() {
+		return chunks;
 	}
+	@Override
+	public Chunk generateChunk(ChunkCoord coord) {
+		Chunk ch = new Chunk(this, coord);
+		ch.ground = new BasicEntity("dirt", new Vector3(100, 10, 100), 50, Color.GREEN);
+		return ch;
+	}
+
+	
 }

@@ -1,15 +1,17 @@
 package info.iconmaster.adam.entity.base;
 
-import info.iconmaster.adam.entity.Entity;
+import java.awt.Color;
+
+import info.iconmaster.adam.entity.ConcreteEntity;
 import info.iconmaster.adam.util.Vector3;
 
-public class BasicEntity implements Entity {
+public class BasicEntity implements ConcreteEntity {
 	
-	public BasicEntity(String name, Vector3 size, double mass) {
-		super();
+	public BasicEntity(String name, Vector3 size, double mass, Color color) {
 		this.size = size;
 		this.mass = mass;
 		this.name = name;
+		this.color = color;
 	}
 
 	Vector3 size;
@@ -42,6 +44,12 @@ public class BasicEntity implements Entity {
 	@Override
 	public void setParent(Object entity) {
 		parent = entity;
+	}
+	
+	Color color;
+	@Override
+	public Color getColor() {
+		return null;
 	}
 
 }

@@ -1,10 +1,12 @@
 package info.iconmaster.adam.game;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import info.iconmaster.adam.entity.Entity;
 import info.iconmaster.adam.entity.base.BasicEntity;
 import info.iconmaster.adam.entity.base.BasicWorld;
+import info.iconmaster.adam.util.ChunkCoord;
 import info.iconmaster.adam.util.Vector3;
 
 public class AdamGame {
@@ -13,9 +15,9 @@ public class AdamGame {
 	public long timePassed = 0;
 	
 	public AdamGame() {
-		player = new BasicEntity("Bumpus", new Vector3(3,6,1), 200);
+		player = new BasicEntity("Bumpus", new Vector3(3,6,1), 200, Color.YELLOW);
 		BasicWorld earth = new BasicWorld("Earth", 1000000, 1000000);
-		earth.entities().put(player, new Vector3(0, 0, 0));
+		earth.getChunk(new ChunkCoord(0, 0)).entities.put(player, new Vector3(0, 0, 0));
 		controllable.add(player);
 	}
 	
