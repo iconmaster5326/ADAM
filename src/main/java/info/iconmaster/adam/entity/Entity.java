@@ -35,4 +35,20 @@ public interface Entity {
 	 */
 	public Object getParent();
 	public void setParent(Object entity);
+	
+	public default <E> E getParentWithClass(Class<E> clazz) {
+		Object parent = getParent();
+		while (parent != null) {
+			if (parent.getClass().equals(clazz)) {
+				return (E) parent;
+			} else if (parent instanceof Chunk) {
+				parent = ((Chunk)parent).world;
+			} else if (parent instanceof Entity) {
+				parent = ((Entity)parent).getParent();
+			} else {
+				return null;
+			}
+		}
+		return null;
+	}
 }

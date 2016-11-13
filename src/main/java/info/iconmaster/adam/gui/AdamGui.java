@@ -77,6 +77,7 @@ public class AdamGui extends JFrame {
 		JTextPane output = new JTextPane();
 		output.setEditable(false);
 		output.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		output.setText("Welcome to ADAM!\nGo to 'File -> New Game' to start a new game.\n");
 		JScrollPane outputScroll = new JScrollPane(output);
 		outputPanel.add(outputScroll);
 		topBar.add(outputPanel);
@@ -170,6 +171,7 @@ public class AdamGui extends JFrame {
 			game = new AdamGame();
 			
 			input.setEnabled(true);
+			output.setText(output.getText()+"A new world has begun!\n");
 		});
 	}
 }

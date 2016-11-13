@@ -24,4 +24,8 @@ public interface World extends Entity {
 			return ch;
 		}
 	}
+	
+	public default void move(Entity e, Vector3 moveTo) {
+		
+	}
 }
