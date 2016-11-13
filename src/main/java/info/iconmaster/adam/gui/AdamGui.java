@@ -12,6 +12,8 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -20,6 +22,9 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
+
+import info.iconmaster.adam.game.AdamGame;
 
 public class AdamGui extends JFrame {
 	private static final long serialVersionUID = -8286165289807880809L;
@@ -50,11 +55,14 @@ public class AdamGui extends JFrame {
 		}
 	}
 	
+	public AdamGame game = null;
+	
 	public AdamGui() {
 		// view - main GUI
 		
 		setSize(1024, 768);
 		setTitle("ADAM");
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
@@ -75,6 +83,7 @@ public class AdamGui extends JFrame {
 		
 		JTextField input = new JTextField();
 		input.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		input.setEnabled(false);
 		JPanel inputPanel = new JPanel(new BorderLayout()) {
 			private static final long serialVersionUID = -3145773988628965624L;
 			@Override
@@ -107,6 +116,17 @@ public class AdamGui extends JFrame {
 		add(bottomBar);
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		
+		// view- menu bar
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu menuTabFile = new JMenu("File");
+		menuBar.add(menuTabFile);
+		
+		JMenuItem menuFileNewGame = new JMenuItem("New Game");
+		menuTabFile.add(menuFileNewGame);
+		
 		// view - popup menus
 		
 		JPopupMenu outputMenu = new JPopupMenu();
@@ -117,7 +137,10 @@ public class AdamGui extends JFrame {
 		// controller
 		
 		input.addActionListener((ev)->{
-			output.setText(output.getText()+"Action!\n");
+			if (input.getText().isEmpty()) return;
+			
+			String result = game.doAction(input.getText());
+			output.setText(output.getText()+">>> "+input.getText()+"\n"+result+"\n");
 			input.setText("");
 		});
 		
@@ -141,6 +164,12 @@ public class AdamGui extends JFrame {
 		
 		outputMenuClear.addActionListener((ev)->{
 			output.setText("");
+		});
+		
+		menuFileNewGame.addActionListener((ev)->{
+			game = new AdamGame();
+			
+			input.setEnabled(true);
 		});
 	}
 }
