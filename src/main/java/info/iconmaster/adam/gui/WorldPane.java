@@ -2,6 +2,9 @@ package info.iconmaster.adam.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -42,7 +45,6 @@ public class WorldPane extends JPanel {
 			}
 		}
 		
-		g.setColor(Color.RED);
 		for (int x = 0; x < chunksWide; x++) {
 			for (int y = 0; y < chunksHigh; y++) {
 				Chunk ch = world.getChunk(new ChunkCoord(((int)(chunkCenterX-chunksWide/2))+x, ((int)(chunkCenterY-chunksHigh/2))+y));
@@ -61,7 +63,11 @@ public class WorldPane extends JPanel {
 					int x1 = (int) (baseX+px*pxPerChunk-x2/2);
 					int y1 = (int) (baseY+py*pxPerChunk-y2/2);
 					
+					AffineTransform old = ((Graphics2D)g).getTransform();
+					((Graphics2D)g).rotate(subject.r, x1+x2/2, y1+y2/2);
+					g.setColor(Color.RED);
 					g.drawRect(x1, y1, x2, y2);
+					((Graphics2D)g).setTransform(old);
 				}
 			}
 		}
