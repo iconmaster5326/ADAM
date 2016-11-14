@@ -26,6 +26,18 @@ public interface Assembly extends Entity {
 		LEFT,
 		RIGHT,
 		INSIDE;
+		
+		public JointType opposite() {
+			switch (this) {
+				case LEFT:   return JointType.RIGHT;
+				case RIGHT:  return JointType.LEFT;
+				case TOP:    return JointType.BOTTOM;
+				case BOTTOM: return JointType.TOP;
+				case FRONT:  return JointType.BACK;
+				case BACK:   return JointType.FRONT;
+				default:     return this;
+			}
+		}
 	}
 	
 	public static class Joint {
@@ -173,7 +185,8 @@ public interface Assembly extends Entity {
 			m.putIfAbsent(j.from, new ArrayList<>());
 			m.get(j.from).add(j);
 			
-			j = new Joint(j.to, j.type, j.from);
+			if (j.type == JointType.INSIDE) return;
+			j = new Joint(j.to, j.type.opposite(), j.from);
 			m.putIfAbsent(j.from, new ArrayList<>());
 			m.get(j.from).add(j);
 		}
@@ -182,7 +195,8 @@ public interface Assembly extends Entity {
 			List<Joint> js = m.getOrDefault(j.from, new ArrayList<>());
 			js.remove(j);
 			
-			j = new Joint(j.to, j.type, j.from);
+			if (j.type == JointType.INSIDE) return;
+			j = new Joint(j.to, j.type.opposite(), j.from);
 			js = m.getOrDefault(j.from, new ArrayList<>());
 			js.remove(j);
 		}
@@ -255,10 +269,165 @@ public interface Assembly extends Entity {
 	
 	@Override
 	public default void draw(AdamGame game, Graphics g, int x, int y, double pixPerUnit, JointType side) {
+		Entity primaryPart = null;
+		double maxVolume = 0;
+		for (Entity part : getParts()) {
+			double vol = part.getVolume();
+			if (vol > maxVolume) {
+				primaryPart = part;
+				maxVolume = vol;
+			}
+		}
 		
+		draw(primaryPart, null, game, g, x, y, pixPerUnit, side);
 	}
-	@Override
-	public default Point drawSize(AdamGame game, double pixPerUnit, JointType side) {
-		return new Point();
+	
+	public default void draw(Entity subject, Entity root, AdamGame game, Graphics g, int x, int y, double pixPerUnit, JointType side) {
+		JointType onTopSide = side.opposite();
+		List<Entity> drawOnTop = new ArrayList<>();
+		EnumMap<JointType, List<Entity>> drawToSide = new EnumMap<>(JointType.class);
+		
+		if (getJoints().has(subject)) {
+			for (Joint j : getJoints().get(subject)) {
+				if (j.to == root) continue;
+				if (j.type == JointType.INSIDE) continue;
+				if (j.type == side) continue;
+				
+				if (j.type == onTopSide) {
+					drawOnTop.add(j.to);
+				} else {
+					if (!drawToSide.containsKey(j.type)) drawToSide.put(j.type, new ArrayList<>());
+					drawToSide.get(j.type).add(j.to);
+				}
+			}
+		}
+		
+		// draw center
+		
+		subject.draw(game, g, x, y, pixPerUnit, side);
+		for (Entity e : drawOnTop) {
+			draw(e, subject, game, g, x, y, pixPerUnit, side);
+		}
+		
+		
+		Point subjectSize = subject.drawSize(game, pixPerUnit, side);
+		
+		// draw north
+		
+		JointType sideUp;
+		switch (side) {
+			case LEFT:
+			case RIGHT:
+			case FRONT:
+			case BACK: {
+				sideUp = JointType.BOTTOM;
+				break;
+			}
+			case TOP:
+			case BOTTOM: {
+				sideUp = JointType.BACK;
+				break;
+			}
+			default: return;
+		}
+		
+		if (drawToSide.containsKey(sideUp)) {
+			List<Entity> toDraw = drawToSide.get(sideUp);
+			
+			for (Entity e : toDraw) {
+				Point eSize = e.drawSize(game, pixPerUnit, side);
+				draw(e, subject, game, g, x, y-subjectSize.y/2-eSize.y/2, pixPerUnit, side);
+			}
+		}
+		
+		// draw south
+		
+		JointType sideDown;
+		switch (side) {
+			case LEFT:
+			case RIGHT:
+			case FRONT:
+			case BACK: {
+				sideDown = JointType.TOP;
+				break;
+			}
+			case TOP:
+			case BOTTOM: {
+				sideDown = JointType.FRONT;
+				break;
+			}
+			default: return;
+		}
+		
+		if (drawToSide.containsKey(sideDown)) {
+			List<Entity> toDraw = drawToSide.get(sideDown);
+			
+			for (Entity e : toDraw) {
+				Point eSize = e.drawSize(game, pixPerUnit, side);
+				draw(e, subject, game, g, x, y+subjectSize.y/2+eSize.y/2, pixPerUnit, side);
+			}
+		}
+		
+		// draw west
+		
+		JointType sideLeft;
+		switch (side) {
+			case LEFT: {
+				sideLeft = JointType.BACK;
+				break;
+			}
+			case RIGHT: {
+				sideLeft = JointType.FRONT;
+				break;
+			}
+			case FRONT:
+			case BACK:
+			case TOP:
+			case BOTTOM: {
+				sideLeft = JointType.LEFT;
+				break;
+			}
+			default: return;
+		}
+		
+		if (drawToSide.containsKey(sideLeft)) {
+			List<Entity> toDraw = drawToSide.get(sideLeft);
+			
+			for (Entity e : toDraw) {
+				Point eSize = e.drawSize(game, pixPerUnit, side);
+				draw(e, subject, game, g, x-subjectSize.x/2-eSize.x/2, y, pixPerUnit, side);
+			}
+		}
+		
+		// draw east
+		
+		JointType sideRight;
+		switch (side) {
+			case LEFT: {
+				sideRight = JointType.FRONT;
+				break;
+			}
+			case RIGHT: {
+				sideRight = JointType.BACK;
+				break;
+			}
+			case FRONT:
+			case BACK:
+			case TOP:
+			case BOTTOM: {
+				sideRight = JointType.RIGHT;
+				break;
+			}
+			default: return;
+		}
+		
+		if (drawToSide.containsKey(sideRight)) {
+			List<Entity> toDraw = drawToSide.get(sideRight);
+			
+			for (Entity e : toDraw) {
+				Point eSize = e.drawSize(game, pixPerUnit, side);
+				draw(e, subject, game, g, x+subjectSize.x/2+eSize.x/2, y, pixPerUnit, side);
+			}
+		}
 	}
 }

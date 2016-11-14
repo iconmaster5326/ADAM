@@ -51,8 +51,4 @@ public interface World extends Entity {
 	public default void draw(AdamGame game, Graphics g, int x, int y, double pixPerUnit, JointType side) {
 		g.fillRect((int) (x-getRadius()/2), (int) (y-getRadius()/2), (int) getRadius(), (int) getRadius()); 
 	}
-	@Override
-	public default Point drawSize(AdamGame game, double pixPerUnit, JointType side) {
-		return new Point((int) (getRadius()*pixPerUnit), (int) (getRadius()*pixPerUnit));
-	}
 }

@@ -3,7 +3,10 @@ package info.iconmaster.adam.game;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import info.iconmaster.adam.entity.Assembly.Joint;
+import info.iconmaster.adam.entity.Assembly.JointType;
 import info.iconmaster.adam.entity.Entity;
+import info.iconmaster.adam.entity.base.BasicAssembly;
 import info.iconmaster.adam.entity.base.BasicEntity;
 import info.iconmaster.adam.entity.base.BasicWorld;
 import info.iconmaster.adam.util.ChunkCoord;
@@ -15,7 +18,29 @@ public class AdamGame {
 	public long timePassed = 0;
 	
 	public AdamGame() {
-		player = new BasicEntity("Bumpus", new WorldCoord(3,6,1), 200, Color.YELLOW);
+		Entity head = new BasicEntity("head", new WorldCoord(.6,1,.6), 50, Color.GRAY);
+		Entity torso = new BasicEntity("torso", new WorldCoord(2.5,3,1), 150, Color.YELLOW);
+		Entity larm = new BasicEntity("left arm", new WorldCoord(1,3,1), 50, Color.RED);
+		Entity rarm = new BasicEntity("right arm", new WorldCoord(1,3,1), 50, Color.BLUE);
+		Entity lleg = new BasicEntity("left leg", new WorldCoord(1,3,1), 50, Color.GREEN);
+		Entity rleg = new BasicEntity("right leg", new WorldCoord(1,3,1), 50, Color.CYAN);
+		
+		BasicAssembly playerAssembly = new BasicAssembly("Bumpus");
+		player = playerAssembly;
+		
+		playerAssembly.getParts().add(head);
+		playerAssembly.getParts().add(torso);
+		playerAssembly.getParts().add(larm);
+		playerAssembly.getParts().add(rarm);
+		playerAssembly.getParts().add(lleg);
+		playerAssembly.getParts().add(rleg);
+		
+		playerAssembly.getJoints().add(new Joint(head, JointType.TOP, torso));
+		playerAssembly.getJoints().add(new Joint(larm, JointType.LEFT, torso));
+		playerAssembly.getJoints().add(new Joint(rarm, JointType.RIGHT, torso));
+		playerAssembly.getJoints().add(new Joint(lleg, JointType.BOTTOM, torso));
+		playerAssembly.getJoints().add(new Joint(rleg, JointType.BOTTOM, torso));
+		
 		BasicWorld earth = new BasicWorld("Earth", 1000000, 1000000);
 		earth.getChunk(new ChunkCoord(0, 0)).entities.put(player, new WorldCoord(5, 0, 3, Math.PI/3));
 		controllable.add(player);
