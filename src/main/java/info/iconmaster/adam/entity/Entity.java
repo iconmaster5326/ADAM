@@ -1,5 +1,9 @@
 package info.iconmaster.adam.entity;
 
+import java.awt.Graphics;
+import java.awt.Point;
+
+import info.iconmaster.adam.game.AdamGame;
 import info.iconmaster.adam.util.WorldCoord;
 
 /**
@@ -51,4 +55,7 @@ public interface Entity {
 		}
 		return null;
 	}
+	
+	public void draw(AdamGame game, Graphics g, int x, int y, double pixPerUnit, Assembly.JointType side);
+	public Point drawSize(AdamGame game, double pixPerUnit, Assembly.JointType side);
 }

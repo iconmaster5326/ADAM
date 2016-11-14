@@ -1,11 +1,15 @@
 package info.iconmaster.adam.entity.base;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
+import info.iconmaster.adam.entity.Assembly.JointType;
 import info.iconmaster.adam.entity.Chunk;
 import info.iconmaster.adam.entity.World;
+import info.iconmaster.adam.game.AdamGame;
 import info.iconmaster.adam.util.ChunkCoord;
 import info.iconmaster.adam.util.WorldCoord;
 
@@ -60,6 +64,4 @@ public class BasicWorld implements World {
 		ch.ground = new BasicEntity("dirt", new WorldCoord(100, 10, 100), 50, Color.GREEN);
 		return ch;
 	}
-
-	
 }

@@ -4,21 +4,22 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import javax.swing.JPanel;
 
+import info.iconmaster.adam.entity.Assembly;
 import info.iconmaster.adam.entity.Chunk;
 import info.iconmaster.adam.entity.Entity;
 import info.iconmaster.adam.entity.World;
+import info.iconmaster.adam.game.AdamGame;
 import info.iconmaster.adam.util.ChunkCoord;
 import info.iconmaster.adam.util.WorldCoord;
 
 public class WorldPane extends JPanel {
 	private static final long serialVersionUID = 8272220582389104958L;
 	
-	public static void drawWorldView(Graphics g, World world, WorldCoord subject, int width, int height, int pxPerChunk) {
+	public static void drawWorldView(AdamGame game, Graphics g, World world, WorldCoord subject, int width, int height, int pxPerChunk) {
 		double chunksWide = Math.ceil((double) width / (double) pxPerChunk)+2; if (chunksWide%2==0) chunksWide++;
 		double chunksHigh = Math.ceil((double) height / (double) pxPerChunk)+2; if (chunksHigh%2==0) chunksHigh++;
 		
@@ -65,8 +66,7 @@ public class WorldPane extends JPanel {
 					
 					AffineTransform old = ((Graphics2D)g).getTransform();
 					((Graphics2D)g).rotate(subject.r, x1+x2/2, y1+y2/2);
-					g.setColor(Color.RED);
-					g.drawRect(x1, y1, x2, y2);
+					entry.getKey().draw(game, g, x1+x2/2, y1+y2/2, pxPerChunk/World.VEC3_TO_CHUNK_SCALE, Assembly.JointType.TOP);
 					((Graphics2D)g).setTransform(old);
 				}
 			}
@@ -96,7 +96,7 @@ public class WorldPane extends JPanel {
 			if (center == null) return;
 			World world = center.world;
 			
-			drawWorldView(g, world, center.entities.get(adamGui.game.player), getWidth(), getHeight(), viewDistance);
+			drawWorldView(adamGui.game, g, world, center.entities.get(adamGui.game.player), getWidth(), getHeight(), viewDistance);
 		}
 	}
 }

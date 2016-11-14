@@ -49,7 +49,6 @@ public class BasicEntity implements ConcreteEntity {
 	Color color;
 	@Override
 	public Color getColor() {
-		return null;
+		return color;
 	}
-
 }

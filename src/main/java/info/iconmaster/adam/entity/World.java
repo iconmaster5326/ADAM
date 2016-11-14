@@ -1,7 +1,11 @@
 package info.iconmaster.adam.entity;
 
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.Map;
 
+import info.iconmaster.adam.entity.Assembly.JointType;
+import info.iconmaster.adam.game.AdamGame;
 import info.iconmaster.adam.util.ChunkCoord;
 import info.iconmaster.adam.util.WorldCoord;
 
@@ -41,5 +45,14 @@ public interface World extends Entity {
 			oldChunk.entities.remove(e);
 			newChunk.entities.put(e, moveTo);
 		}
+	}
+	
+	@Override
+	public default void draw(AdamGame game, Graphics g, int x, int y, double pixPerUnit, JointType side) {
+		g.fillRect((int) (x-getRadius()/2), (int) (y-getRadius()/2), (int) getRadius(), (int) getRadius()); 
+	}
+	@Override
+	public default Point drawSize(AdamGame game, double pixPerUnit, JointType side) {
+		return new Point((int) (getRadius()*pixPerUnit), (int) (getRadius()*pixPerUnit));
 	}
 }

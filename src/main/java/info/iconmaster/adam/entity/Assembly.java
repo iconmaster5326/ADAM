@@ -1,5 +1,7 @@
 package info.iconmaster.adam.entity;
 
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +13,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import info.iconmaster.adam.entity.Assembly.JointType;
+import info.iconmaster.adam.game.AdamGame;
 import info.iconmaster.adam.util.WorldCoord;
 
 public interface Assembly extends Entity {
@@ -247,5 +251,14 @@ public interface Assembly extends Entity {
 			sum += part.getMass();
 		}
 		return sum;
+	}
+	
+	@Override
+	public default void draw(AdamGame game, Graphics g, int x, int y, double pixPerUnit, JointType side) {
+		
+	}
+	@Override
+	public default Point drawSize(AdamGame game, double pixPerUnit, JointType side) {
+		return new Point();
 	}
 }
